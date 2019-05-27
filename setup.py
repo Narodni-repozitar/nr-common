@@ -77,6 +77,9 @@ setup(
         ],
         'invenio_i18n.translations': [
         ],
+        'invenio_jsonschemas.schemas': [
+            'invenio_nusl_common = invenio_nusl_common.jsonschemas'
+        ]
     },
     extras_require=extras_require,
     install_requires=install_requires,

@@ -1,0 +1,35 @@
+{
+  "definitions": {
+    "valueType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "multilanguage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "lang"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
