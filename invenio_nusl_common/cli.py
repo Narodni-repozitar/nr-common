@@ -1,0 +1,1 @@
+#TODO: viz odkaz od Míry hangout
