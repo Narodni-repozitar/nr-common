@@ -30,6 +30,39 @@
           "type": "string"
         }
       }
+    },
+    "organization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contactPoint": {
+          "description": "vkladatel - email",
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/definitions/multilanguage"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "provider": {
+          "type": "boolean"
+        },
+        "isPartOf": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   }
 }
+
