@@ -150,6 +150,7 @@ def test_multilanguage_load_4():
     result = schema.load(user_data)
     assert final_data == result.data
 
+
 def test_multilanguage_load_5():
     user_data = {
         "name": "Text práce",
@@ -161,3 +162,10 @@ def test_multilanguage_load_5():
     schema = MultilanguageSchemaV1(strict=True)
     result = schema.load(user_data)
     assert final_data == result.data
+
+
+########################################################################
+#                       Organization                                   #
+########################################################################
+
+# TODO: dodělat testy

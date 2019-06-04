@@ -14,9 +14,8 @@ from audioop import max
 from invenio_records_rest.schemas import Nested, StrictKeysMixin
 from invenio_records_rest.schemas.fields import DateString, \
     PersistentIdentifier, SanitizedUnicode
-from marshmallow import fields, missing, validate, pre_load, post_load
+from marshmallow import fields, missing, validate, pre_load, post_load, ValidationError
 from pycountry import languages
-from marshmallow import ValidationError
 
 
 ########################################################################
@@ -48,7 +47,7 @@ class MultilanguageSchemaV1(StrictKeysMixin):
 
     name = SanitizedUnicode(required=True)
     lang = fields.String(validate=validate_language,
-                         required=True)  # TODO: velikost písmen, automaticky přepsat CES na CZE, DEU na GER
+                         required=True)  # TODO: velikost písmen
 
     @post_load
     def change_lang_code(self, data):
