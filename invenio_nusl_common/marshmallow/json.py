@@ -9,12 +9,9 @@
 
 from __future__ import absolute_import, print_function
 
-from audioop import max
-
 from invenio_records_rest.schemas import Nested, StrictKeysMixin
-from invenio_records_rest.schemas.fields import DateString, \
-    PersistentIdentifier, SanitizedUnicode
-from marshmallow import fields, missing, validate, pre_load, post_load, ValidationError
+from invenio_records_rest.schemas.fields import SanitizedUnicode
+from marshmallow import fields, pre_load, ValidationError
 from pycountry import languages
 
 
@@ -22,7 +19,7 @@ from pycountry import languages
 #                 VALIDATION MODELS                                    #
 ########################################################################
 
-def validate_language(lang):
+def validate_language(lang):  # TODO: zkontrolovat jen alpha3 a nejdřív bib
     lang = lang.lower()
     alpha3 = languages.get(alpha_3=lang)
     bib = languages.get(bibliographic=lang)
@@ -47,18 +44,26 @@ class MultilanguageSchemaV1(StrictKeysMixin):
 
     name = SanitizedUnicode(required=True)
     lang = fields.String(validate=validate_language,
-                         required=True)  # TODO: velikost písmen
+                         required=True)
 
-    @post_load
+    @pre_load
     def change_lang_code(self, data):
-        lang = data["lang"].lower()
-        alpha3 = languages.get(alpha_3=lang)
-        if alpha3 is not None:
-            try:
-                data["lang"] = alpha3.bibliographic
-                return data
-            except AttributeError:
-                return data
+        if "lang" in data:
+            lang = data["lang"].lower()
+            if languages.get(alpha_3=lang) is not None:
+                language = languages.get(alpha_3=lang)
+            elif languages.get(alpha_2=lang):
+                language = languages.get(alpha_2=lang)
+            elif languages.get(bibliographic=lang):
+                language = languages.get(bibliographic=lang)
+            else:
+                language = None
+            if hasattr(language, "bibliographic"):
+                data["lang"] = language.bibliographic
+            elif hasattr(language, "alpha_3"):
+                data["lang"] = language.alpha_3
+            else:
+                pass
         return data
 
 

@@ -163,6 +163,29 @@ def test_multilanguage_load_5():
     result = schema.load(user_data)
     assert final_data == result.data
 
+def test_multilanguage_load_6():
+    user_data = {
+        "name": "Text práce",
+        "lang": "cs"
+    }
+
+    final_data = {'lang': 'cze', 'name': 'Text práce'}
+
+    schema = MultilanguageSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert final_data == result.data
+
+def test_multilanguage_load_7():
+    user_data = {
+        "name": "Text práce",
+        "lang": "en"
+    }
+
+    final_data = {'lang': 'eng', 'name': 'Text práce'}
+
+    schema = MultilanguageSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert final_data == result.data
 
 ########################################################################
 #                       Organization                                   #
