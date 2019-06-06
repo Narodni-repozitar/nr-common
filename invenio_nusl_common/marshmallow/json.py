@@ -35,7 +35,7 @@ def validate_language(lang):  # TODO: zkontrolovat jen alpha3 a nejdřív bib
 class ValueTypeSchemaV1(StrictKeysMixin):
     """Ids schema."""
 
-    type = SanitizedUnicode()
+    type = SanitizedUnicode(required=True)
     value = SanitizedUnicode(required=True)
 
 
@@ -65,6 +65,11 @@ class MultilanguageSchemaV1(StrictKeysMixin):
             else:
                 pass
         return data
+
+
+class DoctypeSchemaV1(StrictKeysMixin):
+    bterm = SanitizedUnicode()
+    term = SanitizedUnicode()
 
 
 class OrganizationSchemaV1(StrictKeysMixin):  # TODO: Dodělat

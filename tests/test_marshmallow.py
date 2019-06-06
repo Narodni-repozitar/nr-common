@@ -52,9 +52,9 @@ def test_valueType_load_2():
         "value": "12455122"
     }
 
-    schema = ValueTypeSchemaV1(strict=True)
-    result = schema.load(user_data)
-    assert user_data == result.data
+    with pytest.raises(ValidationError):
+        schema = ValueTypeSchemaV1(strict=True)
+        schema.load(user_data)
 
 
 def test_valueType_load_3():
@@ -163,6 +163,7 @@ def test_multilanguage_load_5():
     result = schema.load(user_data)
     assert final_data == result.data
 
+
 def test_multilanguage_load_6():
     user_data = {
         "name": "Text práce",
@@ -174,6 +175,7 @@ def test_multilanguage_load_6():
     schema = MultilanguageSchemaV1(strict=True)
     result = schema.load(user_data)
     assert final_data == result.data
+
 
 def test_multilanguage_load_7():
     user_data = {
