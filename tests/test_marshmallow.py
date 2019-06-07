@@ -1,6 +1,7 @@
 import pytest
 
-from invenio_nusl_common.marshmallow.json import ValueTypeSchemaV1, MultilanguageSchemaV1
+from invenio_nusl_common.marshmallow.json import ValueTypeSchemaV1, MultilanguageSchemaV1, NUSLDoctypeSchemaV1, \
+    RIVDoctypeSchemaV1
 from marshmallow.exceptions import ValidationError
 
 
@@ -188,6 +189,135 @@ def test_multilanguage_load_7():
     schema = MultilanguageSchemaV1(strict=True)
     result = schema.load(user_data)
     assert final_data == result.data
+
+
+########################################################################
+#                       DocTypeNUSL                                    #
+########################################################################
+def test_doctype_dump_1():
+    json = {
+        "term": "studie",
+        "bterm": "anl_met_mat"
+    }
+    multiLanguage = NUSLDoctypeSchemaV1(strict=True)
+    assert json == multiLanguage.dump(json).data
+
+
+def test_doctype_load_1():
+    user_data = {
+        "term": "studie",
+        "bterm": "anl_met_mat"
+    }
+
+    schema = NUSLDoctypeSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
+
+
+def test_doctype_load_2():
+    user_data = {
+        "term": "neexistuje",
+        "bterm": "anl_met_mat"
+    }
+
+    with pytest.raises(ValidationError):
+        schema = NUSLDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
+
+def test_doctype_load_3():
+    user_data = {
+        "bterm": "anl_met_mat"
+    }
+
+    with pytest.raises(ValidationError):
+        schema = NUSLDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
+
+def test_doctype_load_4():
+    user_data = {
+        "bterm": "neexistuje"
+    }
+
+    with pytest.raises(ValidationError):
+        schema = NUSLDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
+
+def test_doctype_load_5():
+    user_data = {
+        "term": "letaky",
+        "bterm": "vskp"
+    }
+
+    with pytest.raises(ValidationError):
+        schema = NUSLDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
+
+########################################################################
+#                       DocTypeRIV                                    #
+########################################################################
+def test_doctype_RIV_dump_1():
+    json = {
+        "term": "polop",
+        "bterm": "Z"
+    }
+    multiLanguage = RIVDoctypeSchemaV1(strict=True)
+    assert json == multiLanguage.dump(json).data
+
+
+def test_doctype_RIV_load_1():
+    user_data = {
+        "term": "polop",
+        "bterm": "Z"
+    }
+
+    schema = RIVDoctypeSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
+
+
+def test_doctype_RIV_load_2():
+    user_data = {
+        "term": "neexistuje",
+        "bterm": "Z"
+    }
+
+    with pytest.raises(ValidationError):
+        schema = RIVDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
+
+def test_doctype_RIV_load_3():
+    user_data = {
+        "bterm": "Z"
+    }
+
+    schema = RIVDoctypeSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
+
+
+def test_doctype_RIV_load_4():
+    user_data = {
+        "bterm": "Z",
+        "term": None
+    }
+    with pytest.raises(ValidationError):
+        schema = RIVDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
+def test_doctype_RIV_load_5():
+    user_data = {
+        "bterm": "P",
+        "term": None
+    }
+    with pytest.raises(ValidationError):
+        schema = RIVDoctypeSchemaV1(strict=True)
+        schema.load(user_data)
+
 
 ########################################################################
 #                       Organization                                   #
