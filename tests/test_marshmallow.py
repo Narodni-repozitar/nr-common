@@ -1,7 +1,7 @@
 import pytest
 
 from invenio_nusl_common.marshmallow.json import ValueTypeSchemaV1, MultilanguageSchemaV1, NUSLDoctypeSchemaV1, \
-    RIVDoctypeSchemaV1
+    RIVDoctypeSchemaV1, OrganizationSchemaV1
 from marshmallow.exceptions import ValidationError
 
 
@@ -309,18 +309,82 @@ def test_doctype_RIV_load_4():
         schema = RIVDoctypeSchemaV1(strict=True)
         schema.load(user_data)
 
+
 def test_doctype_RIV_load_5():
     user_data = {
         "bterm": "P",
         "term": None
     }
-    with pytest.raises(ValidationError):
-        schema = RIVDoctypeSchemaV1(strict=True)
-        schema.load(user_data)
+    schema = RIVDoctypeSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
+
+
+def test_doctype_RIV_load_6():
+    user_data = {
+        "bterm": "W"
+    }
+    schema = RIVDoctypeSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
 
 
 ########################################################################
 #                       Organization                                   #
 ########################################################################
+def test_organization_dump_1():
+    user_data = {
+        "id": {"value": "60461373",
+               "type": "IČO"},
+        "address": "Technická 1905/5, Dejvice, 160 00 Praha",
+        "contactPoint": "info@vscht.cz",
+        "name": {
+            "name": "Vysoká škola chemicko-technologická",
+            "lang": "cze"},
+        "url": "https://www.vscht.cz/",
+        "provider": True,
+        "isPartOf": ["public_uni", "edu"]  # TODO: Dodělat kontrolovaný slovník organizací
+    }
+    schema = OrganizationSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
 
-# TODO: dodělat testy
+
+def test_organization_load_1():
+    user_data = {
+        "id": {"value": "60461373",
+               "type": "IČO"},
+        "address": "Technická 1905/5, Dejvice, 160 00 Praha",
+        "contactPoint": "info@vscht.cz",
+        "name": {
+            "name": "Vysoká škola chemicko-technologická",
+            "lang": "cze"
+        },
+        "url": "https://www.vscht.cz/",
+        "provider": True,
+        "isPartOf": ["public_uni", "edu"]  # TODO: Dodělat kontrolovaný slovník organizací
+    }
+
+    schema = OrganizationSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
+
+def test_organization_load_2():
+    user_data = {
+        "id": {"value": "60461373",
+               "type": "IČO"},
+        "address": "Technická 1905/5, Dejvice, 160 00 Praha",
+        "contactPoint": "info@vscht.cz",
+        "name": {
+            "name": "Vysoká škola chemicko-technologická",
+            "lang": "cz"
+        },
+        "url": "https://www.vscht.cz/",
+        "provider": True,
+        "isPartOf": ["public_uni", "edu"]  # TODO: Dodělat kontrolovaný slovník organizací
+    }
+
+    with pytest.raises(ValidationError):
+        schema = OrganizationSchemaV1(strict=True)
+        schema.load(user_data)
+

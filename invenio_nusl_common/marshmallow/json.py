@@ -32,7 +32,7 @@ def validate_language(lang):  # TODO: zkontrolovat jen alpha3 a nejdřív bib, s
 
 def validate_bterm(bterm, json_path):  # TODO Součást třídy, vypadá to lépe
     terms = NUSLDoctypeSchemaV1.import_json(json_path)  # TODO: vyměnit za relativní
-    if terms.get(bterm, None) is None:
+    if terms.get(bterm, "unknown") == "unknown":
         raise ValidationError('The chosen broader term is not valid.')
 
 
@@ -141,14 +141,15 @@ class RIVDoctypeSchemaV1(StrictKeysMixin):
             bterm = data["bterm"]
             terms = NUSLDoctypeSchemaV1.import_json(
                 "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_RIV.json")  # TODO: vyměnit za relativní
-            if term not in terms[bterm]:
-                raise ValidationError("The term is not part of broader term")
+            if terms[bterm] is not None:
+                if term not in terms[bterm]:
+                    raise ValidationError("The term is not part of broader term")
 
 
 class OrganizationSchemaV1(StrictKeysMixin):  # TODO: Dodělat
     """ """
 
-    id = SanitizedUnicode()
+    id = Nested(ValueTypeSchemaV1)
     address = SanitizedUnicode()
     contactPoint = fields.Email()
     name = Nested(MultilanguageSchemaV1)
