@@ -36,7 +36,19 @@
       "additionalProperties": false,
       "properties": {
         "id": {
-          "type": "string"
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
         },
         "address": {
           "type": "string"
