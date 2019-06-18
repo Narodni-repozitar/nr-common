@@ -30,6 +30,66 @@
           "type": "string"
         }
       }
+    },
+    "organization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        },
+        "address": {
+          "type": "string"
+        },
+        "contactPoint": {
+          "description": "vkladatel - email",
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/definitions/multilanguage"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "provider": {
+          "type": "boolean"
+        },
+        "isPartOf": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "doctype": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bterm": {
+          "type": "string"
+        },
+        "term": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
     }
   }
 }
+

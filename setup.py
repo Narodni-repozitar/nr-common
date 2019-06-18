@@ -68,7 +68,7 @@ setup(
     platforms='any',
     entry_points={
         'console_scripts': [
-
+            'refrep = invenio_nusl_common.cli:refrep'
         ],
         'invenio_base.blueprints': [
         ],
