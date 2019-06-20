@@ -78,8 +78,8 @@ def validate_RIV_term(term):
 class ValueTypeSchemaV1(StrictKeysMixin):
     """Ids schema."""
 
-    type = SanitizedUnicode(required=True)
-    value = SanitizedUnicode(required=True)
+    type = SanitizedUnicode(required=True, allow_none=True)
+    value = SanitizedUnicode(required=True, allow_none=True)
 
 
 class MultilanguageSchemaV1(StrictKeysMixin):
@@ -146,7 +146,7 @@ class RIVDoctypeSchemaV1(StrictKeysMixin):
                     raise ValidationError("The term is not part of broader term")
 
 
-class OrganizationSchemaV1(StrictKeysMixin):  # TODO: Dodělat
+class OrganizationSchemaV1(StrictKeysMixin):
     """ """
 
     id = Nested(ValueTypeSchemaV1)

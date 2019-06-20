@@ -67,6 +67,17 @@ def test_valueType_load_3():
         schema = ValueTypeSchemaV1(strict=True)
         result = schema.load(user_data)
 
+def test_valueType_load_4():
+    user_data = {
+        "value": None,
+        "type": None
+    }
+
+    schema = ValueTypeSchemaV1(strict=True)
+    result = schema.load(user_data)
+    assert user_data == result.data
+
+
 
 ########################################################################
 #                       Multilanguage                                  #
