@@ -79,17 +79,18 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "bterm": {
+        "taxonomy": {
           "type": "string"
         },
-        "term": {
-          "type": [
-            "string",
-            "null"
-          ]
+        "value": {
+          "type": "list",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
   }
 }
+
 
