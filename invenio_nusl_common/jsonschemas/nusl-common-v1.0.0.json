@@ -76,18 +76,9 @@
       }
     },
     "doctype": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "bterm": {
-          "type": "string"
-        },
-        "term": {
-          "type": [
-            "string",
-            "null"
-          ]
-        }
+      "type": "list",
+      "items": {
+        "type": "string"
       }
     }
   }
