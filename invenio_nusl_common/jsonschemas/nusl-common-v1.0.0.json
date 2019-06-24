@@ -76,9 +76,18 @@
       }
     },
     "doctype": {
-      "type": "list",
-      "items": {
-        "type": "string"
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "taxonomy": {
+          "type": "string"
+        },
+        "value": {
+          "type": "list",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     }
   }

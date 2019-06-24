@@ -9,6 +9,7 @@
 
 from __future__ import absolute_import, print_function
 
+import os
 from csv import reader
 
 from invenio_records_rest.schemas import Nested, StrictKeysMixin
@@ -52,22 +53,22 @@ def validate_term(term, json_path):  # TODO Součást třídy, vypadá to lépe
 
 def validate_nusl_bterm(bterm):
     validate_bterm(bterm,
-                   "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_NUSL.json")  # TODO: vyměnit za relativní
+                   os.path.join(os.path.dirname(__file__), "data", "document_typology_NUSL.json"))
 
 
 def validate_nusl_term(term):
     validate_term(term,
-                  "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_NUSL.json")  # TODO: vyměnit za relativní
+                  os.path.join(os.path.dirname(__file__), "data", "document_typology_NUSL.json"))
 
 
 def validate_RIV_bterm(bterm):
     validate_bterm(bterm,
-                   "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_RIV.json")  # TODO: vyměnit za relativní
+                   os.path.join(os.path.dirname(__file__), "data", "document_typology_RIV.json"))
 
 
 def validate_RIV_term(term):
     validate_term(term,
-                  "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_RIV.json")  # TODO: vyměnit za relativní
+                  os.path.join(os.path.dirname(__file__), "data", "document_typology_RIV.json"))
 
 
 ########################################################################
@@ -108,6 +109,22 @@ class MultilanguageSchemaV1(StrictKeysMixin):
             else:
                 pass
         return data
+
+
+class DoctypeSubSchemaV1(StrictKeysMixin):
+    taxonomy = SanitizedUnicode(required=True)
+    value = fields.List(SanitizedUnicode())
+
+    @pre_load
+    def validate_taxonomy(self, data):
+        if data['taxonomy'] != 'NUSL':
+            raise ValidationError('Only NUSL taxonomy supported at this time')
+        value = data['value']
+        if len(value) == 1:
+            validate_nusl_term(value[0])
+        else:
+            validate_nusl_term(value[1])
+            validate_nusl_bterm(value[0])
 
 
 class NUSLDoctypeSchemaV1(StrictKeysMixin):
