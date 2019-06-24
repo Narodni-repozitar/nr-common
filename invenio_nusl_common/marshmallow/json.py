@@ -151,7 +151,7 @@ class OrganizationSchemaV1(StrictKeysMixin):
 
     id = Nested(ValueTypeSchemaV1)
     address = SanitizedUnicode()
-    contactPoint = fields.Email()
+    contactPoint = fields.Email(required=False)
     name = Nested(MultilanguageSchemaV1)
     url = fields.Url()
     provider = fields.Boolean()
