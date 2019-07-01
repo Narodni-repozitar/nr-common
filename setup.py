@@ -86,6 +86,9 @@ setup(
         'invenio_pidstore.fetchers': [
             'nusl = invenio_nusl_common.fetchers:nusl_id_fetcher',
         ],
+        'invenio_db.alembic': [
+            'nusl = invenio_nusl_common:alembic',
+        ]
     },
     extras_require=extras_require,
     install_requires=install_requires,
