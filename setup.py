@@ -79,7 +79,13 @@ setup(
         ],
         'invenio_jsonschemas.schemas': [
             'invenio_nusl_common = invenio_nusl_common.jsonschemas'
-        ]
+        ],
+        'invenio_pidstore.minters': [
+            'nusl = invenio_nusl_common.minters:nusl_id_minter',
+        ],
+        'invenio_pidstore.fetchers': [
+            'nusl = invenio_nusl_common.fetchers:nusl_id_fetcher',
+        ],
     },
     extras_require=extras_require,
     install_requires=install_requires,

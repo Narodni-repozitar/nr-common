@@ -11,3 +11,4 @@ def marshmallow_remove_required(schema, deep_copy=True):
             marshmallow_remove_required(fld.container, deep_copy=False)
         if hasattr(fld, 'nested'):
             marshmallow_remove_required(fld.nested, deep_copy=False)
+    return schema
