@@ -37,17 +37,12 @@ def validate_bterm(bterm, json_path):  # TODO Součást třídy, vypadá to lép
         raise ValidationError('The chosen broader term is not valid.')
 
 
-def validate_term(term, json_path):  # TODO Součást třídy, vypadá to lépe
+def validate_term(bterm, term, json_path):  # TODO Součást třídy, vypadá to lépe
     if term is not None:
         terms = NUSLDoctypeSchemaV1.import_json(json_path)
-        found = False
-        for k, v in terms.items():
-            if v is None:
-                continue
-            if term in v:
-                found = True
-                break
-        if not found:
+        if bterm not in terms:
+            raise ValidationError('The chosen bterm is not valid.')
+        if term not in terms[bterm]:
             raise ValidationError('The chosen term is not valid.')
 
 
@@ -56,8 +51,8 @@ def validate_nusl_bterm(bterm):
                    os.path.join(os.path.dirname(__file__), "data", "document_typology_NUSL.json"))
 
 
-def validate_nusl_term(term):
-    validate_term(term,
+def validate_nusl_term(bterm, term):
+    validate_term(bterm, term,
                   os.path.join(os.path.dirname(__file__), "data", "document_typology_NUSL.json"))
 
 
@@ -123,13 +118,12 @@ class DoctypeSubSchemaV1(StrictKeysMixin):
         if len(value) == 1:
             validate_nusl_term(value[0])
         else:
-            validate_nusl_term(value[1])
-            validate_nusl_bterm(value[0])
+            validate_nusl_term(value[0], value[1])
 
 
 class NUSLDoctypeSchemaV1(StrictKeysMixin):
-    bterm = SanitizedUnicode(required=True, validate=validate_nusl_bterm)
-    term = SanitizedUnicode(required=True, validate=validate_nusl_term)
+    bterm = SanitizedUnicode(required=True)
+    term = SanitizedUnicode(required=True)
 
     @staticmethod
     def import_json(path: str):
@@ -137,14 +131,11 @@ class NUSLDoctypeSchemaV1(StrictKeysMixin):
         json_dict = load(json_file)
         return json_dict
 
-    @post_load
-    def isPartOf(self, data):
-        term = data["term"]
-        bterm = data["bterm"]
-        terms = self.import_json(
-            "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_NUSL.json")  # TODO: vyměnit za relativní
-        if term not in terms[bterm]:
-            raise ValidationError("The term is not part of broader term")
+    @pre_load
+    def validate_taxonomy(self, data):
+        validate_nusl_term(data["bterm"], data["term"])
+
+
 
 
 class RIVDoctypeSchemaV1(StrictKeysMixin):
