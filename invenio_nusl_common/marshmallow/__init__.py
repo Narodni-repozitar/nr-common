@@ -9,6 +9,9 @@
 
 from __future__ import absolute_import, print_function
 
-from .json import ValueTypeSchemaV1, MultilanguageSchemaV1, OrganizationSchemaV1, NUSLDoctypeSchemaV1, RIVDoctypeSchemaV1
+from .json import createValueTypeSchemaV1, createMultilanguageSchemaV1, createOrganizationSchemaV1, createNUSLDoctypeSchemaV1, \
+    createRIVDoctypeSchemaV1
 
-__all__ = ('ValueTypeSchemaV1', 'MultilanguageSchemaV1', 'OrganizationSchemaV1', 'NUSLDoctypeSchemaV1', 'RIVDoctypeSchemaV1')
+__all__ = (
+'createValueTypeSchemaV1', 'createMultilanguageSchemaV1', 'createOrganizationSchemaV1', 'createNUSLDoctypeSchemaV1',
+'createRIVDoctypeSchemaV1')

@@ -10,13 +10,20 @@
 from __future__ import absolute_import, print_function
 
 import os
-from csv import reader
+from functools import lru_cache
+from json import load
 
 from invenio_records_rest.schemas import Nested, StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
 from marshmallow import fields, pre_load, ValidationError, post_load
 from pycountry import languages
-from json import load
+
+
+@lru_cache()
+def import_json(path: str):
+    json_file = open(path, 'r')
+    json_dict = load(json_file)
+    return json_dict
 
 
 ########################################################################
@@ -32,14 +39,14 @@ def validate_language(lang):  # TODO: zkontrolovat jen alpha3 a nejdřív bib, s
 
 
 def validate_bterm(bterm, json_path):  # TODO Součást třídy, vypadá to lépe
-    terms = NUSLDoctypeSchemaV1.import_json(json_path)  # TODO: vyměnit za relativní
+    terms = import_json(json_path)  # TODO: vyměnit za relativní
     if terms.get(bterm, "unknown") == "unknown":
         raise ValidationError('The chosen broader term is not valid.')
 
 
 def validate_term(bterm, term, json_path):  # TODO Součást třídy, vypadá to lépe
     if term is not None:
-        terms = NUSLDoctypeSchemaV1.import_json(json_path)
+        terms = import_json(json_path)
         if bterm not in terms:
             raise ValidationError('The chosen bterm is not valid.')
         if term not in terms[bterm]:
@@ -69,98 +76,105 @@ def validate_RIV_term(term):
 ########################################################################
 #                            SCHEMAS                                   #
 ########################################################################
+def createValueTypeSchemaV1():
+    class ValueTypeSchemaV1(StrictKeysMixin):
+        """Ids schema."""
+
+        type = SanitizedUnicode(required=True, allow_none=True)
+        value = SanitizedUnicode(required=True, allow_none=True)
+
+    return ValueTypeSchemaV1
 
 
-class ValueTypeSchemaV1(StrictKeysMixin):
-    """Ids schema."""
+def createMultilanguageSchemaV1():
+    class MultilanguageSchemaV1(StrictKeysMixin):
+        """ """
 
-    type = SanitizedUnicode(required=True, allow_none=True)
-    value = SanitizedUnicode(required=True, allow_none=True)
+        name = SanitizedUnicode(required=True)
+        lang = fields.String(validate=validate_language,
+                             required=True)
+
+        @pre_load
+        def change_lang_code(self, data):
+            if "lang" in data:
+                lang = data["lang"].lower()
+                if languages.get(alpha_3=lang) is not None:
+                    language = languages.get(alpha_3=lang)
+                elif languages.get(alpha_2=lang):
+                    language = languages.get(alpha_2=lang)
+                elif languages.get(bibliographic=lang):
+                    language = languages.get(bibliographic=lang)
+                else:
+                    language = None
+                if hasattr(language, "bibliographic"):
+                    data["lang"] = language.bibliographic
+                elif hasattr(language, "alpha_3"):
+                    data["lang"] = language.alpha_3
+                else:
+                    pass
+            return data
+
+    return MultilanguageSchemaV1
 
 
-class MultilanguageSchemaV1(StrictKeysMixin):
-    """ """
+def createDoctypeSubSchemaV1():
+    class DoctypeSubSchemaV1(StrictKeysMixin):
+        taxonomy = SanitizedUnicode(required=True)
+        value = fields.List(SanitizedUnicode())
 
-    name = SanitizedUnicode(required=True)
-    lang = fields.String(validate=validate_language,
-                         required=True)
-
-    @pre_load
-    def change_lang_code(self, data):
-        if "lang" in data:
-            lang = data["lang"].lower()
-            if languages.get(alpha_3=lang) is not None:
-                language = languages.get(alpha_3=lang)
-            elif languages.get(alpha_2=lang):
-                language = languages.get(alpha_2=lang)
-            elif languages.get(bibliographic=lang):
-                language = languages.get(bibliographic=lang)
+        @pre_load
+        def validate_taxonomy(self, data):
+            if data['taxonomy'] != 'NUSL':
+                raise ValidationError('Only NUSL taxonomy supported at this time')
+            value = data['value']
+            if len(value) == 1:
+                validate_nusl_term(value[0])
             else:
-                language = None
-            if hasattr(language, "bibliographic"):
-                data["lang"] = language.bibliographic
-            elif hasattr(language, "alpha_3"):
-                data["lang"] = language.alpha_3
-            else:
-                pass
-        return data
+                validate_nusl_term(value[0], value[1])
+
+    return DoctypeSubSchemaV1
 
 
-class DoctypeSubSchemaV1(StrictKeysMixin):
-    taxonomy = SanitizedUnicode(required=True)
-    value = fields.List(SanitizedUnicode())
+def createNUSLDoctypeSchemaV1():
+    class NUSLDoctypeSchemaV1(StrictKeysMixin):
+        bterm = SanitizedUnicode(required=True)
+        term = SanitizedUnicode(required=True)
 
-    @pre_load
-    def validate_taxonomy(self, data):
-        if data['taxonomy'] != 'NUSL':
-            raise ValidationError('Only NUSL taxonomy supported at this time')
-        value = data['value']
-        if len(value) == 1:
-            validate_nusl_term(value[0])
-        else:
-            validate_nusl_term(value[0], value[1])
+        @pre_load
+        def validate_taxonomy(self, data):
+            validate_nusl_term(data["bterm"], data["term"])
+
+    return NUSLDoctypeSchemaV1
 
 
-class NUSLDoctypeSchemaV1(StrictKeysMixin):
-    bterm = SanitizedUnicode(required=True)
-    term = SanitizedUnicode(required=True)
+def createRIVDoctypeSchemaV1():
+    class RIVDoctypeSchemaV1(StrictKeysMixin):
+        bterm = SanitizedUnicode(required=True, validate=validate_RIV_bterm)
+        term = SanitizedUnicode(validate=validate_RIV_term, allow_none=True)
 
-    @staticmethod
-    def import_json(path: str):
-        json_file = open(path, 'r')
-        json_dict = load(json_file)
-        return json_dict
+        @post_load
+        def isPartOf(self, data):
+            if "term" in data:
+                term = data["term"]
+                bterm = data["bterm"]
+                terms = import_json(
+                    "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_RIV.json")  # TODO: vyměnit za relativní
+                if terms[bterm] is not None:
+                    if term not in terms[bterm]:
+                        raise ValidationError("The term is not part of broader term")
 
-    @pre_load
-    def validate_taxonomy(self, data):
-        validate_nusl_term(data["bterm"], data["term"])
+    return RIVDoctypeSchemaV1
 
+def createOrganizationSchemaV1():
+    class OrganizationSchemaV1(StrictKeysMixin):
+        """ """
 
+        id = Nested(createValueTypeSchemaV1())
+        address = SanitizedUnicode()
+        contactPoint = fields.Email(required=False)
+        name = Nested(createMultilanguageSchemaV1())
+        url = fields.Url()
+        provider = fields.Boolean()
+        isPartOf = fields.List(SanitizedUnicode())
 
-
-class RIVDoctypeSchemaV1(StrictKeysMixin):
-    bterm = SanitizedUnicode(required=True, validate=validate_RIV_bterm)
-    term = SanitizedUnicode(validate=validate_RIV_term, allow_none=True)
-
-    @post_load
-    def isPartOf(self, data):
-        if "term" in data:
-            term = data["term"]
-            bterm = data["bterm"]
-            terms = NUSLDoctypeSchemaV1.import_json(
-                "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_RIV.json")  # TODO: vyměnit za relativní
-            if terms[bterm] is not None:
-                if term not in terms[bterm]:
-                    raise ValidationError("The term is not part of broader term")
-
-
-class OrganizationSchemaV1(StrictKeysMixin):
-    """ """
-
-    id = Nested(ValueTypeSchemaV1)
-    address = SanitizedUnicode()
-    contactPoint = fields.Email(required=False)
-    name = Nested(MultilanguageSchemaV1)
-    url = fields.Url()
-    provider = fields.Boolean()
-    isPartOf = fields.List(SanitizedUnicode())
+    return OrganizationSchemaV1
