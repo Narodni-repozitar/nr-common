@@ -14,6 +14,7 @@ from functools import lru_cache
 from json import load
 
 from invenio_records_rest.schemas import Nested, StrictKeysMixin
+from flask_taxonomies.marshmallow import TaxonomySchemaV1
 from invenio_records_rest.schemas.fields import SanitizedUnicode
 from marshmallow import fields, pre_load, ValidationError, post_load
 from pycountry import languages
@@ -118,19 +119,8 @@ def createMultilanguageSchemaV1():
 
 
 def createDoctypeSubSchemaV1():
-    class DoctypeSubSchemaV1(StrictKeysMixin):
-        taxonomy = SanitizedUnicode(required=True)
-        value = fields.List(SanitizedUnicode())
-
-        @pre_load
-        def validate_taxonomy(self, data):
-            if data['taxonomy'] != 'NUSL':
-                raise ValidationError('Only NUSL taxonomy supported at this time')
-            value = data['value']
-            if len(value) == 1:
-                validate_nusl_term(value[0])
-            else:
-                validate_nusl_term(value[0], value[1])
+    class DoctypeSubSchemaV1(TaxonomySchemaV1):
+        pass
 
     return DoctypeSubSchemaV1
 
@@ -164,6 +154,7 @@ def createRIVDoctypeSchemaV1():
                         raise ValidationError("The term is not part of broader term")
 
     return RIVDoctypeSchemaV1
+
 
 def createOrganizationSchemaV1():
     class OrganizationSchemaV1(StrictKeysMixin):
