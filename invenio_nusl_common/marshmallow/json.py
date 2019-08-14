@@ -39,41 +39,6 @@ def validate_language(lang):  # TODO: zkontrolovat jen alpha3 a nejdřív bib, s
         raise ValidationError('The language code is not part of ISO-639 codes.')
 
 
-# def validate_bterm(bterm, json_path):  # TODO Součást třídy, vypadá to lépe
-#     terms = import_json(json_path)  # TODO: vyměnit za relativní
-#     if terms.get(bterm, "unknown") == "unknown":
-#         raise ValidationError('The chosen broader term is not valid.')
-#
-#
-# def validate_term(bterm, term, json_path):  # TODO Součást třídy, vypadá to lépe
-#     if term is not None:
-#         terms = import_json(json_path)
-#         if bterm not in terms:
-#             raise ValidationError('The chosen bterm is not valid.')
-#         if term not in terms[bterm]:
-#             raise ValidationError('The chosen term is not valid.')
-
-
-# def validate_nusl_bterm(bterm):
-#     validate_bterm(bterm,
-#                    os.path.join(os.path.dirname(__file__), "data", "document_typology_NUSL.json"))
-#
-#
-# def validate_nusl_term(bterm, term):
-#     validate_term(bterm, term,
-#                   os.path.join(os.path.dirname(__file__), "data", "document_typology_NUSL.json"))
-
-
-# def validate_RIV_bterm(bterm):
-#     validate_bterm(bterm,
-#                    os.path.join(os.path.dirname(__file__), "data", "document_typology_RIV.json"))
-#
-#
-# def validate_RIV_term(term):
-#     validate_term(term,
-#                   os.path.join(os.path.dirname(__file__), "data", "document_typology_RIV.json"))
-
-
 ########################################################################
 #                            SCHEMAS                                   #
 ########################################################################
@@ -115,22 +80,6 @@ class MultilanguageSchemaV1(StrictKeysMixin):
 
 class DoctypeSubSchemaV1(TaxonomySchemaV1):
     pass
-
-
-# class RIVDoctypeSchemaV1(StrictKeysMixin):
-#     bterm = SanitizedUnicode(required=True, validate=validate_RIV_bterm)
-#     term = SanitizedUnicode(validate=validate_RIV_term, allow_none=True)
-#
-#     @post_load
-#     def isPartOf(self, data):
-#         if "term" in data:
-#             term = data["term"]
-#             bterm = data["bterm"]
-#             terms = import_json(
-#                 "/home/semtex/Projekty/nusl/invenio-nusl-common/invenio_nusl_common/marshmallow/data/document_typology_RIV.json")  # TODO: vyměnit za relativní
-#             if terms[bterm] is not None:
-#                 if term not in terms[bterm]:
-#                     raise ValidationError("The term is not part of broader term")
 
 
 class OrganizationSchemaV1(StrictKeysMixin):
