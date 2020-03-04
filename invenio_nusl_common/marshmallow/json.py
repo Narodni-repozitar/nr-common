@@ -58,7 +58,7 @@ class MultilanguageSchemaV1(StrictKeysMixin):
                          required=True)
 
     @pre_load
-    def change_lang_code(self, data):
+    def change_lang_code(self, data, **kwargs):
         if "lang" in data:
             lang = data["lang"].lower()
             if languages.get(alpha_3=lang) is not None:
