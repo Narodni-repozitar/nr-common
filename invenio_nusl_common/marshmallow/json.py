@@ -9,15 +9,18 @@
 
 from __future__ import absolute_import, print_function
 
-import os
+from copy import deepcopy
 from functools import lru_cache
 from json import load
+from urllib.parse import urlparse
 
-from invenio_records_rest.schemas import Nested, StrictKeysMixin
+from flask_taxonomies.jsonresolver import get_taxonomy_term
 from flask_taxonomies.marshmallow import TaxonomySchemaV1
+from invenio_records_rest.schemas import Nested, StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
 from marshmallow import fields, pre_load, ValidationError, post_load
 from pycountry import languages
+
 
 
 @lru_cache()
@@ -78,7 +81,29 @@ class MultilanguageSchemaV1(StrictKeysMixin):
         return data
 
 
-class DoctypeSubSchemaV1(TaxonomySchemaV1):
+class ApprovedTaxonomySchema(TaxonomySchemaV1):
+    approved = fields.Boolean(missing=False)
+    date_of_serialization = fields.DateTime()
+    taxonomy = SanitizedUnicode()
+
+    @post_load()
+    def subject_or_keyword_required(self, data, **kwargs):
+        if "$ref" in data.keys():
+            ref = data["$ref"]
+            url = urlparse(data["$ref"])
+            path_array = [x for x in url.path.split("/") if len(x) > 0]
+            slug = path_array[-1]
+            code = path_array[path_array.index("taxonomies") + 1]
+            data_ = get_taxonomy_term(code=code, slug=slug)
+            data = {"$ref": ref}
+        else:
+            data_ = deepcopy(data)
+        if not data_.get("approved"):
+            raise ValidationError("The taxonomy has not been approved by curator, yet.")
+        return data
+
+
+class DoctypeSubSchemaV1(ApprovedTaxonomySchema):
     pass
 
 
