@@ -19,11 +19,11 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "name",
+        "value",
         "lang"
       ],
       "properties": {
-        "name": {
+        "value": {
           "type": "string"
         },
         "lang": {

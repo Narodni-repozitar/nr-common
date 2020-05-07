@@ -56,7 +56,7 @@ class ValueTypeSchemaV1(StrictKeysMixin):
 class MultilanguageSchemaV1(StrictKeysMixin):
     """ """
 
-    name = SanitizedUnicode(required=True)
+    value = SanitizedUnicode(required=True)
     lang = fields.String(validate=validate_language,
                          required=True)
 
