@@ -98,7 +98,7 @@ class ApprovedTaxonomySchema(TaxonomySchemaV1):
             data = {"$ref": ref}
         else:
             data_ = deepcopy(data)
-        if not data_.get("approved"):
+        if data_.get("approved") is False:
             raise ValidationError("The taxonomy has not been approved by curator, yet.")
         return data
 
