@@ -5,6 +5,8 @@ from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
 
 
+# MIXINS
+
 class TitledMixin:
     title = MultilingualStringV2()
 
@@ -19,6 +21,13 @@ class AccessRightsMixin:
     relatedURI = Nested(RelatedURISchema)
 
 
+class ContributorMixin:
+    dataCiteCode = SanitizedUnicode()
+    marcCode = SanitizedUnicode()
+
+
+# SCHEMAS
+
 class PersonSchema(StrictKeysMixin):
     name = SanitizedUnicode(required=True)
     ORCID = SanitizedUnicode()
@@ -29,10 +38,22 @@ class PersonSchema(StrictKeysMixin):
     institutionalID = SanitizedUnicode()  # TODO: vložit prefix instituce
 
 
-class ContributorMixin:
-    dataCiteCode = SanitizedUnicode()
-    marcCode = SanitizedUnicode()
-
-
 class ContributorSchema(PersonSchema):
     role = TaxonomyField(mixins=[ContributorMixin])
+
+
+class RecordIdentifier(StrictKeysMixin):
+    pass
+    # nuslOAI =
+    # nrcrHandle
+    # nrcrOAI
+    # originalRecord
+    # originalRecordOAI
+    # catalogueSysNo
+
+
+class workIdentifers(StrictKeysMixin):
+    isbn
+    issn
+    doi
+    RIV
