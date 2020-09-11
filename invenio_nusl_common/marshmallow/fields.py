@@ -1,7 +1,9 @@
 import re
 
 import arrow
+import idutils
 import isbnlib
+from arrow import ParserError
 from marshmallow import fields, ValidationError
 from stdnum import issn
 from stdnum.exceptions import InvalidChecksum, InvalidLength, InvalidFormat, InvalidComponent
@@ -13,6 +15,22 @@ class NRDate(fields.Field):
 
     def _deserialize(self, value, attr, data, **kwargs):
         return serialize_date(value)
+
+
+class Year(fields.Field):
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        try:
+            value = str(value).strip()
+            a = arrow.get(value)
+            if a < arrow.get("1700"):
+                raise ValidationError(
+                    "Date is lower then 1700")
+            if a > arrow.get():
+                raise ValidationError("Cannot use year higher than current year")
+            return a.format("YYYY")
+        except ParserError:
+            raise ValidationError("Wrong date format")
 
 
 class ISBN(fields.Field):
@@ -42,6 +60,25 @@ class ISSN(fields.Field):
             return issn.format(value)
         except (InvalidChecksum, InvalidLength, InvalidFormat, InvalidComponent) as e:
             raise ValidationError(str(e))
+
+
+class DOI(fields.Field):
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        doi = idutils.is_doi(value)
+        if not doi:
+            raise ValidationError(f"It is not valid doi: \"{value}\"")
+        return doi.string
+
+
+class RIV(fields.Field):
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        pattern = r"RIV/\w{8}:\w{5}/\d{2}:\d{8}$"
+        match = re.match(pattern, value.strip())
+        if not match:
+            raise ValidationError(f"It is not valid RIV id: \"{value.strip()}\"")
+        return match.string
 
 
 def extract_date(value):

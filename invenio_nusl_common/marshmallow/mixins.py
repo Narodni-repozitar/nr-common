@@ -1,11 +1,12 @@
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
-from marshmallow.fields import Nested
+from marshmallow import ValidationError, validates
+from marshmallow.fields import Nested, List, Url, Boolean, Integer, DateTime, Date
 from oarepo_multilingual.marshmallow import MultilingualStringV2
-from oarepo_taxonomies.marshmallow import TaxonomyField
 
+from invenio_nusl_common.marshmallow.schemas import RelatedIDSchema, CountryCodeSchema, \
+    RightsRelated, RelatedUriCZMesh
 
-# MIXINS
 
 class TitledMixin:
     title = MultilingualStringV2()
@@ -26,34 +27,52 @@ class ContributorMixin:
     marcCode = SanitizedUnicode()
 
 
-# SCHEMAS
+class FunderMixin:
+    funderISVaVaICode = SanitizedUnicode()
 
-class PersonSchema(StrictKeysMixin):
+
+class InstitutionsMixin:
+    relatedID = Nested(RelatedIDSchema)
+    aliases = List(SanitizedUnicode())
+    ico = SanitizedUnicode()
+    url = Url()
+    provider = Boolean(missing=False)
+    formerNames = List(SanitizedUnicode())
+
+
+class CountryMixin:
+    numericCode = Integer()
+    code = Nested(CountryCodeSchema)
+
+    @validates(numericCode)
+    def validate_length(self, value):
+        if len(str(value)) != 3:
+            raise ValidationError("Numeric code must to be three character lenght.")
+
+
+class RightsMixin:
+    icon = Url()
+    related = Nested(RightsRelated)
+
+
+class SeriesMixin:
     name = SanitizedUnicode(required=True)
-    ORCID = SanitizedUnicode()
-    scopusID = SanitizedUnicode()
-    researcherID = SanitizedUnicode()  # WOS ID
-    czenasAutID = SanitizedUnicode()
-    vedidk = SanitizedUnicode()
-    institutionalID = SanitizedUnicode()  # TODO: vložit prefix instituce
+    volume = SanitizedUnicode(required=True)
 
 
-class ContributorSchema(PersonSchema):
-    role = TaxonomyField(mixins=[ContributorMixin])
+class PSHMixin:
+    modified = DateTime()
+    uri = Url()
+    altLabel = MultilingualStringV2()
 
 
-class RecordIdentifier(StrictKeysMixin):
-    pass
-    # nuslOAI =
-    # nrcrHandle
-    # nrcrOAI
-    # originalRecord
-    # originalRecordOAI
-    # catalogueSysNo
+class CZMeshMixin:
+    relatedURI = Nested(RelatedUriCZMesh)
+    DateCreated = Date()
+    DateRevised = Date()
+    DateEstablished = Date()
+    TreeNumberList = List(SanitizedUnicode())
 
 
-class workIdentifers(StrictKeysMixin):
-    isbn
-    issn
-    doi
-    RIV
+class MedvikMixin:
+    relatedURI = List(Nested(RelatedUriCZMesh))

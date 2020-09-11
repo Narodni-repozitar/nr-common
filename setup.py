@@ -45,7 +45,8 @@ install_requires = [
     'pycountry>=19.0.0',
     'arrow>=0.16.0, <1.0.0',
     'isbnlib>=3.10.3,<4.0.0',
-    'python-stdnum>=1.14, <2.0'
+    'python-stdnum>=1.14, <2.0',
+    'IDUtils>=1.1.8, <2.0.0'
 ]
 
 packages = find_packages()
