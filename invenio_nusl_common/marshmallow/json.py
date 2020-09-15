@@ -19,7 +19,7 @@ from oarepo_taxonomies.marshmallow import TaxonomyField
 
 from invenio_nusl_common.marshmallow.fields import NRDate
 from invenio_nusl_common.marshmallow.mixins import TitledMixin, AccessRightsMixin, \
-    InstitutionsMixin, RightsMixin, SeriesMixin, PSHMixin, CZMeshMixin, MedvikMixin
+    InstitutionsMixin, RightsMixin, SeriesMixin, PSHMixin, CZMeshMixin, MedvikMixin, SubjectMixin
 from invenio_nusl_common.marshmallow.schemas import PersonSchema, ContributorSchema, \
     workIdentifersSchema, fundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema
 
@@ -27,7 +27,7 @@ from invenio_nusl_common.marshmallow.schemas import PersonSchema, ContributorSch
 #
 
 
-class ThesisMetadataSchemaV1(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin):
+class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin):
     """Schema for the record metadata."""
 
     abstract = MultilingualStringV2()
@@ -53,7 +53,7 @@ class ThesisMetadataSchemaV1(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     relatedItem = List(RelatedItemSchema)
     rights = TaxonomyField(mixins=[TitledMixin, RightsMixin])
     series = TaxonomyField(mixins=[SeriesMixin])
-    subject = TaxonomyField(mixins=[TitledMixin, PSHMixin, CZMeshMixin, MedvikMixin])
+    subject = TaxonomyField(mixins=[TitledMixin, SubjectMixin, PSHMixin, CZMeshMixin, MedvikMixin])
     keywords = List(MultilingualStringV2())
     title = List(MultilingualStringV2(required=True), required=True, validate=Length(min=1))
     titleAlternate = List(MultilingualStringV2())

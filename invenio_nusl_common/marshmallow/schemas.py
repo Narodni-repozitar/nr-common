@@ -1,6 +1,6 @@
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
-from marshmallow.fields import List, URL, Integer
+from marshmallow.fields import List, URL
 from marshmallow.validate import Length
 from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
@@ -80,8 +80,3 @@ class RelatedItemSchema(StrictKeysMixin):
     itemStartPage = SanitizedUnicode()
     itemEndPage = SanitizedUnicode()
     # itemRelationship = # TODO: zeptat se Péti až bude OK
-
-
-class RelatedUriCZMesh(StrictKeysMixin):
-    medvik = URL()
-    Mesh = URL()

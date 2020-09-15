@@ -1,11 +1,11 @@
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
 from marshmallow import ValidationError, validates
-from marshmallow.fields import Nested, List, Url, Boolean, Integer, DateTime, Date
+from marshmallow.fields import Nested, List, Url, Boolean, Integer, Date
 from oarepo_multilingual.marshmallow import MultilingualStringV2
 
 from invenio_nusl_common.marshmallow.schemas import RelatedIDSchema, CountryCodeSchema, \
-    RightsRelated, RelatedUriCZMesh
+    RightsRelated
 
 
 class TitledMixin:
@@ -60,19 +60,20 @@ class SeriesMixin:
     volume = SanitizedUnicode(required=True)
 
 
+class SubjectMixin:
+    relatedURI = List(Url)
+    DateCreated = Date()
+    DateRevised = Date()
+    DateEstablished = Date()
+
+
 class PSHMixin:
-    modified = DateTime()
-    uri = Url()
     altLabel = MultilingualStringV2()
 
 
 class CZMeshMixin:
-    relatedURI = Nested(RelatedUriCZMesh)
-    DateCreated = Date()
-    DateRevised = Date()
-    DateEstablished = Date()
     TreeNumberList = List(SanitizedUnicode())
 
 
 class MedvikMixin:
-    relatedURI = List(Nested(RelatedUriCZMesh))
+    pass
