@@ -9,6 +9,6 @@
 
 from __future__ import absolute_import, print_function
 
-from .json import ThesisMetadataSchemaV1
+from .json import CommonMetadataSchemaV2
 
-__all__ = (ThesisMetadataSchemaV1,)
+__all__ = (CommonMetadataSchemaV2,)

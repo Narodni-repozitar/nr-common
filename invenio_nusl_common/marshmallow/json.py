@@ -18,10 +18,10 @@ from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
 
 from invenio_nusl_common.marshmallow.fields import NRDate
-from invenio_nusl_common.marshmallow.mixins import TitledMixin, AccessRightsMixin, \
-    InstitutionsMixin, RightsMixin, SeriesMixin, PSHMixin, CZMeshMixin, MedvikMixin, SubjectMixin
-from invenio_nusl_common.marshmallow.schemas import PersonSchema, ContributorSchema, \
-    workIdentifersSchema, fundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema
+from invenio_nusl_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
+    WorkIdentifersSchema, FundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema, \
+    TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SeriesMixin, SubjectMixin, \
+    PSHMixin, CZMeshMixin, MedvikMixin
 
 
 #
@@ -42,11 +42,11 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     externalLocation = Url()
     control_number = SanitizedUnicode(required=True)
     # recordIdentifiers = # TODO: ještě probrat
-    workIdentifiers = Nested(workIdentifersSchema)
+    workIdentifiers = Nested(WorkIdentifersSchema)
     isGL = Boolean()
     language = TaxonomyField(mixins=[TitledMixin], required=True)
     note = List(SanitizedUnicode())
-    fundingReference = Nested(fundingReferenceSchema)
+    fundingReference = Nested(FundingReferenceSchema)
     provider = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin], required=True)
     publicationPlace = Nested(PublicationPlaceSchema)
     publisher = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin])
