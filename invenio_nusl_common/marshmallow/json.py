@@ -50,7 +50,7 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     provider = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin], required=True)
     publicationPlace = Nested(PublicationPlaceSchema)
     publisher = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin])
-    relatedItem = List(RelatedItemSchema)
+    relatedItem = List(Nested(RelatedItemSchema))
     rights = TaxonomyField(mixins=[TitledMixin, RightsMixin])
     series = TaxonomyField(mixins=[SeriesMixin])
     subject = TaxonomyField(mixins=[TitledMixin, SubjectMixin, PSHMixin, CZMeshMixin, MedvikMixin])
