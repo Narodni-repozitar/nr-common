@@ -93,6 +93,9 @@ setup(
         ],
         'invenio_db.alembic': [
             'nusl = invenio_nusl_common:alembic',
+        ],
+        "oarepo_mapping_includes": [
+            "invenio_nusl_common = invenio_nusl_common.mapping_includes"
         ]
     },
     extras_require=extras_require,
