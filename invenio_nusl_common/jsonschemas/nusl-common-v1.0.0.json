@@ -9,7 +9,7 @@
       "type": "string"
     },
     "abstract": {
-      "$ref": "../multilingual-v2.0.0.json../multilingual-v2.0.0.json#/definitions/multilingual"
+      "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
     },
     "accessibility": {
       "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
