@@ -1,270 +1,180 @@
 import pytest
-from marshmallow.exceptions import ValidationError
+from marshmallow import ValidationError
 
-from invenio_nusl_common.marshmallow.json import ValueTypeSchemaV1, MultilanguageSchemaV1, \
-    OrganizationSchemaV1
-
-
-########################################################################
-#                           ValueType                                  #
-########################################################################
-
-def test_valueType_dump_1():
-    json = {
-        "value": "151515",
-        "type": "nusl"
-    }
-    valueType = ValueTypeSchemaV1()
-    assert json == valueType.dump(json).data
+from invenio_nusl_common.marshmallow import CommonMetadataSchemaV2
 
 
-def test_valueType_dump_2():
-    json = {
-        "value": "151515",
-        "type": "nusl",
-        "pole": "blbost"
-    }
-    valueType = ValueTypeSchemaV1()
-    assert json != valueType.dump(json).data
+def test_required_fields(app, db, taxonomy_tree, base_json, base_json_derefernced):
+    schema = CommonMetadataSchemaV2()
+    json = base_json
+    result = schema.load(json)
+    assert result == base_json_derefernced
 
 
-def test_valueType_dump_3():
-    json = {
-        "value": "151515",
-        "pole": "blbost"
-    }
-    valueType = ValueTypeSchemaV1()
-    assert json != valueType.dump(json).data
+class TestAbstract:
+    def test_abstract_load_1(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        abstract_ = {
+            "cs": "Testovací abstrakt",
+            "en": "Test abstract"
+        }
+        base_json["abstract"] = abstract_
+        base_json_derefernced["abstract"] = abstract_
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_derefernced
+
+    def test_abstract_load_2(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        abstract_ = [{
+            "cs": "Testovací abstrakt",
+            "en": "Test abstract"
+        }]
+        base_json["abstract"] = abstract_
+        base_json_derefernced["abstract"] = abstract_
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+    def test_abstract_load_3(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        abstract_ = {
+            "cs": "Testovací abstrakt",
+            "pl": "Test abstract"
+        }
+        base_json["abstract"] = abstract_
+        base_json_derefernced["abstract"] = abstract_
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+    def test_abstract_load_4(self, db, taxonomy_tree, base_json, base_json_derefernced):
+        abstract_ = {
+            "cze": "Testovací abstrakt",
+            "en": "Test abstract"
+        }
+        base_json["abstract"] = abstract_
+        base_json_derefernced["abstract"] = abstract_
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
 
-def test_valueType_load_1():
-    user_data = {
-        "value": "12455122",
-        "type": "nusl"
-    }
+class TestAccessibility:
+    def test_accessibility(self, db, taxonomy_tree, base_json, base_json_derefernced):
+        acc_ = {
+            "cs": "Dostupné kdesi blabla",
+            "en": "Avallable at blabla"
+        }
+        base_json["accessibility"] = acc_
+        base_json_derefernced["accessibility"] = acc_
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_derefernced
 
-    schema = ValueTypeSchemaV1()
-    result = schema.load(user_data)
-    assert user_data == result.data
-
-
-def test_valueType_load_2():
-    user_data = {
-        "value": "12455122"
-    }
-
-    with pytest.raises(ValidationError):
-        schema = ValueTypeSchemaV1()
-        schema.load(user_data)
-
-
-def test_valueType_load_3():
-    user_data = {
-        "type": "nusl"
-    }
-
-    with pytest.raises(ValidationError):
-        schema = ValueTypeSchemaV1()
-        result = schema.load(user_data)
-
-
-def test_valueType_load_4():
-    user_data = {
-        "value": None,
-        "type": None
-    }
-
-    schema = ValueTypeSchemaV1()
-    result = schema.load(user_data)
-    assert user_data == result.data
+    def test_accessibility_2(self, db, taxonomy_tree, base_json, base_json_derefernced):
+        acc_ = [
+            {
+                "value": "Dostupné kdesi blabla",
+                "lang": "cz"
+            },
+            {
+                "value": "Avallable at blabla",
+                "lang": "en"
+            }
+        ]
+        base_json["accessibility"] = acc_
+        base_json_derefernced["accessibility"] = acc_
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
 
-########################################################################
-#                       Multilanguage                                  #
-########################################################################
+class TestAccessRights:
+    def test_access_rights_1(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        ar = {
+        }
+        base_json["accessRights"] = ar
+        base_json_derefernced["accessRights"] = ar
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
-def test_multiLanguage_dump_1():
-    json = {
-        "name": "Název práce",
-        "lang": "CZE"
-    }
-    multiLanguage = MultilanguageSchemaV1()
-    assert json == multiLanguage.dump(json).data
+    def test_access_rights_2(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        ar = [{
+        }]
+        base_json["accessRights"] = ar
+        base_json_derefernced["accessRights"] = ar
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
-
-def test_multiLanguage_dump_2():
-    json = {
-        "name": "Název práce",
-        "lang": "CZE",
-        "pole": "blbost"
-    }
-    multiLanguage = MultilanguageSchemaV1()
-    assert json != multiLanguage.dump(json).data
-
-
-def test_multiLanguage_dump_3():
-    json = {
-        "name": "Název práce",
-        "pole": "blbost"
-    }
-    multiLanguage = MultilanguageSchemaV1()
-    assert json != multiLanguage.dump(json).data
-
-
-def test_multiLanguage_dump_4():
-    json = {
-        "name": "Název práce"
-    }
-    multiLanguage = MultilanguageSchemaV1()
-    assert json == multiLanguage.dump(json).data
+    def test_access_rights_3(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        ar = [{
+            "links": {
+                "self": "bla"
+            }
+        }]
+        base_json["accessRights"] = ar
+        base_json_derefernced["accessRights"] = ar
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValueError):
+            schema.load(base_json)
 
 
-def test_multilanguage_load_1():
-    user_data = {
-        "name": "Text práce",
-        "lang": "CZE"
-    }
+class TestCreator:
+    def test_creator(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        content = [{
+            "name": "Daniel Kopecký",
+            "ORCID": "125456",
+            "scopusID": "125456",
+            "researcherID": "125456",
+            "czenasAutID": "125456",
+            "institutionalID": "vscht123456"
+        }]
+        field = "creator"
+        base_json[field] = content
+        base_json_derefernced[field] = content
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_derefernced
 
-    schema = MultilanguageSchemaV1()
-    result = schema.load(user_data)
-    assert user_data == result.data
+    def test_creator_2(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        """
+        Unknown field
+        """
+        content = [{
+            "name": "Daniel Kopecký",
+            "randomID": "123456"
+        }]
+        field = "creator"
+        base_json[field] = content
+        base_json_derefernced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
+    def test_creator_3(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        """
+        Wrong data type
+        """
+        content = {
+            "name": "Daniel Kopecký",
+        }
+        field = "creator"
+        base_json[field] = content
+        base_json_derefernced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
-def test_multilanguage_load_2():
-    user_data = {
-        "name": "Text práce",
-        "lang": "blbost"
-    }
-    with pytest.raises(ValidationError):
-        schema = MultilanguageSchemaV1()
-        result = schema.load(user_data)
-
-
-def test_multilanguage_load_3():
-    user_data = {
-        "name": "Text práce"
-    }
-
-    with pytest.raises(ValidationError):
-        schema = MultilanguageSchemaV1()
-        result = schema.load(user_data)
-
-
-def test_multilanguage_load_4():
-    user_data = {
-        "name": "Text práce",
-        "lang": "CES"
-    }
-
-    final_data = {'lang': 'cze', 'name': 'Text práce'}
-
-    schema = MultilanguageSchemaV1()
-    result = schema.load(user_data)
-    assert final_data == result.data
-
-
-def test_multilanguage_load_5():
-    user_data = {
-        "name": "Text práce",
-        "lang": "DEU"
-    }
-
-    final_data = {'lang': 'ger', 'name': 'Text práce'}
-
-    schema = MultilanguageSchemaV1()
-    result = schema.load(user_data)
-    assert final_data == result.data
-
-
-def test_multilanguage_load_6():
-    user_data = {
-        "name": "Text práce",
-        "lang": "cs"
-    }
-
-    final_data = {'lang': 'cze', 'name': 'Text práce'}
-
-    schema = MultilanguageSchemaV1()
-    result = schema.load(user_data)
-    assert final_data == result.data
-
-
-def test_multilanguage_load_7():
-    user_data = {
-        "name": "Text práce",
-        "lang": "en"
-    }
-
-    final_data = {'lang': 'eng', 'name': 'Text práce'}
-
-    schema = MultilanguageSchemaV1()
-    result = schema.load(user_data)
-    assert final_data == result.data
-
-
-########################################################################
-#                       Organization                                   #
-########################################################################
-def test_organization_dump_1():
-    user_data = {
-        "id": {
-            "value": "60461373",
-            "type": "IČO"
-        },
-        "address": "Technická 1905/5, Dejvice, 160 00 Praha",
-        "contactPoint": "info@vscht.cz",
-        "name": {
-            "name": "Vysoká škola chemicko-technologická",
-            "lang": "cze"
-        },
-        "url": "https://www.vscht.cz/",
-        "provider": True,
-        "isPartOf": ["public_uni", "edu"]  # TODO: Dodělat kontrolovaný slovník organizací
-    }
-    schema = OrganizationSchemaV1()
-    result = schema.load(user_data)
-    assert user_data == result.data
-
-
-def test_organization_load_1():
-    user_data = {
-        "id": {
-            "value": "60461373",
-            "type": "IČO"
-        },
-        "address": "Technická 1905/5, Dejvice, 160 00 Praha",
-        "contactPoint": "info@vscht.cz",
-        "name": {
-            "name": "Vysoká škola chemicko-technologická",
-            "lang": "cze"
-        },
-        "url": "https://www.vscht.cz/",
-        "provider": True,
-        "isPartOf": ["public_uni", "edu"]  # TODO: Dodělat kontrolovaný slovník organizací
-    }
-
-    schema = OrganizationSchemaV1()
-    result = schema.load(user_data)
-    assert user_data == result.data
-
-
-def test_organization_load_2():
-    user_data = {
-        "id": {
-            "value": "60461373",
-            "type": "IČO"
-        },
-        "address": "Technická 1905/5, Dejvice, 160 00 Praha",
-        "contactPoint": "info@vscht.cz",
-        "name": {
-            "name": "Vysoká škola chemicko-technologická",
-            "lang": "cz"
-        },
-        "url": "https://www.vscht.cz/",
-        "provider": True,
-        "isPartOf": ["public_uni", "edu"]  # TODO: Dodělat kontrolovaný slovník organizací
-    }
-
-    with pytest.raises(ValidationError):
-        schema = OrganizationSchemaV1()
-        schema.load(user_data)
+    def test_creator_4(self, app, db, taxonomy_tree, base_json, base_json_derefernced):
+        """
+        Missing required field
+        """
+        content = [{
+            "ORCID": "12455"
+        }]
+        field = "creator"
+        base_json[field] = content
+        base_json_derefernced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
