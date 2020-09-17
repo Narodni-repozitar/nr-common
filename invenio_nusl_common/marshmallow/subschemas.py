@@ -106,7 +106,7 @@ class ContributorMixin:
 
 
 class ContributorSchema(PersonSchema):
-    role = TaxonomyField(mixins=[ContributorMixin])
+    role = TaxonomyField(mixins=[ContributorMixin], required=True)
 
 
 class RecordIdentifier(StrictKeysMixin):

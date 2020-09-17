@@ -288,6 +288,16 @@ def taxonomy_tree(app, db, taxonomy):
             "en": "Czech"
         }
     })
+
+    # contributor
+    id5 = TermIdentification(taxonomy=taxonomy, slug="supervisor")
+    term5 = current_flask_taxonomies.create_term(id5, extra_data={
+        "title": {
+            "cs": "supervizor",
+            "en": "supervisor"
+        },
+        "dataCiteCode": "Supervisor"
+    })
     db.session.commit()
 
 
@@ -429,7 +439,7 @@ def base_json():
 
 
 @pytest.fixture()
-def base_json_derefernced():
+def base_json_dereferenced():
     return {
         'accessRights': [{
             'is_ancestor': False,

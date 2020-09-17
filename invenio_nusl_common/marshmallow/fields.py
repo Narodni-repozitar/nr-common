@@ -82,7 +82,10 @@ class RIV(fields.Field):
 
 
 def extract_date(value):
-    obj = re.search(r"(\d{4})[/.-]+(\d{4})", value)
+    try:
+        obj = re.search(r"(\d{4})[/.-]+(\d{4})", value)
+    except TypeError as e:
+        raise ValidationError(str(e))
     if obj:
         groups = obj.groups()
         return [(groups[0],), (groups[1],)]
@@ -112,7 +115,10 @@ def _serialize_dates(dates):
         new_date = [stage.strip() for stage in date if len(stage) > 0]
         l = len(new_date)
         date_str = "-".join(new_date)
-        a = arrow.get(date_str)
+        try:
+            a = arrow.get(date_str)
+        except ValueError as e:
+            raise ValidationError(str(e))
         if a > arrow.get():
             raise ValidationError("Can't select a future date")
         if l == 3:
