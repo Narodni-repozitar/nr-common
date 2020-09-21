@@ -1401,3 +1401,80 @@ class TestSubject:
         schema = CommonMetadataSchemaV2()
         with pytest.raises(ValidationError):
             schema.load(base_json)
+
+
+class TestKeywords:
+    def test_keywords_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        del base_json["keywords"]
+        del base_json_dereferenced["keywords"]
+        content = []
+        field = "keywords"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+
+class TestTitle:
+    def test_title_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "cs": "Titulek",
+                "en": "Title"
+            },
+            {
+                "cs": "Titulek2",
+                "en": "Title2"
+            },
+        ]
+        field = "title"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+    def test_title_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = {
+            "cs": "Titulek",
+            "en": "Title"
+        }
+        field = "title"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+
+class TestTitleAlternate:
+    def test_title_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "cs": "Titulek",
+                "en": "Title"
+            },
+            {
+                "cs": "Titulek2",
+                "en": "Title2"
+            },
+        ]
+        field = "titleAlternate"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+    def test_title_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = {
+            "cs": "Titulek",
+            "en": "Title"
+        }
+        field = "title"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
