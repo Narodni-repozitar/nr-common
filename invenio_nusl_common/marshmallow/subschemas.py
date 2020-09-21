@@ -1,7 +1,7 @@
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
 from marshmallow import validates, ValidationError, validates_schema
-from marshmallow.fields import List, URL, Nested, Url, Boolean, Integer, Date
+from marshmallow.fields import List, URL, Nested, Url, Boolean, Integer, Date, DateTime
 from marshmallow.validate import Length
 from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
@@ -68,9 +68,9 @@ class SeriesMixin:
 
 class SubjectMixin:
     relatedURI = List(Url)
-    DateCreated = Date()
-    DateRevised = Date()
-    DateEstablished = Date()
+    DateCreated = DateTime()
+    DateRevised = DateTime()
+    DateEstablished = DateTime()
 
 
 class PSHMixin:
@@ -148,12 +148,31 @@ class PublicationPlaceSchema(StrictKeysMixin):
 class RelatedItemSchema(StrictKeysMixin):
     itemTitle = MultilingualStringV2(required=True)
     itemDOI = DOI()
-    itemISBN = ISBN()
-    itemISSN = ISSN()
+    itemISBN = List(ISBN())
+    itemISSN = List(ISSN())
     itemURL = URL()
     itemYear = Year()
     itemVolume = SanitizedUnicode()
     itemIssue = SanitizedUnicode()
     itemStartPage = SanitizedUnicode()
     itemEndPage = SanitizedUnicode()
-    # itemRelationship = # TODO: zeptat se Péti až bude OK
+    itemRelationship = TaxonomyField(mixins=[TitledMixin], required=True)
+
+    @validates_schema
+    def required_journal(self, data, **kwargs):
+        if data.get("ISSN") or data.get("itemVolume") or data.get("itemIssue") or data.get(
+                "itemStartPage") or data.get("itemEndPage"):
+            journal_keys = ["itemVolume", "itemIssue", "itemStartPage", "itemEndPage"]
+            for key in data.keys():
+                if key in journal_keys:
+                    journal_keys.pop(journal_keys.index(key))
+            if len(journal_keys) > 0:
+                raise ValidationError(f"Required field(s) is/are missing: {journal_keys}")
+
+    @validates_schema
+    def validate_pages(self, data, **kwargs):
+        start_page = data.get("itemStartPage")
+        end_page = data.get("itemEndPage")
+        if start_page and end_page:
+            if int(start_page) > int(end_page):
+                raise ValidationError(f"Start page ({start_page}) must be smaller than end page ({end_page})")

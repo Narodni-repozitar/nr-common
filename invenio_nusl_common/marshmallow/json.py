@@ -11,6 +11,7 @@ from __future__ import absolute_import, print_function
 
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
+from marshmallow import validates_schema, post_load, ValidationError
 from marshmallow.fields import Nested, Url, Boolean, List
 from marshmallow.validate import Length
 from oarepo_invenio_model.marshmallow import InvenioRecordMetadataSchemaV1Mixin
@@ -53,7 +54,16 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     relatedItem = List(Nested(RelatedItemSchema))
     rights = TaxonomyField(mixins=[TitledMixin, RightsMixin])
     series = TaxonomyField(mixins=[SeriesMixin])
-    subject = TaxonomyField(mixins=[TitledMixin, SubjectMixin, PSHMixin, CZMeshMixin, MedvikMixin])
+    subject = TaxonomyField(mixins=[TitledMixin, SubjectMixin, PSHMixin, CZMeshMixin, MedvikMixin],
+                            many=True)
     keywords = List(MultilingualStringV2())
     title = List(MultilingualStringV2(required=True), required=True, validate=Length(min=1))
     titleAlternate = List(MultilingualStringV2())
+
+    @post_load
+    def validate_keywords_subjects(self, data, **kwargs):
+        subject = [x for x in data.get("subject", []) if not x["is_ancestor"]]
+        keywords = data.get("keywords", [])
+        if len(keywords) + len(subject) < 3:
+            raise ValidationError("At least three subjects or keyword are required")
+        return data
