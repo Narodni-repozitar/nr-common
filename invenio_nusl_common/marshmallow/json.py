@@ -46,7 +46,7 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     isGL = Boolean()
     language = TaxonomyField(mixins=[TitledMixin], required=True)
     note = List(SanitizedUnicode())
-    fundingReference = Nested(FundingReferenceSchema)
+    fundingReference = List(Nested(FundingReferenceSchema))
     provider = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin], required=True)
     publicationPlace = Nested(PublicationPlaceSchema)
     publisher = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin])

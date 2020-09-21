@@ -298,6 +298,30 @@ def taxonomy_tree(app, db, taxonomy):
         },
         "dataCiteCode": "Supervisor"
     })
+
+    # funder
+    id6 = TermIdentification(taxonomy=taxonomy, slug="ntk")
+    term6 = current_flask_taxonomies.create_term(id6, extra_data={
+        "title": {
+            "cs": "Národní technická knihovna",
+            "en": "National library of technology"
+        },
+        "funderISVaVaICode": "123456789"
+    })
+
+    # country
+    id7 = TermIdentification(taxonomy=taxonomy, slug="cz")
+    term7 = current_flask_taxonomies.create_term(id7, extra_data={
+        "title": {
+            "cs": "Česko",
+            "en": "Czechia"
+        },
+        "code": {
+            "number": "203",
+            "alpha2": "CZ",
+            "alpha3": "CZE"
+        }
+    })
     db.session.commit()
 
 

@@ -1,6 +1,6 @@
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
-from marshmallow import validates, ValidationError
+from marshmallow import validates, ValidationError, validates_schema
 from marshmallow.fields import List, URL, Nested, Url, Boolean, Integer, Date
 from marshmallow.validate import Length
 from oarepo_multilingual.marshmallow import MultilingualStringV2
@@ -43,18 +43,13 @@ class InstitutionsMixin:
 
 
 class CountryCodeSchema(StrictKeysMixin):
-    aplha2 = SanitizedUnicode(validate=Length(equal=2))
-    aplha3 = SanitizedUnicode(validate=Length(equal=3))
+    alpha2 = SanitizedUnicode(validate=Length(equal=2))
+    alpha3 = SanitizedUnicode(validate=Length(equal=3))
+    number = SanitizedUnicode()
 
 
 class CountryMixin:
-    numericCode = Integer()
     code = Nested(CountryCodeSchema)
-
-    @validates(numericCode)
-    def validate_length(self, value):
-        if len(str(value)) != 3:
-            raise ValidationError("Numeric code must to be three character lenght.")
 
 
 class RightsRelated(StrictKeysMixin):
@@ -132,10 +127,22 @@ class FundingReferenceSchema(StrictKeysMixin):
     fundingProgram = SanitizedUnicode()
     funder = TaxonomyField(mixins=[FunderMixin, TitledMixin])
 
+    @validates_schema
+    def required_fields(self, data, **kwargs):
+        if data.get("projectID"):
+            if not data.get("funder"):
+                raise ValidationError("Funder is required")
+
 
 class PublicationPlaceSchema(StrictKeysMixin):
     place = SanitizedUnicode()
-    country = TaxonomyField(mixins=[CountryMixin])
+    country = TaxonomyField(mixins=[TitledMixin, CountryMixin])
+
+    # @validates_schema
+    # def required_fields(self, data, **kwargs):
+    #     if data.get("place"):
+    #         if not data.get("country"):
+    #             raise ValidationError("Country is required")
 
 
 class RelatedItemSchema(StrictKeysMixin):
