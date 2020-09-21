@@ -30,67 +30,7 @@ from oarepo_references import OARepoReferences
 from oarepo_taxonomies.ext import OarepoTaxonomies
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
-# RECORDS_REST_ENDPOINTS = {
-#     'recid': dict(
-#         pid_type='recid',
-#         pid_minter='recid',
-#         pid_fetcher='recid',
-#         default_endpoint_prefix=True,
-#         search_class=RecordsSearch,
-#         indexer_class=RecordIndexer,
-#         search_index='records',
-#         search_type=None,
-#         record_serializers={
-#             'application/json': 'oarepo_validate:json_response',
-#         },
-#         search_serializers={
-#             'application/json': 'oarepo_validate:json_search',
-#         },
-#         record_loaders={
-#             'application/json': 'oarepo_validate:json_loader',
-#         },
-#         record_class=TestRecord,
-#         list_route='/records/',
-#         item_route='/records/<pid(recid):pid_value>',
-#         default_media_type='application/json',
-#         max_result_window=10000,
-#         error_handlers=dict()
-#     )
-# }
 from tests.helpers import set_identity
-
-
-# class TestSchema(Schema):
-#     """Test record schema."""
-#     title = SanitizedUnicode()
-#     pid = Integer()
-#     taxonomy = Nested(TaxonomySchema, required=False)
-# class TestRecord(MarshmallowValidatedRecordMixin,
-#                  ReferenceEnabledRecordMixin,
-#                  Record):
-#     """Reference enabled test record class."""
-#     MARSHMALLOW_SCHEMA = TestSchema
-#     VALIDATE_MARSHMALLOW = True
-#     VALIDATE_PATCH = True
-#
-#     @property
-#     def canonical_url(self):
-#         SERVER_NAME = current_app.config["SERVER_NAME"]
-#         return f"http://{SERVER_NAME}/api/records/{self['pid']}"
-#         # return url_for('invenio_records_rest.recid_item',
-#         #                pid_value=self['pid'], _external=True)
-# class TaxonomyRecord(MarshmallowValidatedRecordMixin,
-#                      ReferenceEnabledRecordMixin,
-#                      Record):
-#     """Record for testing inlined taxonomies."""
-#     MARSHMALLOW_SCHEMA = TaxonomySchema
-#     VALIDATE_MARSHMALLOW = True
-#     VALIDATE_PATCH = True
-#
-#     @property
-#     def canonical_url(self):
-#         return url_for('invenio_records_rest.recid_item',
-#                        pid_value=self['pid'], _external=True)
 
 
 @pytest.yield_fixture(scope="class")
@@ -322,86 +262,66 @@ def taxonomy_tree(app, db, taxonomy):
             "alpha3": "CZE"
         }
     })
+
+    # relationship
+    id8 = TermIdentification(taxonomy=taxonomy, slug="isversionof")
+    term8 = current_flask_taxonomies.create_term(id8, extra_data={
+        "title": {
+            "cs": "jeVerzí",
+            "en": "isVersionOf"
+        }
+    })
+
+    # rights
+    id9 = TermIdentification(taxonomy=taxonomy, slug="copyright")
+    term9 = current_flask_taxonomies.create_term(id9, extra_data={
+        "title": {
+            "cs": "Dílo je chráněno podle autorského zákona č. 121/2000 Sb.",
+            "en": "This work is protected under the Copyright Act No. 121/2000 Coll."
+        }
+    })
+
+    # series
+    id9 = TermIdentification(taxonomy=taxonomy, slug="maj")
+    term9 = current_flask_taxonomies.create_term(id9, extra_data={
+        "name": "maj",
+        "volume": "1"
+    })
+
+    # subject
+    id10 = TermIdentification(taxonomy=taxonomy, slug="psh3001")
+    term10 = current_flask_taxonomies.create_term(id10, extra_data={
+        "title": {
+            "cs": "Reynoldsovo číslo",
+            "en": "Reynolds number"
+        },
+        "reletedURI": ["http://psh.techlib.cz/skos/PSH3001"],
+        "DateRevised": "2007-01-26T16:14:37"
+    })
+
+    id11 = TermIdentification(taxonomy=taxonomy, slug="psh3000")
+    term11 = current_flask_taxonomies.create_term(id11, extra_data={
+        "title": {
+            "cs": "turbulentní proudění",
+            "en": "turbulent flow"
+        },
+        "reletedURI": ["http://psh.techlib.cz/skos/PSH3000"],
+        "DateRevised": "2007-01-26T16:14:37"
+    })
+
+    id12 = TermIdentification(taxonomy=taxonomy, slug="D010420")
+    term12 = current_flask_taxonomies.create_term(id12, extra_data={
+        "title": {
+            "cs": "pentany",
+            "en": "Pentanes"
+        },
+        "reletedURI": ["http://www.medvik.cz/link/D010420", "http://id.nlm.nih.gov/mesh/D010420"],
+        "DateRevised": "2007-01-26T16:14:37",
+        "DateCreated": "2007-01-26T16:14:37",
+        "DateDateEstablished": "2007-01-26T16:14:37",
+    })
+
     db.session.commit()
-
-
-# TestUsers = namedtuple('TestUsers', ['u1', 'u2', 'u3', 'r1', 'r2'])
-
-
-# @pytest.fixture()
-# def test_users(app, db):
-#     """Returns named tuple (u1, u2, u3, r1, r2)."""
-#     with db.session.begin_nested():
-#         r1 = Role(name='admin')
-#         r2 = Role(name='role2')
-#
-#         u1 = User(id=1, email='1@test.com', active=True, roles=[r1])
-#         u2 = User(id=2, email='2@test.com', active=True, roles=[r1, r2])
-#         u3 = User(id=3, email='3@test.com', active=True, roles=[r2])
-#
-#         db.session.add(u1)
-#         db.session.add(u2)
-#         db.session.add(u3)
-#
-#         db.session.add(r1)
-#         db.session.add(r2)
-#     db.session.commit()
-#
-#     return TestUsers(u1, u2, u3, r1, r2)
-
-
-# @pytest.fixture()
-# def mapping():
-#     parent_dir = pathlib.Path(__file__).parent.absolute()
-#     return str(parent_dir / "test_v1.0.0.json")
-#
-#
-# @pytest.fixture()
-# def schema():
-#     parent_dir = pathlib.Path(__file__).parent.absolute()
-#     return str(parent_dir)
-
-
-# @pytest.fixture()
-# def record_json():
-#     return {
-#         "taxonomy": [
-#             {
-#                 'links': {
-#                     'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/a',
-#                 },
-#                 'test': 'extra_data_a',
-#                 'is_ancestor': True
-#             },
-#             {
-#                 'links': {
-#                     'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/a/b',
-#                     'parent': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/a'
-#                 },
-#                 'test': 'extra_data_a_b',
-#                 'is_ancestor': True
-#             },
-#             {
-#                 'links': {
-#                     'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/a/b/c',
-#                     'parent': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/a/b'
-#                 },
-#                 'test': 'extra_data_a_b_c',
-#                 'is_ancestor': False
-#             }
-#         ],
-#         "pid": 999,
-#         "title": "record 1"
-#     }
-
-
-# @pytest.fixture
-# def test_record(db, record_json, taxonomy_tree):
-#     ruuid, pid = get_pid()
-#     record_json['pid'] = pid
-#     record = TestRecord.create(record_json, id_=str(ruuid))
-#     db.session.commit()
-#     return record
 
 
 def get_pid():
@@ -431,6 +351,11 @@ def base_json():
             }
         ],
         "dateIssued": "2010-07-01",
+        "keywords": [
+            {"cs": "1", "en": "1"},
+            {"cs": "2", "en": "2"},
+            {"cs": "3", "en": "3"},
+        ],
         "language": [
             {
                 "is_ancestor": False,
@@ -481,6 +406,11 @@ def base_json_dereferenced():
         'control_number': '411100',
         'creator': [{'name': 'Daniel Kopecký'}],
         'dateIssued': '2010-07-01',
+        "keywords": [
+            {"cs": "1", "en": "1"},
+            {"cs": "2", "en": "2"},
+            {"cs": "3", "en": "3"},
+        ],
         'language': [{
             'is_ancestor': False,
             'links': {

@@ -897,17 +897,17 @@ class TestPublicationPlace:
         base_json[field] = content
         base_json_dereferenced[field] = {
             'country': [{
-                            'code': {
-                                'alpha2': 'CZ',
-                                'alpha3': 'CZE',
-                                'number': '203'
-                            },
-                            'is_ancestor': False,
-                            'links': {
-                                'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/cz'
-                            },
-                            'title': {'cs': 'Česko', 'en': 'Czechia'}
-                        }],
+                'code': {
+                    'alpha2': 'CZ',
+                    'alpha3': 'CZE',
+                    'number': '203'
+                },
+                'is_ancestor': False,
+                'links': {
+                    'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/cz'
+                },
+                'title': {'cs': 'Česko', 'en': 'Czechia'}
+            }],
             'place': 'Praha'
         }
         schema = CommonMetadataSchemaV2()
@@ -942,6 +942,462 @@ class TestPublicationPlace:
             }],
             'place': 'Praha'
         }
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+
+class TestPublisher:
+    def test_publisher(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "links": {
+                    "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
+                }
+            }
+        ]
+        field = "publisher"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'address': 'Malostranské náměstí 259/12, '
+                       '118 00 Praha 1',
+            'aliases': ['AMU'],
+            'ico': '61384984',
+            'is_ancestor': False,
+            'links': {
+                'self':
+                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
+            },
+            'provider': True,
+            'related': {'rid': '51000'},
+            'title': {
+                'cs': 'Akademie múzických umění v Praze',
+                'en': 'Academy of Performing Arts in Prague'
+            },
+            'type': 'veřejná VŠ',
+            'url': 'https://www.amu.cz'
+        }]
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+    def test_publication_place_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "links": {
+                    "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/bla'
+                }
+            }
+        ]
+        field = "publisher"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'address': 'Malostranské náměstí 259/12, '
+                       '118 00 Praha 1',
+            'aliases': ['AMU'],
+            'ico': '61384984',
+            'is_ancestor': False,
+            'links': {
+                'self':
+                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
+            },
+            'provider': True,
+            'related': {'rid': '51000'},
+            'title': {
+                'cs': 'Akademie múzických umění v Praze',
+                'en': 'Academy of Performing Arts in Prague'
+            },
+            'type': 'veřejná VŠ',
+            'url': 'https://www.amu.cz'
+        }]
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+
+class TestRelatedItem:
+    def test_related_item_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "itemTitle": {
+                    "cs": "Český titulek",
+                    "en": "English title"
+                },
+                "itemISBN": ["978-3-16-148410-0"],
+                "itemISSN": ["2049-3630"],
+                "itemDOI": "10.1021/acs.jced.6b00139",
+                "itemURL": "https://example.com",
+                "itemYear": "2020",
+                "itemVolume": "2",
+                "itemIssue": "25",
+                "itemStartPage": "15",
+                "itemEndPage": "30",
+                "itemRelationship": {
+                    "links": {
+                        "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                    }
+                }
+            }
+        ]
+        field = "relatedItem"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'itemDOI': '10.1021/acs.jced.6b00139',
+            'itemEndPage': '30',
+            'itemISBN': ['978-3-16-148410-0'],
+            'itemISSN': ['2049-3630'],
+            'itemIssue': '25',
+            'itemRelationship': [{
+                'is_ancestor': False,
+                'links': {
+                    'self':
+                        'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                },
+                'title': {
+                    'cs': 'jeVerzí',
+                    'en': 'isVersionOf'
+                }
+            }],
+            'itemStartPage': '15',
+            'itemTitle': {
+                'cs': 'Český titulek', 'en': 'English title'
+            },
+            'itemURL': 'https://example.com',
+            'itemVolume': '2',
+            'itemYear': '2020'
+        }]
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+    def test_related_item_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "itemTitle": {
+                    "cs": "Český titulek",
+                    "en": "English title"
+                },
+                "itemISBN": ["978-3-16-148410-0"],
+                "itemISSN": ["2049-3630"],
+                "itemDOI": "10.1021/acs.jced.6b00139",
+                "itemURL": "https://example.com",
+                "itemYear": "2020",
+                "itemVolume": "2",
+                "itemIssue": "25",
+                "itemEndPage": "30",
+                "itemRelationship": {
+                    "links": {
+                        "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                    }
+                }
+            }
+        ]
+        field = "relatedItem"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'itemDOI': '10.1021/acs.jced.6b00139',
+            'itemEndPage': '30',
+            'itemISBN': ['978-3-16-148410-0'],
+            'itemISSN': ['2049-3630'],
+            'itemIssue': '25',
+            'itemRelationship': [{
+                'is_ancestor': False,
+                'links': {
+                    'self':
+                        'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                },
+                'title': {
+                    'cs': 'jeVerzí',
+                    'en': 'isVersionOf'
+                }
+            }],
+            'itemStartPage': '15',
+            'itemTitle': {
+                'cs': 'Český titulek', 'en': 'English title'
+            },
+            'itemURL': 'https://example.com',
+            'itemVolume': '2',
+            'itemYear': '2020'
+        }]
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+    def test_related_item_3(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "itemTitle": {
+                    "cs": "Český titulek",
+                    "en": "English title"
+                },
+                "itemISBN": ["978-3-16-148410-0"],
+                "itemISSN": ["2049-3630"],
+                "itemDOI": "10.1021/acs.jced.6b00139",
+                "itemURL": "https://example.com",
+                "itemYear": "2020",
+                "itemVolume": "2",
+                "itemIssue": "25",
+                "itemRelationship": {
+                    "links": {
+                        "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                    }
+                }
+            }
+        ]
+        field = "relatedItem"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'itemDOI': '10.1021/acs.jced.6b00139',
+            'itemEndPage': '30',
+            'itemISBN': ['978-3-16-148410-0'],
+            'itemISSN': ['2049-3630'],
+            'itemIssue': '25',
+            'itemRelationship': [{
+                'is_ancestor': False,
+                'links': {
+                    'self':
+                        'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                },
+                'title': {
+                    'cs': 'jeVerzí',
+                    'en': 'isVersionOf'
+                }
+            }],
+            'itemStartPage': '15',
+            'itemTitle': {
+                'cs': 'Český titulek', 'en': 'English title'
+            },
+            'itemURL': 'https://example.com',
+            'itemVolume': '2',
+            'itemYear': '2020'
+        }]
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+    def test_related_item_4(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "itemTitle": {
+                    "cs": "Český titulek",
+                    "en": "English title"
+                },
+                "itemISBN": ["978-3-16-148410-0"],
+                "itemISSN": ["2049-3630"],
+                "itemDOI": "10.1021/acs.jced.6b00139",
+                "itemURL": "https://example.com",
+                "itemYear": "2020",
+                "itemVolume": "2",
+                "itemIssue": "25",
+                "itemStartPage": "30",
+                "itemEndPage": "15",
+                "itemRelationship": {
+                    "links": {
+                        "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                    }
+                }
+            }
+        ]
+        field = "relatedItem"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'itemDOI': '10.1021/acs.jced.6b00139',
+            'itemEndPage': '30',
+            'itemISBN': ['978-3-16-148410-0'],
+            'itemISSN': ['2049-3630'],
+            'itemIssue': '25',
+            'itemRelationship': [{
+                'is_ancestor': False,
+                'links': {
+                    'self':
+                        'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
+                },
+                'title': {
+                    'cs': 'jeVerzí',
+                    'en': 'isVersionOf'
+                }
+            }],
+            'itemStartPage': '15',
+            'itemTitle': {
+                'cs': 'Český titulek', 'en': 'English title'
+            },
+            'itemURL': 'https://example.com',
+            'itemVolume': '2',
+            'itemYear': '2020'
+        }]
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
+
+
+class TestRights:
+    def test_rights_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/copyright"
+                }
+            }
+        ]
+        field = "rights"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'is_ancestor': False,
+            'links': {
+                'self':
+                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/copyright'
+            },
+            'title': {
+                'cs': 'Dílo je chráněno podle autorského zákona '
+                      'č. '
+                      '121/2000 Sb.',
+                'en': 'This work is protected under the Copyright Act '
+                      'No. 121/2000 Coll.'
+            }
+        }]
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+
+class TestSeries:
+    def test_series_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/maj"
+                }
+            }
+        ]
+        field = "series"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'is_ancestor': False,
+            'links': {
+                'self':
+                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/maj'
+            },
+            'name': 'maj',
+            'volume': '1'
+        }]
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+
+class TestSubject:
+    def test_subject_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        del base_json["keywords"]
+        del base_json_dereferenced["keywords"]
+        content = [
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3001"
+                }
+            },
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3000"
+                }
+            },
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/d010420"
+                }
+            }
+        ]
+        field = "subject"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'DateCreated': datetime(2007, 1, 26, 16, 14,
+                                    37),
+            'DateDateEstablished': '2007-01-26T16:14:37',
+            'DateRevised': datetime(2007, 1, 26, 16, 14,
+                                    37),
+            'is_ancestor': False,
+            'links': {
+                'self':
+                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/d010420'
+            },
+            'reletedURI': ['http://www.medvik.cz/link/D010420',
+                           'http://id.nlm.nih.gov/mesh/D010420'],
+            'title': {'cs': 'pentany', 'en': 'Pentanes'}
+        },
+            {
+                'DateRevised': datetime(2007, 1, 26, 16, 14,
+                                        37),
+                'is_ancestor': False,
+                'links': {
+                    'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3000'
+                },
+                'reletedURI': ['http://psh.techlib.cz/skos/PSH3000'],
+                'title': {
+                    'cs': 'turbulentní proudění',
+                    'en': 'turbulent flow'
+                }
+            },
+            {
+                'DateRevised': datetime(2007, 1, 26, 16, 14,
+                                        37),
+                'is_ancestor': False,
+                'links': {
+                    'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3001'
+                },
+                'reletedURI': ['http://psh.techlib.cz/skos/PSH3001'],
+                'title': {
+                    'cs': 'Reynoldsovo číslo', 'en': 'Reynolds number'
+                }
+            }]
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+    def test_subject_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        del base_json["keywords"]
+        del base_json_dereferenced["keywords"]
+        content = [
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3001"
+                }
+            },
+            {
+                "links": {
+                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3000"
+                }
+            }
+        ]
+        field = "subject"
+        base_json[field] = content
+        base_json_dereferenced[field] = [{
+            'DateCreated': datetime(2007, 1, 26, 16, 14,
+                                    37),
+            'DateDateEstablished': '2007-01-26T16:14:37',
+            'DateRevised': datetime(2007, 1, 26, 16, 14,
+                                    37),
+            'is_ancestor': False,
+            'links': {
+                'self':
+                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/d010420'
+            },
+            'reletedURI': ['http://www.medvik.cz/link/D010420',
+                           'http://id.nlm.nih.gov/mesh/D010420'],
+            'title': {'cs': 'pentany', 'en': 'Pentanes'}
+        },
+            {
+                'DateRevised': datetime(2007, 1, 26, 16, 14,
+                                        37),
+                'is_ancestor': False,
+                'links': {
+                    'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3000'
+                },
+                'reletedURI': ['http://psh.techlib.cz/skos/PSH3000'],
+                'title': {
+                    'cs': 'turbulentní proudění',
+                    'en': 'turbulent flow'
+                }
+            }
+        ]
         schema = CommonMetadataSchemaV2()
         with pytest.raises(ValidationError):
             schema.load(base_json)
