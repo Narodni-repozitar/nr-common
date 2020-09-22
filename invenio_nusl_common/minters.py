@@ -38,7 +38,7 @@ def nusl_id_minter(record_uuid, data):
     :param data: The record metadata.
     :returns: A fresh `invenio_pidstore.models.PersistentIdentifier` instance.
     """
-    pid_field = "id"
+    pid_field = "control_number"
     assert pid_field not in data
     provider = NuslIdProvider.create(
         object_type='rec', object_uuid=record_uuid)
