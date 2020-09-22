@@ -46,7 +46,8 @@ install_requires = [
     'arrow>=0.16.0, <1.0.0',
     'isbnlib>=3.10.3,<4.0.0',
     'python-stdnum>=1.14, <2.0',
-    'IDUtils>=1.1.8, <2.0.0'
+    'IDUtils>=1.1.8, <2.0.0',
+    'marshmallow>=3.0.0, <4.0.0'
 ]
 
 packages = find_packages()
