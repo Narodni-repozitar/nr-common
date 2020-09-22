@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import Schema, ValidationError
 
-from invenio_nusl_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year
+from invenio_nusl_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year, OAI
 
 
 # NRDate tests
@@ -301,6 +301,50 @@ def test_year_3():
 
     data = {
         "year": "2021"
+    }
+    schema = TestSchema()
+    with pytest.raises(ValidationError):
+        schema.load(data)
+
+
+# OAI
+@pytest.mark.parametrize("test_input,expected",
+                         [
+                             ("oai:arXiv.org:hep-th/9901001", "oai:arXiv.org:hep-th/9901001"),
+                             ("oai:foo.org:some-local-id-53", "oai:foo.org:some-local-id-53"),
+                             ("oai:FOO.ORG:some-local-id-53", "oai:FOO.ORG:some-local-id-53"),
+                             ("oai:foo.org:some-local-id-54", "oai:foo.org:some-local-id-54"),
+                             ("oai:foo.org:Some-Local-Id-54", "oai:foo.org:Some-Local-Id-54"),
+                             ("oai:wibble.org:ab%20cd", "oai:wibble.org:ab%20cd"),
+                             ("oai:wibble.org:ab?cd", "oai:wibble.org:ab?cd"),
+                         ])
+def test_oai(test_input, expected):
+    class TestSchema(Schema):
+        oai = OAI(required=True)
+
+    data = {
+        "oai": test_input
+    }
+    schema = TestSchema()
+    res = schema.load(data)
+    assert res["oai"] == expected
+
+
+@pytest.mark.parametrize("test_input",
+                         [
+                             "something:arXiv.org:hep-th/9901001",
+                             "oai:999:abc123",
+                             "oai:wibble:abc123",
+                             # "oai:wibble.org:ab cd",
+                             # "oai:wibble.org:ab#cd",
+                             # "oai:wibble.org:ab<cd",
+                         ])
+def test_oai_2(test_input):
+    class TestSchema(Schema):
+        oai = OAI(required=True)
+
+    data = {
+        "oai": test_input
     }
     schema = TestSchema()
     with pytest.raises(ValidationError):

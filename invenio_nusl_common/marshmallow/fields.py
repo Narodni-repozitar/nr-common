@@ -130,3 +130,13 @@ def _serialize_dates(dates):
         else:
             raise ValidationError("Wrong date format")
     return result
+
+
+class OAI(fields.Field):
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        pattern = r"oai:[a-zA-Z][a-zA-Z0-9\-]*(\.[a-zA-Z][a-zA-Z0-9\-]*)+:[a-zA-Z0-9\-_\.!~\*'\(\);/\?:@&=\+$,%]+"
+        match = re.match(pattern, value.strip())
+        if not match:
+            raise ValidationError(f"It is not valid oai identifier \"{value}\"")
+        return match.string
