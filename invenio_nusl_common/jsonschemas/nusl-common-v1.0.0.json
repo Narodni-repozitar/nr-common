@@ -9,14 +9,14 @@
       "type": "string"
     },
     "abstract": {
-      "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
+      "$ref": "./multilingual-v2.0.0.json#/definitions/multilingual"
     },
     "accessibility": {
-      "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
+      "$ref": "./multilingual-v2.0.0.json#/definitions/multilingual"
     },
     "accessRights": {
       "description": "Taxonomy driven list of possible access to the document - open, embargoed, restirected and metadata only access. Based on COAR vocabulary - http://vocabularies.coar-repositories.org/documentation/access_rights/",
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "creator": {
       "description": "Metadata on primary responsibility on the work - people (authors; preferred in a form Surname, First Name) and organizations. Contains its name and identifier as e.g. ORCID",
@@ -82,7 +82,7 @@
             "type": "string"
           },
           "role": {
-            "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
           }
         }
       }
@@ -98,7 +98,7 @@
     },
     "resourceType": {
       "description": "Taxonomy driven typology of documents that's possible to store in the repository. More details on document typology is available from website www.narodnirepozitar.cz",
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "extent": {
       "description": "Extent of the work. If it is not paged, then it takes over number of pages of the entire pdf.",
@@ -186,7 +186,7 @@
     },
     "language": {
       "description": "ISO 639-2 B language code, i.e. code for a language in English.",
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term",
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term",
       "minItems": 1
     },
     "note": {
@@ -216,14 +216,14 @@
           "funder": {
             "$comment": "bude taxonomie, která bude obsahovat název v cz a en (funderName), funderISVaVaICode (3-místné označení poskytovatele, např. MSM pro MŠMT), a možná funderDOI (doi z crossref pro poskytovatele), ale to musím prozkoumat, jestli dohledám pro všechny české",
             "$comment": "podmíněně povinné - uvedu projekt, musím uvést i poskytovatele",
-            "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
           }
         }
       }
     },
     "provider": {
       "description": "It takes over metadata on provider from Institutions taxonomy - i.e. name and url.",
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "publicationPlace": {
       "$comment": "stejný princip jako místo konference - viz model Event",
@@ -237,13 +237,13 @@
           },
           "country": {
             "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
-            "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
           }
         }
       }
     },
     "publisher": {
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "relatedItem": {
       "description": "pole pro linkdata, provázání částí a celku nebo jinak přidružených dokumentů. předpokládá se u dizertací vydaných jako knih, příspěvky ve sborníku na sborník, článek na časopis, kapitola na knihu, recenze na článek nebo knihu.",
@@ -299,7 +299,7 @@
           "itemRelationship": {
             "description": "typ vztahu k původnímu popisovanému dok. možné jsou čtyři dvojce vazeb: isVersionOf - hasVersion, isPartOf - hasPart, isCompiledBy - compiles, isReviewedBy - reviews",
             "$comment": "podmíněně povinné pokud vyplním název (nebo cokoliv z relatedItem)",
-            "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
           }
         }
       }
@@ -307,7 +307,7 @@
     "rights": {
       "description": "It tells details on copyright - if it is fully under copyright act or if it is available under Creative Commons licence and if so under which one.",
       "$comment": "podmíněně povinné - if ručně vložené bez omezení, then přidělit Dílo chráněno podle aut. zákona v cz a en",
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "series": {
       "description": "edice tématicky sdružující podobné věci",
@@ -329,27 +329,27 @@
     },
     "subject": {
       "description": "subject headings that describes the work taken over from a vocabulary (taxonomy). Current vocabularies - PSH, MEDVIK, CZMESH.",
-      "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "keywords": {
       "description": "free-form keywords, often created by author(s)",
       "type": "array",
       "items": {
-        "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
+        "$ref": "./multilingual-v2.0.0.json#/definitions/multilingual"
       }
     },
     "title": {
       "description": "Title of the work. It is allowed to insert title in multiple languages.",
       "type": "array",
       "items": {
-        "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
+        "$ref": "./multilingual-v2.0.0.json#/definitions/multilingual"
       }
     },
     "titleAlternate": {
       "description": "alternate title of the work - subtitle or title of work part. It is allowed to insert title in multiple languages.",
       "type": "array",
       "items": {
-        "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
+        "$ref": "./multilingual-v2.0.0.json#/definitions/multilingual"
       }
     }
   },

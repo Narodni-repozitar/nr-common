@@ -39,7 +39,7 @@ def app():
     app = Flask('testapp', instance_path=instance_path)
 
     app.config.update(
-        JSONSCHEMAS_HOST="example.com",
+        JSONSCHEMAS_HOST="nusl.cz",
         SQLALCHEMY_TRACK_MODIFICATIONS=True,
         SERVER_NAME='127.0.0.1:5000',
         INVENIO_INSTANCE_PATH=instance_path,
