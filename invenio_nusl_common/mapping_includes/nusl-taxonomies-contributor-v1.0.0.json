@@ -1,0 +1,13 @@
+{
+    "contributor": {
+        "type": "taxonomy-term",
+        "properties": {
+            "dataCiteCode": {
+                "type": "keyword"
+            },
+            "marcCode": {
+                "type": "keyword"
+            }
+        }
+    }
+}

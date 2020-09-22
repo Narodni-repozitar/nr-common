@@ -39,8 +39,9 @@ def nusl_id_fetcher(record_uuid, data):
     :param data: The record metadata.
     :returns: A :data:`invenio_pidstore.fetchers.FetchedPID` instance.
     """
+    id_field = "control_number"
     return FetchedPID(
         provider=NuslIdProvider,
         pid_type=NuslIdProvider.pid_type,
-        pid_value=str(data["id"]),
+        pid_value=str(data[id_field]),
     )

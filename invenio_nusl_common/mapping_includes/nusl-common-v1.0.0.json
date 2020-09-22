@@ -1,0 +1,307 @@
+{
+  "mappings": {
+    "date_detection": false,
+    "numeric_detection": false,
+    "dynamic": false,
+    "properties": {
+      "$schema": {
+        "type": "keyword",
+        "index": true
+      },
+      "abstract": {
+        "type": "multilingual"
+      },
+      "accessibility": {
+        "type": "multilingual"
+      },
+      "accessRights": {
+        "type": "accessRights"
+      },
+      "creator": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text",
+            "copy_to": "person"
+          },
+          "ORCID": {
+            "type": "keyword"
+          },
+          "scopusID": {
+            "type": "keyword"
+          },
+          "researcherID": {
+            "type": "keyword"
+          },
+          "czenasAutID": {
+            "type": "keyword"
+          },
+          "vedidk": {
+            "type": "keyword"
+          },
+          "institutionalID": {
+            "type": "keyword"
+          }
+        }
+      },
+      "contributor": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text",
+            "copy_to": "person"
+          },
+          "ORCID": {
+            "type": "keyword"
+          },
+          "scopusID": {
+            "type": "keyword"
+          },
+          "researcherID": {
+            "type": "keyword"
+          },
+          "czenasAutID": {
+            "type": "keyword"
+          },
+          "vedidk": {
+            "type": "keyword"
+          },
+          "institutionalID": {
+            "type": "keyword"
+          },
+          "role": {
+            "type": "contributor"
+          }
+        }
+      },
+      "person": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "dateIssued": {
+        "type": "keyword"
+      },
+      "dateModified": {
+        "type": "keyword"
+      },
+      "resourceType": {
+        "type": "taxonomy-term",
+        "properties": {
+          "title": {
+            "type": "multilingual"
+          }
+        }
+      },
+      "extent": {
+        "type": "keyword",
+        "index": false
+      },
+      "externalLocation": {
+        "type": "keyword"
+      },
+      "control_number": {
+        "type": "keyword"
+      },
+      "recordIdentifiers": {
+        "type": "object",
+        "properties": {
+          "nuslOAI": {
+            "type": "keyword"
+          },
+          "nrcrHandle": {
+            "type": "keyword"
+          },
+          "nrcrOAI": {
+            "type": "keyword"
+          },
+          "originalRecord": {
+            "type": "keyword"
+          },
+          "originalRecordOAI": {
+            "type": "keyword"
+          },
+          "catalogueSysNo": {
+            "type": "keyword"
+          }
+        }
+      },
+      "workIdentifiers": {
+        "type": "object",
+        "properties": {
+          "isbn": {
+            "type": "keyword"
+          },
+          "issn": {
+            "type": "keyword"
+          },
+          "doi": {
+            "type": "keyword"
+          },
+          "RIV": {
+            "type": "keyword"
+          }
+        }
+      },
+      "isGL": {
+        "type": "boolean"
+      },
+      "language": {
+        "type": "taxonomy-term",
+        "properties": {
+          "title": {
+            "type": "multilingual"
+          }
+        }
+      },
+      "note": {
+        "type": "text"
+      },
+      "fundingReference": {
+        "type": "nested",
+        "properties": {
+          "projectID": {
+            "type": "keyword"
+          },
+          "projectName": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "fundingProgram": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "funder": {
+            "type": "Institution"
+          }
+        }
+      },
+      "provider": {
+        "type": "Institution"
+      },
+      "publicationPlace": {
+        "type": "nested",
+        "properties": {
+          "place": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "country": {
+            "type": "taxonomy-term",
+            "properties": {
+              "title": {
+                "type": "multilingual"
+              }
+            }
+          }
+        }
+      },
+      "publisher": {
+        "type": "Institution",
+        "properties": {
+          "title": {
+            "type": "multilingual"
+          }
+        }
+      },
+      "relatedItem": {
+        "type": "nested",
+        "properties": {
+          "itemTitle": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "itemDOI": {
+            "type": "keyword"
+          },
+          "itemISBN": {
+            "type": "keyword"
+          },
+          "itemISSN": {
+            "type": "keyword"
+          },
+          "itemURL": {
+            "type": "keyword"
+          },
+          "itemYear": {
+            "type": "keyword"
+          },
+          "itemVolume": {
+            "type": "keyword"
+          },
+          "itemIssue": {
+            "type": "keyword"
+          },
+          "itemStartPage": {
+            "type": "keyword"
+          },
+          "itemEndPage": {
+            "type": "keyword"
+          },
+          "itemRelationship": {
+            "type": "taxonomy-term"
+          }
+        }
+      },
+      "rights": {
+        "type": "rights"
+      },
+      "series": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "volume": {
+            "type": "keyword"
+          }
+        }
+      },
+      "subject": {
+        "type": "subject",
+        "properties": {
+          "title": {
+            "type": "multilingual",
+            "copy_to": "subjectKeywords"
+          }
+        }
+      },
+      "keywords": {
+        "type": "multilingual",
+        "copy_to": "subjectKeywords"
+      },
+      "subjectKeywords": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "multilingual"
+      }
+    }
+  }
+}
+
+
