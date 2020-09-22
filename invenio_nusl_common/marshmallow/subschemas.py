@@ -6,7 +6,7 @@ from marshmallow.validate import Length
 from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
 
-from invenio_nusl_common.marshmallow.fields import ISBN, ISSN, DOI, RIV, Year
+from invenio_nusl_common.marshmallow.fields import ISBN, ISSN, DOI, RIV, Year, OAI
 
 
 class TitledMixin:
@@ -105,13 +105,12 @@ class ContributorSchema(PersonSchema):
 
 
 class RecordIdentifier(StrictKeysMixin):
-    pass
-    # nuslOAI =
-    # nrcrHandle
-    # nrcrOAI
-    # originalRecord
-    # originalRecordOAI
-    # catalogueSysNo
+    nuslOAI = OAI()
+    nrcrHandle = Url()
+    nrcrOAI = OAI()
+    originalRecord = Url()
+    originalRecordOAI = OAI()
+    catalogueSysNo = SanitizedUnicode()
 
 
 class WorkIdentifersSchema(StrictKeysMixin):

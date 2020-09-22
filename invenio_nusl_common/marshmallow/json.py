@@ -11,7 +11,7 @@ from __future__ import absolute_import, print_function
 
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
-from marshmallow import validates_schema, post_load, ValidationError
+from marshmallow import post_load, ValidationError
 from marshmallow.fields import Nested, Url, Boolean, List
 from marshmallow.validate import Length
 from oarepo_invenio_model.marshmallow import InvenioRecordMetadataSchemaV1Mixin
@@ -22,7 +22,7 @@ from invenio_nusl_common.marshmallow.fields import NRDate
 from invenio_nusl_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
     WorkIdentifersSchema, FundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema, \
     TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SeriesMixin, SubjectMixin, \
-    PSHMixin, CZMeshMixin, MedvikMixin
+    PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier
 
 
 #
@@ -42,7 +42,7 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     extent = SanitizedUnicode()  # TODO: pokud nemáme extent, spočítat z PDF - asi nepůjde
     externalLocation = Url()
     control_number = SanitizedUnicode(required=True)
-    # recordIdentifiers = # TODO: ještě probrat
+    recordIdentifiers = Nested(RecordIdentifier)
     workIdentifiers = Nested(WorkIdentifersSchema)
     isGL = Boolean()
     language = TaxonomyField(mixins=[TitledMixin], required=True)
