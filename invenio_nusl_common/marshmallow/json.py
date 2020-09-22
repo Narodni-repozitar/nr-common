@@ -1,119 +1,69 @@
-# -*- coding: utf-8 -*-
+# # -*- coding: utf-8 -*-
+# #
+# # Copyright (C) 2019 CERN.
+# #
+# # My site is free software; you can redistribute it and/or modify it under
+# # the terms of the MIT License; see LICENSE file for more details.
 #
-# Copyright (C) 2019 CERN.
+# """JSON Schemas."""
 #
-# My site is free software; you can redistribute it and/or modify it under
-# the terms of the MIT License; see LICENSE file for more details.
-
-"""JSON Schemas."""
-
 from __future__ import absolute_import, print_function
 
-from copy import deepcopy
-from functools import lru_cache
-from json import load
-from urllib.parse import urlparse
-
-from flask_taxonomies.jsonresolver import get_taxonomy_term
-from flask_taxonomies.marshmallow import TaxonomySchemaV1
-from invenio_records_rest.schemas import Nested, StrictKeysMixin
+from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
-from marshmallow import fields, pre_load, ValidationError, post_load
-from pycountry import languages
+from marshmallow import post_load, ValidationError
+from marshmallow.fields import Nested, Url, Boolean, List
+from marshmallow.validate import Length
+from oarepo_invenio_model.marshmallow import InvenioRecordMetadataSchemaV1Mixin
+from oarepo_multilingual.marshmallow import MultilingualStringV2
+from oarepo_taxonomies.marshmallow import TaxonomyField
+
+from invenio_nusl_common.marshmallow.fields import NRDate
+from invenio_nusl_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
+    WorkIdentifersSchema, FundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema, \
+    TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SeriesMixin, SubjectMixin, \
+    PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier
 
 
-
-@lru_cache()
-def import_json(path: str):
-    json_file = open(path, 'r')
-    json_dict = load(json_file)
-    return json_dict
+#
 
 
-########################################################################
-#                 VALIDATION MODELS                                    #
-########################################################################
+class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin):
+    """Schema for the record metadata."""
 
-def validate_language(lang):  # TODO: zkontrolovat jen alpha3 a nejdřív bib, součást třídy
-    lang = lang.lower()
-    alpha3 = languages.get(alpha_3=lang)
-    bib = languages.get(bibliographic=lang)
-    if alpha3 is None and bib is None:
-        raise ValidationError('The language code is not part of ISO-639 codes.')
+    abstract = MultilingualStringV2()
+    accessibility = MultilingualStringV2()
+    accessRights = TaxonomyField(mixins=[TitledMixin, AccessRightsMixin], required=True)
+    creator = List(Nested(PersonSchema), required=True)
+    contributor = List(Nested(ContributorSchema))
+    dateIssued = NRDate(required=True)
+    dateModified = NRDate()
+    resourceType = TaxonomyField(mixins=[TitledMixin], required=True)
+    extent = SanitizedUnicode()  # TODO: pokud nemáme extent, spočítat z PDF - asi nepůjde
+    externalLocation = Url()
+    control_number = SanitizedUnicode(required=True)
+    recordIdentifiers = Nested(RecordIdentifier)
+    workIdentifiers = Nested(WorkIdentifersSchema)
+    isGL = Boolean()
+    language = TaxonomyField(mixins=[TitledMixin], required=True)
+    note = List(SanitizedUnicode())
+    fundingReference = List(Nested(FundingReferenceSchema))
+    provider = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin], required=True)
+    publicationPlace = Nested(PublicationPlaceSchema)
+    publisher = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin])
+    relatedItem = List(Nested(RelatedItemSchema))
+    rights = TaxonomyField(mixins=[TitledMixin, RightsMixin])
+    series = TaxonomyField(mixins=[SeriesMixin])
+    subject = TaxonomyField(mixins=[TitledMixin, SubjectMixin, PSHMixin, CZMeshMixin, MedvikMixin],
+                            many=True)
+    keywords = List(MultilingualStringV2())
+    title = List(MultilingualStringV2(required=True), required=True, validate=Length(min=1))
+    titleAlternate = List(MultilingualStringV2())
 
-
-########################################################################
-#                            SCHEMAS                                   #
-########################################################################
-
-class ValueTypeSchemaV1(StrictKeysMixin):
-    """Ids schema."""
-
-    type = SanitizedUnicode(required=True, allow_none=True)
-    value = SanitizedUnicode(required=True, allow_none=True)
-
-
-class MultilanguageSchemaV1(StrictKeysMixin):
-    """ """
-
-    value = SanitizedUnicode(required=True)
-    lang = fields.String(validate=validate_language,
-                         required=True)
-
-    @pre_load
-    def change_lang_code(self, data, **kwargs):
-        if "lang" in data:
-            lang = data["lang"].lower()
-            if languages.get(alpha_3=lang) is not None:
-                language = languages.get(alpha_3=lang)
-            elif languages.get(alpha_2=lang):
-                language = languages.get(alpha_2=lang)
-            elif languages.get(bibliographic=lang):
-                language = languages.get(bibliographic=lang)
-            else:
-                language = None
-            if hasattr(language, "bibliographic"):
-                data["lang"] = language.bibliographic
-            elif hasattr(language, "alpha_3"):
-                data["lang"] = language.alpha_3
-            else:
-                pass
+    @post_load
+    def validate_keywords_subjects(self, data, **kwargs):
+        subject = [x for x in data.get("subject", []) if not x["is_ancestor"]]
+        keywords = data.get("keywords", [])
+        if len(keywords) + len(subject) < 3:
+            raise ValidationError("At least three subjects or keyword are required")
         return data
-
-
-class ApprovedTaxonomySchema(TaxonomySchemaV1):
-    approved = fields.Boolean(missing=False)
-    date_of_serialization = fields.DateTime()
-    taxonomy = SanitizedUnicode()
-
-    @post_load()
-    def subject_or_keyword_required(self, data, **kwargs):
-        if "$ref" in data.keys():
-            ref = data["$ref"]
-            url = urlparse(data["$ref"])
-            path_array = [x for x in url.path.split("/") if len(x) > 0]
-            slug = path_array[-1]
-            code = path_array[path_array.index("taxonomies") + 1]
-            data_ = get_taxonomy_term(code=code, slug=slug)
-            data = {"$ref": ref}
-        else:
-            data_ = deepcopy(data)
-        if data_.get("approved") is False:
-            raise ValidationError("The taxonomy has not been approved by curator, yet.")
-        return data
-
-
-class DoctypeSubSchemaV1(ApprovedTaxonomySchema):
-    pass
-
-
-class OrganizationSchemaV1(StrictKeysMixin):
-    """ """
-
-    id = Nested(ValueTypeSchemaV1())
-    address = SanitizedUnicode()
-    contactPoint = fields.Email(required=False)
-    name = Nested(MultilanguageSchemaV1())
-    url = fields.Url()
-    provider = fields.Boolean()
-    isPartOf = fields.List(SanitizedUnicode())

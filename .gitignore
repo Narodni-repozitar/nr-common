@@ -63,3 +63,7 @@ target/
 
 # Vim swapfiles
 .*.sw?
+
+database.db
+
+venv/

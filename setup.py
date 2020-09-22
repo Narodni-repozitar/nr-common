@@ -10,19 +10,9 @@ from setuptools import find_packages, setup
 readme = open('README.rst').read()
 
 tests_require = [
-    'check-manifest>=0.25',
-    'coverage>=4.0',
-    'isort>=4.3.3',
-    'mock>=2.0.0',
-    'pydocstyle>=1.0.0',
-    'pytest-cache>=1.0',
-    'pytest-invenio>=1.0.2,<1.1.0',
-    'pytest-mock>=1.6.0',
-    'pytest-cov>=1.8.0',
-    'pytest-random-order>=0.5.4',
-    'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
-    'selenium>=3.4.3',
+    'pytest',
+    'pytest-cov',
+    'oarepo[tests]'
 ]
 
 extras_require = {
@@ -41,8 +31,14 @@ setup_requires = [
 ]
 
 install_requires = [
-    'invenio-oarepo>=1.0.0',
-    'pycountry >= 19.0.0',
+    'pycountry>=19.0.0',
+    'arrow>=0.16.0, <1.0.0',
+    'isbnlib>=3.10.3,<4.0.0',
+    'python-stdnum>=1.14, <2.0',
+    'IDUtils>=1.1.8, <2.0.0',
+    'oarepo-invenio-model>=2.0.0, <3.0.0',
+    'oarepo-multilingual>=2.0.0, <3.0.0',
+    'oarepo-taxonomies>=2.5.0, <3.0.0'
 ]
 
 packages = find_packages()
@@ -68,16 +64,16 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
-        'console_scripts': [
-            'refrep = invenio_nusl_common.cli:refrep'
-        ],
-        'invenio_base.blueprints': [
-        ],
-
-        'invenio_config.module': [
-        ],
-        'invenio_i18n.translations': [
-        ],
+        # 'console_scripts': [
+        #     'refrep = invenio_nusl_common.cli:refrep'
+        # ],
+        # 'invenio_base.blueprints': [
+        # ],
+        #
+        # 'invenio_config.module': [
+        # ],
+        # 'invenio_i18n.translations': [
+        # ],
         'invenio_jsonschemas.schemas': [
             'invenio_nusl_common = invenio_nusl_common.jsonschemas'
         ],
@@ -89,6 +85,9 @@ setup(
         ],
         'invenio_db.alembic': [
             'nusl = invenio_nusl_common:alembic',
+        ],
+        "oarepo_mapping_includes": [
+            "invenio_nusl_common = invenio_nusl_common.mapping_includes"
         ]
     },
     extras_require=extras_require,
