@@ -64,16 +64,6 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
-        # 'console_scripts': [
-        #     'refrep = invenio_nusl_common.cli:refrep'
-        # ],
-        # 'invenio_base.blueprints': [
-        # ],
-        #
-        # 'invenio_config.module': [
-        # ],
-        # 'invenio_i18n.translations': [
-        # ],
         'invenio_jsonschemas.schemas': [
             'invenio_nusl_common = invenio_nusl_common.jsonschemas'
         ],
