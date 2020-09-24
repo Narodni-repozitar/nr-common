@@ -7,7 +7,7 @@ import os
 
 from setuptools import find_packages, setup
 
-readme = open('README.rst').read()
+readme = open('README.md').read()
 
 tests_require = [
     'pytest',
@@ -32,7 +32,7 @@ setup_requires = [
 
 install_requires = [
     'pycountry>=19.0.0',
-    'arrow>=0.16.0, <1.0.0',
+    'arrow',
     'isbnlib>=3.10.3,<4.0.0',
     'python-stdnum>=1.14, <2.0',
     'IDUtils>=1.1.8, <2.0.0',
@@ -64,16 +64,6 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
-        # 'console_scripts': [
-        #     'refrep = invenio_nusl_common.cli:refrep'
-        # ],
-        # 'invenio_base.blueprints': [
-        # ],
-        #
-        # 'invenio_config.module': [
-        # ],
-        # 'invenio_i18n.translations': [
-        # ],
         'invenio_jsonschemas.schemas': [
             'invenio_nusl_common = invenio_nusl_common.jsonschemas'
         ],

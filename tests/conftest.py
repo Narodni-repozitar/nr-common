@@ -20,6 +20,7 @@ from invenio_base.signals import app_loaded
 from invenio_celery import InvenioCelery
 from invenio_db import InvenioDB
 from invenio_db import db as db_
+from invenio_indexer import InvenioIndexer
 from invenio_indexer.api import RecordIndexer
 from invenio_jsonschemas import InvenioJSONSchemas
 from invenio_pidstore.providers.recordid import RecordIdProvider
@@ -89,30 +90,6 @@ RECORDS_REST_ENDPOINTS = {
 }
 
 
-# RECORDS_DRAFT_ENDPOINTS = {
-#     'theses': {
-#         'draft': 'draft-theses',
-#
-#         'pid_type': 'nusl',
-#         'pid_minter': 'nusl',
-#         'pid_fetcher': 'nusl',
-#         'default_endpoint_prefix': True,
-#         'max_result_window': 500000,
-#
-#         'record_class': TestRecord,
-#
-#         'publish_permission_factory_imp': allow_all,  # TODO: change this !!!
-#         'unpublish_permission_factory_imp': allow_all,
-#         'edit_permission_factory_imp': allow_all,
-#         'default_media_type': 'application/json',
-#
-#     },
-#     'draft-theses': {
-#         'pid_type': 'dnusl',
-#     }
-# }
-
-
 @pytest.yield_fixture(scope="class")
 def app():
     instance_path = tempfile.mkdtemp()
@@ -148,6 +125,7 @@ def app():
     Principal(app)
     InvenioJSONSchemas(app)
     InvenioSearch(app)
+    InvenioIndexer(app)
     OARepoMappingIncludesExt(app)
     InvenioRecords(app)
     InvenioRecordsREST(app)
