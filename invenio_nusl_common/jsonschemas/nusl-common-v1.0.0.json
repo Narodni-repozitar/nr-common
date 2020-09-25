@@ -225,21 +225,7 @@
       "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "publicationPlace": {
-      "$comment": "stejný princip jako místo konference - viz model Event",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "place": {
-            "type": "string"
-          },
-          "country": {
-            "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
-            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
-          }
-        }
-      }
+      "$ref": "#/definitions/address"
     },
     "publisher": {
       "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
@@ -361,5 +347,23 @@
     "language",
     "provider",
     "title"
-  ]
+  ],
+  "definitions": {
+    "location": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "place": {
+            "type": "string"
+          },
+          "country": {
+            "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
+            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
+          }
+        }
+      }
+    }
+  }
 }
