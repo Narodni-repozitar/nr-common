@@ -1,7 +1,8 @@
 import pytest
 from marshmallow import Schema, ValidationError
 
-from invenio_nusl_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year, OAI
+from invenio_nusl_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year, OAI, \
+    DateRange
 
 
 # NRDate tests
@@ -48,6 +49,42 @@ def test_NRDate_3():
     schema = TestSchema()
     with pytest.raises(ValidationError):
         res = schema.load(data)
+
+
+# DateRange tests
+@pytest.mark.parametrize("test_input,expected",
+                         [("2019-12-31", "2019-12-31"),
+                          ("2018-12-31 / 2019-12-31", "2018-12-31/2019-12-31"),
+                          ("2018-12-31/2019-12-31", "2018-12-31/2019-12-31"),
+                          ])
+def test_DateRange(test_input, expected):
+    class TestSchema(Schema):
+        date = DateRange(required=True)
+
+    data = {
+        "date": test_input
+    }
+    schema = TestSchema()
+    res = schema.load(data)
+    assert res["date"] == expected
+
+
+@pytest.mark.parametrize("test_input",
+                         ["2019-12",
+                          "2018.12.31 / 2019.12.31",
+                          "2018-12/2019-12",
+                          "2021-12-21"
+                          ])
+def test_DateRange_2(test_input):
+    class TestSchema(Schema):
+        date = DateRange(required=True)
+
+    data = {
+        "date": test_input
+    }
+    schema = TestSchema()
+    with pytest.raises(ValidationError):
+        schema.load(data)
 
 
 # ISBN

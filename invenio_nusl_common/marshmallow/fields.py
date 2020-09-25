@@ -3,7 +3,7 @@ import re
 import arrow
 import idutils
 import isbnlib
-from arrow import ParserError
+from arrow import ParserError, Arrow
 from marshmallow import fields, ValidationError
 from stdnum import issn
 from stdnum.exceptions import InvalidChecksum, InvalidLength, InvalidFormat, InvalidComponent
@@ -15,6 +15,34 @@ class NRDate(fields.Field):
 
     def _deserialize(self, value, attr, data, **kwargs):
         return serialize_date(value)
+
+
+class DateRange(fields.Field):
+    """Field that parse date and date range.
+    """
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        date_str = value.replace(" ", "")
+        date_arr = date_str.split("/")
+        try:
+            val_date_arr = [self.validate_min_max(arrow.get(date, "YYYY-MM-DD")) for date in date_arr]
+        except ValueError as e:
+            raise ValidationError(str(e))
+        l: int = len(val_date_arr)
+        if l > 2:
+            raise ValidationError("Date period cannot contain more then two dates")
+        if l == 2:
+            return f"{val_date_arr[0].format('YYYY-MM-DD')}/{val_date_arr[1].format('YYYY-MM-DD')}"
+        if l == 1:
+            return val_date_arr[0].format('YYYY-MM-DD')
+        else:
+            raise ValidationError("Unexpected time period format")
+
+    @staticmethod
+    def validate_min_max(date: Arrow):
+        if date > arrow.get() or date < arrow.get("1700-01-01"):
+            raise ValidationError("The date is in the future or before 1700.")
+        return date
 
 
 class Year(fields.Field):
@@ -135,7 +163,8 @@ def _serialize_dates(dates):
 class OAI(fields.Field):
 
     def _deserialize(self, value, attr, data, **kwargs):
-        pattern = r"oai:[a-zA-Z][a-zA-Z0-9\-]*(\.[a-zA-Z][a-zA-Z0-9\-]*)+:[a-zA-Z0-9\-_\.!~\*'\(\);/\?:@&=\+$,%]+"
+        pattern = r"oai:[a-zA-Z][a-zA-Z0-9\-]*(\.[a-zA-Z][a-zA-Z0-9\-]*)+:[a-zA-Z0-9\-_\.!~\*'\(" \
+                  r"\);/\?:@&=\+$,%]+"
         match = re.match(pattern, value.strip())
         if not match:
             raise ValidationError(f"It is not valid oai identifier \"{value}\"")
