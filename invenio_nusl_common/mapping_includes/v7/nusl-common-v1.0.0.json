@@ -15,7 +15,7 @@
         "type": "multilingual"
       },
       "accessRights": {
-        "type": "accessRights"
+        "type": "nusl-taxonomies-accessRights-v1.0.0.json#/accessRights"
       },
       "creator": {
         "type": "nested",
@@ -70,7 +70,7 @@
             "type": "keyword"
           },
           "role": {
-            "type": "contributor"
+            "type": "nusl-taxonomies-contributor-v1.0.0.json#/contributor"
           }
         }
       },
@@ -183,12 +183,12 @@
             }
           },
           "funder": {
-            "type": "Institution"
+            "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
           }
         }
       },
       "provider": {
-        "type": "Institution"
+        "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
       },
       "publicationPlace": {
         "type": "nested",
@@ -212,7 +212,7 @@
         }
       },
       "publisher": {
-        "type": "Institution",
+        "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution",
         "properties": {
           "title": {
             "type": "multilingual"
@@ -263,7 +263,7 @@
         }
       },
       "rights": {
-        "type": "rights"
+        "type": "nusl-taxonomies-rights-v1.0.0.json#/rights"
       },
       "series": {
         "type": "nested",
@@ -282,17 +282,10 @@
         }
       },
       "subject": {
-        "type": "subject",
-        "properties": {
-          "title": {
-            "type": "multilingual",
-            "copy_to": "subjectKeywords"
-          }
-        }
+        "type": "nusl-taxonomies-subject-v1.0.0.json#/subject"
       },
       "keywords": {
-        "type": "multilingual",
-        "copy_to": "subjectKeywords"
+        "type": "multilingual#subjectKeyword"
       },
       "subjectKeywords": {
         "type": "keyword"

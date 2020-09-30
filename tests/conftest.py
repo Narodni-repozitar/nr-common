@@ -8,6 +8,7 @@ import uuid
 from pathlib import Path
 
 import pytest
+from elasticsearch import Elasticsearch
 from flask import Flask, make_response, url_for
 from flask_login import LoginManager, login_user
 from flask_principal import RoleNeed, Principal, Permission
@@ -111,7 +112,25 @@ def app():
         CELERY_CACHE_BACKEND='memory',
         CELERY_TASK_EAGER_PROPAGATES=True,
         SUPPORTED_LANGUAGES=["cs", "en"],
-        RECORDS_REST_ENDPOINTS=RECORDS_REST_ENDPOINTS
+        RECORDS_REST_ENDPOINTS=RECORDS_REST_ENDPOINTS,
+        ELASTICSEARCH_DEFAULT_LANGUAGE_TEMPLATE={
+            "type": "text",
+            "fields": {
+                "keywords": {
+                    "type": "keyword"
+                }
+            }
+        },
+        ELASTICSEARCH_LANGUAGE_TEMPLATES={
+            "cs#subjectKeyword": {
+                "type": "keyword",
+                "copy_to": "subjectKeyword"
+            },
+            "en#subjectKeyword": {
+                "type": "keyword",
+                "copy_to": "subjectKeyword"
+            },
+        }
     )
 
     app.secret_key = 'changeme'
@@ -194,6 +213,21 @@ def client(app, db):
     from flask_taxonomies.models import Base
     Base.metadata.create_all(db.engine)
     return app.test_client()
+
+
+@pytest.fixture()
+def es():
+    return Elasticsearch()
+
+
+@pytest.yield_fixture
+def es_index(es):
+    index_name = "test_index"
+    if not es.indices.exists(index=index_name):
+        yield es.indices.create(index_name)
+
+    if es.indices.exists(index=index_name):
+        es.indices.delete(index_name)
 
 
 @pytest.fixture

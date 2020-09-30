@@ -1,7 +1,10 @@
 {
   "subject": {
-    "type": "taxonomy-v1.0.0.json#/TaxonomyTerm",
+    "type": "taxonomy-term",
     "properties": {
+      "title": {
+            "type": "multilingual"
+        },
       "relatedURI": {
         "type": "keyword"
       },
