@@ -78,6 +78,9 @@ setup(
         ],
         "oarepo_mapping_includes": [
             "invenio_nusl_common = invenio_nusl_common.mapping_includes"
+        ],
+        'invenio_search.mappings': [
+            'invenio_nusl_common = invenio_nusl_common.mappings'
         ]
     },
     extras_require=extras_require,

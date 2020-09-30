@@ -1,0 +1,12 @@
+{
+  "mappings": {
+    "date_detection": false,
+    "numeric_detection": false,
+    "dynamic": false,
+    "properties": {
+      "oarepo:extends": "nusl-common-v1.0.0.json#/mappings/properties"
+    }
+  }
+}
+
+
