@@ -1,8 +1,10 @@
+from pprint import pprint
+
 import pytest
 from marshmallow import Schema, ValidationError
 
 from invenio_nusl_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year, OAI, \
-    DateRange
+    DateRange, DateString
 
 
 # NRDate tests
@@ -338,6 +340,62 @@ def test_year_3():
 
     data = {
         "year": "2021"
+    }
+    schema = TestSchema()
+    with pytest.raises(ValidationError):
+        schema.load(data)
+
+
+# DateString
+@pytest.mark.parametrize("test_input,expected",
+                         [
+                             ("1700-01-01", "1700-01-01"),
+                             ("2020-05-01", "2020-05-01"),
+                             ("1991-07-01", "1991-07-01"),
+                             (" 1991-07-01 ", "1991-07-01"),
+                         ])
+def test_date_string(test_input, expected):
+    class TestSchema(Schema):
+        date = DateString(required=True)
+
+    data = {
+        "date": test_input
+    }
+    schema = TestSchema()
+    res = schema.load(data)
+    assert res["date"] == expected
+
+
+def test_date_string_2():
+    class TestSchema(Schema):
+        date = DateString(required=True)
+
+    data = {
+        "date": "1699-01-01"
+    }
+    schema = TestSchema()
+    with pytest.raises(ValidationError):
+        schema.load(data)
+
+
+def test_date_string_3():
+    class TestSchema(Schema):
+        date = DateString(required=True)
+
+    data = {
+        "date": "2100-01-01"
+    }
+    schema = TestSchema()
+    with pytest.raises(ValidationError):
+        schema.load(data)
+
+
+def test_date_string_4():
+    class TestSchema(Schema):
+        date = DateString(required=True)
+
+    data = {
+        "date": "1995"
     }
     schema = TestSchema()
     with pytest.raises(ValidationError):

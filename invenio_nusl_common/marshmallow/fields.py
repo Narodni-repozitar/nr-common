@@ -25,7 +25,8 @@ class DateRange(fields.Field):
         date_str = value.replace(" ", "")
         date_arr = date_str.split("/")
         try:
-            val_date_arr = [self.validate_min_max(arrow.get(date, "YYYY-MM-DD")) for date in date_arr]
+            val_date_arr = [self.validate_min_max(arrow.get(date, "YYYY-MM-DD")) for date in
+                            date_arr]
         except ValueError as e:
             raise ValidationError(str(e))
         l: int = len(val_date_arr)
@@ -43,6 +44,21 @@ class DateRange(fields.Field):
         if date > arrow.get() or date < arrow.get("1700-01-01"):
             raise ValidationError("The date is in the future or before 1700.")
         return date
+
+
+class DateString(fields.Field):
+    def _deserialize(self, value, attr, data, **kwargs):
+        try:
+            value = str(value).strip()
+            a = arrow.get(value, "YYYY-MM-DD")
+            if a < arrow.get("1700-01-01"):
+                raise ValidationError(
+                    "Date is lower then 1700")
+            if a > arrow.get():
+                raise ValidationError("Cannot use year higher than current year")
+            return a.format("YYYY-MM-DD")
+        except ParserError:
+            raise ValidationError("Wrong date format")
 
 
 class Year(fields.Field):
