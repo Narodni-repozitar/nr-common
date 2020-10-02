@@ -190,6 +190,9 @@
       "provider": {
         "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
       },
+      "entities": {
+        "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
+      },
       "publicationPlace": {
         "type": "nested",
         "properties": {
@@ -212,10 +215,10 @@
         }
       },
       "publisher": {
-        "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution",
-        "properties": {
-          "title": {
-            "type": "multilingual"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
           }
         }
       },

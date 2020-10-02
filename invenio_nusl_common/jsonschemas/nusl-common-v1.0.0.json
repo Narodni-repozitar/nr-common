@@ -224,11 +224,14 @@
       "description": "It takes over metadata on provider from Institutions taxonomy - i.e. name and url.",
       "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
+    "entities": {
+      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
+    },
     "publicationPlace": {
       "$ref": "#/definitions/address"
     },
     "publisher": {
-      "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
+      "type": "string"
     },
     "relatedItem": {
       "description": "pole pro linkdata, provázání částí a celku nebo jinak přidružených dokumentů. předpokládá se u dizertací vydaných jako knih, příspěvky ve sborníku na sborník, článek na časopis, kapitola na knihu, recenze na článek nebo knihu.",

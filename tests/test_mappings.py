@@ -309,42 +309,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     },
                     'type': 'object'
                 },
-                'publicationPlace': {
-                    'properties': {
-                        'country': {
-                            'properties': {
-                                'is_ancestor': {'type': 'boolean'},
-                                'links': {
-                                    'properties': {
-                                        'parent': {'type': 'keyword'},
-                                        'self': {'type': 'keyword'}
-                                    },
-                                    'type': 'object'
-                                },
-                                'title': {
-                                    'properties': {
-                                        'cs': {
-                                            'fields': {'keywords': {'type': 'keyword'}},
-                                            'type': 'text'
-                                        },
-                                        'en': {
-                                            'fields': {'keywords': {'type': 'keyword'}},
-                                            'type': 'text'
-                                        }
-                                    },
-                                    'type': 'object'
-                                }
-                            },
-                            'type': 'object'
-                        },
-                        'place': {
-                            'fields': {'keyword': {'type': 'keyword'}},
-                            'type': 'text'
-                        }
-                    },
-                    'type': 'nested'
-                },
-                'publisher': {
+                'entities': {
                     'properties': {
                         'aliases': {
                             'fields': {
@@ -396,22 +361,48 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                                 }
                             }
                         },
-                        'title': {
+                        'url': {'type': 'keyword'}
+                    },
+                    'type': 'object'
+                },
+                'publicationPlace': {
+                    'properties': {
+                        'country': {
                             'properties': {
-                                'cs': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
-                                    'type': 'text'
+                                'is_ancestor': {'type': 'boolean'},
+                                'links': {
+                                    'properties': {
+                                        'parent': {'type': 'keyword'},
+                                        'self': {'type': 'keyword'}
+                                    },
+                                    'type': 'object'
                                 },
-                                'en': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
-                                    'type': 'text'
+                                'title': {
+                                    'properties': {
+                                        'cs': {
+                                            'fields': {'keywords': {'type': 'keyword'}},
+                                            'type': 'text'
+                                        },
+                                        'en': {
+                                            'fields': {'keywords': {'type': 'keyword'}},
+                                            'type': 'text'
+                                        }
+                                    },
+                                    'type': 'object'
                                 }
                             },
                             'type': 'object'
                         },
-                        'url': {'type': 'keyword'}
+                        'place': {
+                            'fields': {'keyword': {'type': 'keyword'}},
+                            'type': 'text'
+                        }
                     },
-                    'type': 'object'
+                    'type': 'nested'
+                },
+                'publisher': {
+                    'fields': {'keyword': {'type': 'keyword'}},
+                    'type': 'text'
                 },
                 'recordIdentifiers': {
                     'properties': {
