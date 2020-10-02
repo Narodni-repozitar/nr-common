@@ -8,9 +8,9 @@
 notifications:
   email: false
 
-dist: focal
+os: linux
 
-sudo: false
+dist: focal
 
 language: python
 
