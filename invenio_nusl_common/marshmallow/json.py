@@ -49,8 +49,9 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     note = List(SanitizedUnicode())
     fundingReference = List(Nested(FundingReferenceSchema))
     provider = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin], required=True)
+    entities = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin], many=True)
     publicationPlace = Nested(PublicationPlaceSchema)
-    publisher = TaxonomyField(mixins=[TitledMixin, InstitutionsMixin])
+    publisher = SanitizedUnicode()
     relatedItem = List(Nested(RelatedItemSchema))
     rights = TaxonomyField(mixins=[TitledMixin, RightsMixin])
     series = TaxonomyField(mixins=[SeriesMixin])
@@ -66,4 +67,11 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
         keywords = data.get("keywords", [])
         if len(keywords) + len(subject) < 3:
             raise ValidationError("At least three subjects or keyword are required")
+        return data
+
+    @post_load
+    def copy_to_entities(self, data, **kwargs):
+        entities = data.get("entities")
+        if not entities:
+            data["entities"] = data["provider"]
         return data

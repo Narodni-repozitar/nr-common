@@ -38,7 +38,8 @@ install_requires = [
     'IDUtils>=1.1.8, <2.0.0',
     'oarepo-invenio-model>=2.0.0, <3.0.0',
     'oarepo-multilingual>=2.0.0, <3.0.0',
-    'oarepo-taxonomies>=2.5.0, <3.0.0'
+    'oarepo-taxonomies>=2.5.0, <3.0.0',
+    'pytest-invenio==1.3.4'
 ]
 
 packages = find_packages()

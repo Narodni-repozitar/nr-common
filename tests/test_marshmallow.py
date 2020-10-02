@@ -854,7 +854,7 @@ class TestProvider:
                 "links": {
                     "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
                 }
-            }
+            },
         ]
         field = "provider"
         base_json[field] = content
@@ -880,6 +880,25 @@ class TestProvider:
         schema = CommonMetadataSchemaV2()
         result = schema.load(base_json)
         assert result == base_json_dereferenced
+
+    def test_provider_1b(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "links": {
+                    "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
+                }
+            },
+            {
+                "links": {
+                    "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/60461373'
+                }
+            },
+        ]
+        field = "provider"
+        base_json[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError):
+            schema.load(base_json)
 
     def test_provider_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = [
@@ -983,67 +1002,19 @@ class TestPublicationPlace:
 
 class TestPublisher:
     def test_publisher(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
-        content = [
-            {
-                "links": {
-                    "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
-                }
-            }
-        ]
+        content = "bla"
         field = "publisher"
         base_json[field] = content
-        base_json_dereferenced[field] = [{
-            'address': 'Malostranské náměstí 259/12, '
-                       '118 00 Praha 1',
-            'aliases': ['AMU'],
-            'ico': '61384984',
-            'is_ancestor': False,
-            'links': {
-                'self':
-                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
-            },
-            'provider': True,
-            'related': {'rid': '51000'},
-            'title': {
-                'cs': 'Akademie múzických umění v Praze',
-                'en': 'Academy of Performing Arts in Prague'
-            },
-            'type': 'veřejná VŠ',
-            'url': 'https://www.amu.cz'
-        }]
+        base_json_dereferenced[field] = content
         schema = CommonMetadataSchemaV2()
         result = schema.load(base_json)
         assert result == base_json_dereferenced
 
     def test_publication_place_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
-        content = [
-            {
-                "links": {
-                    "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/bla'
-                }
-            }
-        ]
+        content = ["bla"]
         field = "publisher"
         base_json[field] = content
-        base_json_dereferenced[field] = [{
-            'address': 'Malostranské náměstí 259/12, '
-                       '118 00 Praha 1',
-            'aliases': ['AMU'],
-            'ico': '61384984',
-            'is_ancestor': False,
-            'links': {
-                'self':
-                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
-            },
-            'provider': True,
-            'related': {'rid': '51000'},
-            'title': {
-                'cs': 'Akademie múzických umění v Praze',
-                'en': 'Academy of Performing Arts in Prague'
-            },
-            'type': 'veřejná VŠ',
-            'url': 'https://www.amu.cz'
-        }]
+        base_json_dereferenced[field] = content
         schema = CommonMetadataSchemaV2()
         with pytest.raises(ValidationError):
             schema.load(base_json)
