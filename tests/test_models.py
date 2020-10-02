@@ -12,7 +12,7 @@ def test_max(app, db):
 
 def test_insert(app, db):
     nusl_id = NuslIdentifier()
-    nusl_id.insert(1)
+    nusl_id.insert(5)
     nusl_id.insert(20)
     db.session.commit()
     last = NuslIdentifier.query.order_by(NuslIdentifier.nusl_id.desc()).first()
