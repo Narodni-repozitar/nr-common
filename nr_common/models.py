@@ -10,10 +10,10 @@ from sqlalchemy.exc import IntegrityError
 
 _ = make_lazy_gettext(lambda: gettext)
 
-logger = logging.getLogger('invenio-nusl-nusl-idstore')
+logger = logging.getLogger('nr-pidstore')
 
 
-class NuslIdentifier(db.Model):
+class NRIdentifier(db.Model):
     """Sequence generator for integer record identifiers.
 
     The sole purpose of this model is to generate integer record identifiers in
@@ -24,9 +24,9 @@ class NuslIdentifier(db.Model):
     record identifiers, but instead use e.g. UUIDs as record identifiers.
     """
 
-    __tablename__ = 'nusl_id'
+    __tablename__ = 'nr_id'
 
-    nusl_id = db.Column(
+    nr_id = db.Column(
         db.BigInteger().with_variant(db.Integer, "sqlite"),
         primary_key=True, autoincrement=True)
 
@@ -44,13 +44,13 @@ class NuslIdentifier(db.Model):
                 cls._set_sequence(cls.max())
                 obj = cls()
                 db.session.add(obj)
-        return obj.nusl_id
+        return obj.nr_id
 
     @classmethod
     def max(cls):
         """Get max record identifier."""
-        max_nusl_id = db.session.query(func.max(cls.nusl_id)).scalar()
-        return max_nusl_id if max_nusl_id else 0
+        max_nr_id = db.session.query(func.max(cls.nr_id)).scalar()
+        return max_nr_id if max_nr_id else 0
 
     @classmethod
     def _set_sequence(cls, val):
@@ -63,16 +63,16 @@ class NuslIdentifier(db.Model):
         if db.engine.dialect.name == 'postgresql':  # pragma: no cover
             db.session.execute(
                 "SELECT setval(pg_get_serial_sequence("
-                "'{0}', 'nusl_id'), :newval)".format(
+                "'{0}', 'nr_id'), :newval)".format(
                     cls.__tablename__), dict(newval=val))
 
     @classmethod
     def insert(cls, val):
         """Insert a record identifier.
 
-        :param val: The `nusl_id` column value to insert.
+        :param val: The `nr_id` column value to insert.
         """
         with db.session.begin_nested():
-            obj = cls(nusl_id=val)
+            obj = cls(nr_id=val)
             db.session.add(obj)
             cls._set_sequence(cls.max())

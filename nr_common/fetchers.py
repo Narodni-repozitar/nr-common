@@ -29,10 +29,10 @@ from __future__ import absolute_import, print_function
 
 from invenio_pidstore.fetchers import FetchedPID
 
-from .providers import NuslIdProvider
+from .providers import NRIdProvider
 
 
-def nusl_id_fetcher(record_uuid, data):
+def nr_id_fetcher(record_uuid, data):
     """Fetch a record's identifiers.
 
     :param record_uuid: The record UUID.
@@ -41,7 +41,7 @@ def nusl_id_fetcher(record_uuid, data):
     """
     id_field = "control_number"
     return FetchedPID(
-        provider=NuslIdProvider,
-        pid_type=NuslIdProvider.pid_type,
+        provider=NRIdProvider,
+        pid_type=NRIdProvider.pid_type,
         pid_value=str(data[id_field]),
     )

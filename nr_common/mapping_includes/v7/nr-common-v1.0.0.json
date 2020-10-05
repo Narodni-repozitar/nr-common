@@ -15,7 +15,7 @@
         "type": "multilingual"
       },
       "accessRights": {
-        "type": "nusl-taxonomies-accessRights-v1.0.0.json#/accessRights"
+        "type": "nr-taxonomies-accessRights-v1.0.0.json#/accessRights"
       },
       "creator": {
         "type": "nested",
@@ -70,7 +70,7 @@
             "type": "keyword"
           },
           "role": {
-            "type": "nusl-taxonomies-contributor-v1.0.0.json#/contributor"
+            "type": "nr-taxonomies-contributor-v1.0.0.json#/contributor"
           }
         }
       },
@@ -183,15 +183,15 @@
             }
           },
           "funder": {
-            "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
+            "type": "nr-taxonomies-institution-v1.0.0.json#/Institution"
           }
         }
       },
       "provider": {
-        "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
+        "type": "nr-taxonomies-institution-v1.0.0.json#/Institution"
       },
       "entities": {
-        "type": "nusl-taxonomies-institution-v1.0.0.json#/Institution"
+        "type": "nr-taxonomies-institution-v1.0.0.json#/Institution"
       },
       "publicationPlace": {
         "type": "nested",
@@ -266,7 +266,7 @@
         }
       },
       "rights": {
-        "type": "nusl-taxonomies-rights-v1.0.0.json#/rights"
+        "type": "nr-taxonomies-rights-v1.0.0.json#/rights"
       },
       "series": {
         "type": "nested",
@@ -285,7 +285,7 @@
         }
       },
       "subject": {
-        "type": "nusl-taxonomies-subject-v1.0.0.json#/subject"
+        "type": "nr-taxonomies-subject-v1.0.0.json#/subject"
       },
       "keywords": {
         "type": "multilingual#subjectKeyword"
