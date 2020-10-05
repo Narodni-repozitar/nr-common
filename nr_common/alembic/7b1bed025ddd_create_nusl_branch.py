@@ -5,7 +5,7 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Create nusl branch."""
+"""Create nr branch."""
 
 from alembic import op
 import sqlalchemy as sa
@@ -14,7 +14,7 @@ import sqlalchemy as sa
 # revision identifiers, used by Alembic.
 revision = '7b1bed025ddd'
 down_revision = None
-branch_labels = ('invenio_nusl_common',)
+branch_labels = ('nr_common',)
 depends_on = None
 
 

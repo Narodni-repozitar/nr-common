@@ -1,6 +1,6 @@
 import pytest
 
-from invenio_nusl_common.marshmallow.fields import extract_date, serialize_date
+from nr_common.marshmallow.fields import extract_date, serialize_date
 
 
 @pytest.mark.parametrize("test_input,expected",

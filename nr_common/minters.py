@@ -10,10 +10,10 @@
 
 from __future__ import absolute_import, print_function
 
-from .providers import NuslIdProvider
+from .providers import NRIdProvider
 
 
-def nusl_id_minter(record_uuid, data):
+def nr_id_minter(record_uuid, data):
     """Mint record identifiers.
 
     This is a minter specific for records.
@@ -22,7 +22,7 @@ def nusl_id_minter(record_uuid, data):
     the PID instance with `rec` as predefined `object_type`.
 
     Procedure followed: (we will use `control_number` as value of
-    `PIDSTORE_nusl_id_FIELD` for the simplicity of the documentation.)
+    `PIDSTORE_nr_id_FIELD` for the simplicity of the documentation.)
 
     #. If a `control_number` field is already there, a `AssertionError`
     exception is raised.
@@ -40,7 +40,7 @@ def nusl_id_minter(record_uuid, data):
     """
     pid_field = "control_number"
     assert pid_field not in data
-    provider = NuslIdProvider.create(
+    provider = NRIdProvider.create(
         object_type='rec', object_uuid=record_uuid)
     data[pid_field] = provider.pid.pid_value
     return provider.pid

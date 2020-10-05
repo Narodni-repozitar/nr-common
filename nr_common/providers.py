@@ -13,13 +13,13 @@ from __future__ import absolute_import, print_function
 from invenio_pidstore.models import PIDStatus
 from invenio_pidstore.providers.base import BaseProvider
 
-from invenio_nusl_common.models import NuslIdentifier
+from nr_common.models import NRIdentifier
 
 
-class NuslIdProvider(BaseProvider):
+class NRIdProvider(BaseProvider):
     """Thesss identifier provider."""
 
-    pid_type = 'nusl'
+    pid_type = 'nr'
     """Type of persistent identifier."""
 
     pid_provider = None
@@ -49,9 +49,9 @@ class NuslIdProvider(BaseProvider):
         """
         # Request next integer in recid sequence.
         assert 'pid_value' not in kwargs
-        kwargs['pid_value'] = str(NuslIdentifier.next())
+        kwargs['pid_value'] = str(NRIdentifier.next())
         kwargs.setdefault('status', cls.default_status)
         if object_type and object_uuid:
             kwargs['status'] = PIDStatus.REGISTERED
-        return super(NuslIdProvider, cls).create(
+        return super(NRIdProvider, cls).create(
             object_type=object_type, object_uuid=object_uuid, **kwargs)

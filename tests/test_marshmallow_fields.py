@@ -3,7 +3,7 @@ from pprint import pprint
 import pytest
 from marshmallow import Schema, ValidationError
 
-from invenio_nusl_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year, OAI, \
+from nr_common.marshmallow.fields import NRDate, ISBN, ISSN, DOI, RIV, Year, OAI, \
     DateRange, DateString
 
 
