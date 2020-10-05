@@ -67,3 +67,11 @@ target/
 database.db
 
 venv/
+
+.install.sh
+
+.travis-release-requirements.in
+
+.travis-release-requirements.txt
+
+fail_requirements.txt
