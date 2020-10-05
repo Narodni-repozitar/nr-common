@@ -6,7 +6,7 @@ from marshmallow.validate import Length
 from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
 
-from invenio_nusl_common.marshmallow.fields import ISBN, ISSN, DOI, RIV, Year, OAI
+from nr_common.marshmallow.fields import ISBN, ISSN, DOI, RIV, Year, OAI
 
 
 class TitledMixin:

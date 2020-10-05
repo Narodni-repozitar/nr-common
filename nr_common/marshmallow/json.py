@@ -18,8 +18,8 @@ from oarepo_invenio_model.marshmallow import InvenioRecordMetadataSchemaV1Mixin
 from oarepo_multilingual.marshmallow import MultilingualStringV2
 from oarepo_taxonomies.marshmallow import TaxonomyField
 
-from invenio_nusl_common.marshmallow.fields import NRDate
-from invenio_nusl_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
+from nr_common.marshmallow.fields import NRDate
+from nr_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
     WorkIdentifersSchema, FundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema, \
     TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SeriesMixin, SubjectMixin, \
     PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier

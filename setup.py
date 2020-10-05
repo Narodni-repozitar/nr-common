@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-'''NUSL common data types'''
+'''NR common data types'''
 
 import os
 
@@ -47,16 +47,16 @@ packages = find_packages()
 
 # Get the version string. Cannot be done with import!
 g = {}
-with open(os.path.join('invenio_nusl_common', 'version.py'), 'rt') as fp:
+with open(os.path.join('nr_common', 'version.py'), 'rt') as fp:
     exec(fp.read(), g)
     version = g['__version__']
 
 setup(
-    name='invenio-nusl-common',
+    name='nr-common',
     version=version,
     description=__doc__,
     long_description=readme,
-    keywords='NUSL Invenio',
+    keywords='Nationa Repository common model Invenio',
     license='MIT',
     author='Daniel Kopecký',
     author_email='Daniel.Kopecky@techlib.cz',
@@ -67,22 +67,22 @@ setup(
     platforms='any',
     entry_points={
         'invenio_jsonschemas.schemas': [
-            'invenio_nusl_common = invenio_nusl_common.jsonschemas'
+            'nr_common = nr_common.jsonschemas'
         ],
         'invenio_pidstore.minters': [
-            'nusl = invenio_nusl_common.minters:nusl_id_minter',
+            'nr = nr_common.minters:nr_id_minter',
         ],
         'invenio_pidstore.fetchers': [
-            'nusl = invenio_nusl_common.fetchers:nusl_id_fetcher',
+            'nr = nr_common.fetchers:nr_id_fetcher',
         ],
         'invenio_db.alembic': [
-            'nusl = invenio_nusl_common:alembic',
+            'nr = nr_common:alembic',
         ],
         'oarepo_mapping_includes': [
-            'invenio_nusl_common = invenio_nusl_common.mapping_includes'
+            'nr_common = nr_common.mapping_includes'
         ],
         'invenio_search.mappings': [
-            'invenio_nusl_common = invenio_nusl_common.mappings'
+            'nr_common = nr_common.mappings'
         ]
     },
     extras_require=extras_require,

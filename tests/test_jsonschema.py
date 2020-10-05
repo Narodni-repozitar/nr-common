@@ -7,4 +7,4 @@ def test_json(app, base_json):
     print("START")
     print(app)
     print(current_jsonschemas.list_schemas())
-    _records_state.validate(base_json, "https://nusl.cz/schemas/nusl-common-v1.0.0.json")
+    _records_state.validate(base_json, "https://nusl.cz/schemas/nr-common-v1.0.0.json")
