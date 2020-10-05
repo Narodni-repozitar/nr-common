@@ -75,3 +75,5 @@ venv/
 .travis-release-requirements.txt
 
 fail_requirements.txt
+
+successful_requirements.txt
