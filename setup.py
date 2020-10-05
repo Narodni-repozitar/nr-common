@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-"""NUSL common data types"""
+'''NUSL common data types'''
 
 import os
 
@@ -39,6 +39,7 @@ install_requires = [
     'oarepo-invenio-model>=2.0.0, <3.0.0',
     'oarepo-multilingual>=2.0.0, <3.0.0',
     'oarepo-taxonomies>=2.5.0, <3.0.0',
+    'oarepo-mapping-includes==1.2.0',  # TODO: fixnout bug a rozvolnit závislost
     'pytest-invenio==1.3.4'
 ]
 
@@ -77,8 +78,8 @@ setup(
         'invenio_db.alembic': [
             'nusl = invenio_nusl_common:alembic',
         ],
-        "oarepo_mapping_includes": [
-            "invenio_nusl_common = invenio_nusl_common.mapping_includes"
+        'oarepo_mapping_includes': [
+            'invenio_nusl_common = invenio_nusl_common.mapping_includes'
         ],
         'invenio_search.mappings': [
             'invenio_nusl_common = invenio_nusl_common.mappings'
