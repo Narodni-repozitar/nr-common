@@ -228,7 +228,10 @@
       "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
     },
     "publicationPlace": {
-      "$ref": "#/definitions/address"
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/location"
+      }
     },
     "publisher": {
       "type": "string"
@@ -353,20 +356,18 @@
   ],
   "definitions": {
     "location": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "place": {
-            "type": "string"
-          },
-          "country": {
-            "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
-            "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
-          }
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "place": {
+          "type": "string"
+        },
+        "country": {
+          "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
+          "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
         }
       }
+
     }
   }
 }

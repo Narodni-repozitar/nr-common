@@ -26,17 +26,16 @@ python:
 
 before_install:
   - travis_retry pip install --upgrade pip setuptools py
-  - "travis_retry pip install twine wheel coveralls requirements-builder pip-tools"
-  - "requirements-builder --level=pypi -e tests setup.py > .travis-release-requirements.in"
-  - "pip-compile -U --verbose -o .travis-release-requirements.txt .travis-release-requirements.in"
-  - cat .travis-release-requirements.txt
+  - "travis_retry pip install twine wheel coveralls"
+  - pip install poetry
   - curl https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-amd64.deb -o elasticsearch.deb
   - sudo dpkg -i --force-confnew elasticsearch.deb
   - sudo chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
   - sudo service elasticsearch restart
 
 install:
-  - travis_retry pip install -r .travis-release-requirements.txt
+  - "travis_retry poetry install --extras tests"
+  - cat poetry.lock
 
 before_script:
   - sleep 10
