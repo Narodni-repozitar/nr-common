@@ -22,6 +22,9 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
     pprint(es_record["_source"])
     assert es_record["_source"] == base_json_dereferenced
     assert body == {
+        'aliases': {
+          'nr-all':{}
+        },
         'mappings': {
             'date_detection': False,
             'dynamic': False,
