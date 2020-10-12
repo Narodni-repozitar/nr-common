@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-python ./scripts/extraxt.py
+python ./scripts/extract.py
