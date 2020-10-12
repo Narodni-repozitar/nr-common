@@ -13,7 +13,6 @@ commit_website_files() {
 }
 
 upload_files() {
-  echo ${GH_TOKEN}
   git remote add origin-pages "https://${GH_TOKEN}@github.com/Narodni-repozitar/nr-schemas.git"
   git push --set-upstream origin-pages
 }

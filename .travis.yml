@@ -27,7 +27,7 @@ script:
 - "./run-tests.sh"
 after_success:
 - coveralls
-- "./push-schemas.sh"
+- test $TRAVIS_BRANCH = "master" && "./push-schemas.sh"
 before_deploy:
 - |-
   SRCTAG=$(cat oarepo_taxonomies/version.py | grep '__version__' | sed 's/__version__//' | sed 's/=//g' | sed 's/"//g' | sed "s/'//g" | sed 's/[ \t\n]//g')
