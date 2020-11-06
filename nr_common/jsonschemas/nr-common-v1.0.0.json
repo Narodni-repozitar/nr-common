@@ -308,11 +308,11 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "name": {
+          "seriesTitle": {
             "$comment": "podmíněně povinné pokud uvádím volume, tj. nelze mít svazek bez edice",
             "type": "string"
           },
-          "volume": {
+          "seriesVolume": {
             "type": "string"
           }
         }

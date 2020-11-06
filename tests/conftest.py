@@ -400,8 +400,8 @@ def taxonomy_tree(app, db, taxonomy):
     # series
     id9 = TermIdentification(taxonomy=taxonomy, slug="maj")
     term9 = current_flask_taxonomies.create_term(id9, extra_data={
-        "name": "maj",
-        "volume": "1"
+        "seriesTitle": "maj",
+        "seriesVolume": "1"
     })
 
     # subject

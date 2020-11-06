@@ -1282,8 +1282,8 @@ class TestSeries:
                 'self':
                     'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/maj'
             },
-            'name': 'maj',
-            'volume': '1'
+            'seriesTitle': 'maj',
+            'seriesVolume': '1'
         }]
         schema = CommonMetadataSchemaV2()
         result = schema.load(base_json)

@@ -62,8 +62,8 @@ class RightsMixin:
 
 
 class SeriesMixin:
-    name = SanitizedUnicode(required=True)
-    volume = SanitizedUnicode(required=True)
+    seriesTitle = SanitizedUnicode(required=True)
+    seriesVolume = SanitizedUnicode(required=True)
 
 
 class SubjectMixin:
