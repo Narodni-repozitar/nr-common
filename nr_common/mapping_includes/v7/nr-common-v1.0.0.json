@@ -260,7 +260,7 @@
           "itemEndPage": {
             "type": "keyword"
           },
-          "itemRelationship": {
+          "itemRelationType": {
             "type": "taxonomy-term"
           }
         }
@@ -271,7 +271,7 @@
       "series": {
         "type": "nested",
         "properties": {
-          "name": {
+          "seriesTitle": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -279,7 +279,7 @@
               }
             }
           },
-          "volume": {
+          "seriesVolume": {
             "type": "keyword"
           }
         }

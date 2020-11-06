@@ -287,7 +287,7 @@
             "$comment": "podmíněně povinné pro články a kapitoly",
             "type": "string"
           },
-          "itemRelationship": {
+          "itemRelationType": {
             "description": "typ vztahu k původnímu popisovanému dok. možné jsou čtyři dvojce vazeb: isVersionOf - hasVersion, isPartOf - hasPart, isCompiledBy - compiles, isReviewedBy - reviews",
             "$comment": "podmíněně povinné pokud vyplním název (nebo cokoliv z relatedItem)",
             "$ref": "./taxonomy-v2.0.0.json#/definitions/Term"
@@ -308,11 +308,11 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "name": {
+          "seriesTitle": {
             "$comment": "podmíněně povinné pokud uvádím volume, tj. nelze mít svazek bez edice",
             "type": "string"
           },
-          "volume": {
+          "seriesVolume": {
             "type": "string"
           }
         }

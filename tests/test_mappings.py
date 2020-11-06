@@ -425,7 +425,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'itemISBN': {'type': 'keyword'},
                         'itemISSN': {'type': 'keyword'},
                         'itemIssue': {'type': 'keyword'},
-                        'itemRelationship': {
+                        'itemRelationType': {
                             'properties': {
                                 'is_ancestor': {'type': 'boolean'},
                                 'links': {
@@ -505,11 +505,11 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                 },
                 'series': {
                     'properties': {
-                        'name': {
+                        'seriesTitle': {
                             'fields': {'keyword': {'type': 'keyword'}},
                             'type': 'text'
                         },
-                        'volume': {'type': 'keyword'}
+                        'seriesVolume': {'type': 'keyword'}
                     },
                     'type': 'nested'
                 },

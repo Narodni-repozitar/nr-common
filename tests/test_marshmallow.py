@@ -1037,7 +1037,7 @@ class TestRelatedItem:
                 "itemIssue": "25",
                 "itemStartPage": "15",
                 "itemEndPage": "30",
-                "itemRelationship": {
+                "itemRelationType": {
                     "links": {
                         "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
                     }
@@ -1052,7 +1052,7 @@ class TestRelatedItem:
             'itemISBN': ['978-3-16-148410-0'],
             'itemISSN': ['2049-3630'],
             'itemIssue': '25',
-            'itemRelationship': [{
+            'itemRelationType': [{
                 'is_ancestor': False,
                 'links': {
                     'self':
@@ -1090,7 +1090,7 @@ class TestRelatedItem:
                 "itemVolume": "2",
                 "itemIssue": "25",
                 "itemEndPage": "30",
-                "itemRelationship": {
+                "itemRelationType": {
                     "links": {
                         "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
                     }
@@ -1105,7 +1105,7 @@ class TestRelatedItem:
             'itemISBN': ['978-3-16-148410-0'],
             'itemISSN': ['2049-3630'],
             'itemIssue': '25',
-            'itemRelationship': [{
+            'itemRelationType': [{
                 'is_ancestor': False,
                 'links': {
                     'self':
@@ -1142,7 +1142,7 @@ class TestRelatedItem:
                 "itemYear": "2020",
                 "itemVolume": "2",
                 "itemIssue": "25",
-                "itemRelationship": {
+                "itemRelationType": {
                     "links": {
                         "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
                     }
@@ -1157,7 +1157,7 @@ class TestRelatedItem:
             'itemISBN': ['978-3-16-148410-0'],
             'itemISSN': ['2049-3630'],
             'itemIssue': '25',
-            'itemRelationship': [{
+            'itemRelationType': [{
                 'is_ancestor': False,
                 'links': {
                     'self':
@@ -1196,7 +1196,7 @@ class TestRelatedItem:
                 "itemIssue": "25",
                 "itemStartPage": "30",
                 "itemEndPage": "15",
-                "itemRelationship": {
+                "itemRelationType": {
                     "links": {
                         "self": 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/isversionof'
                     }
@@ -1211,7 +1211,7 @@ class TestRelatedItem:
             'itemISBN': ['978-3-16-148410-0'],
             'itemISSN': ['2049-3630'],
             'itemIssue': '25',
-            'itemRelationship': [{
+            'itemRelationType': [{
                 'is_ancestor': False,
                 'links': {
                     'self':
@@ -1282,8 +1282,8 @@ class TestSeries:
                 'self':
                     'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/maj'
             },
-            'name': 'maj',
-            'volume': '1'
+            'seriesTitle': 'maj',
+            'seriesVolume': '1'
         }]
         schema = CommonMetadataSchemaV2()
         result = schema.load(base_json)
