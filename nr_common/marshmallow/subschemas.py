@@ -155,7 +155,7 @@ class RelatedItemSchema(StrictKeysMixin):
     itemIssue = SanitizedUnicode()
     itemStartPage = SanitizedUnicode()
     itemEndPage = SanitizedUnicode()
-    itemRelationship = TaxonomyField(mixins=[TitledMixin], required=True)
+    itemRelationType = TaxonomyField(mixins=[TitledMixin], required=True)
 
     @validates_schema
     def required_journal(self, data, **kwargs):

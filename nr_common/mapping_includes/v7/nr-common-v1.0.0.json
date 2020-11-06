@@ -260,7 +260,7 @@
           "itemEndPage": {
             "type": "keyword"
           },
-          "itemRelationship": {
+          "itemRelationType": {
             "type": "taxonomy-term"
           }
         }
