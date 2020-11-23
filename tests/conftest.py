@@ -24,13 +24,17 @@ from invenio_db import db as db_
 from invenio_indexer import InvenioIndexer
 from invenio_indexer.api import RecordIndexer
 from invenio_jsonschemas import InvenioJSONSchemas
+from invenio_pidstore import InvenioPIDStore
 from invenio_pidstore.providers.recordid import RecordIdProvider
 from invenio_records import InvenioRecords, Record
 from invenio_records_rest import InvenioRecordsREST
 from invenio_records_rest.schemas.fields import SanitizedUnicode
+from invenio_records_rest.utils import PIDConverter
+from invenio_records_rest.views import create_blueprint_from_app
 from invenio_search import InvenioSearch, RecordsSearch
 from marshmallow import Schema
 from oarepo_mapping_includes.ext import OARepoMappingIncludesExt
+from oarepo_records_draft.ext import RecordsDraft
 from oarepo_references import OARepoReferences
 from oarepo_references.mixins import ReferenceEnabledRecordMixin
 from oarepo_taxonomies.cli import init_db
@@ -38,6 +42,7 @@ from oarepo_taxonomies.ext import OarepoTaxonomies
 from oarepo_validate import MarshmallowValidatedRecordMixin
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
+from nr_common.ext import NRCommon
 from tests.helpers import set_identity
 
 
@@ -150,6 +155,10 @@ def app():
     InvenioRecords(app)
     InvenioRecordsREST(app)
     InvenioCelery(app)
+    NRCommon(app)
+    InvenioPIDStore(app)
+    RecordsDraft(app)
+    app.url_map.converters['pid'] = PIDConverter
 
     # Celery
     print(app.config["CELERY_BROKER_URL"])
@@ -163,7 +172,7 @@ def app():
         user_obj = User.query.get(int(user_id))
         return user_obj
 
-    # app.register_blueprint(create_blueprint_from_app(app))
+    app.register_blueprint(create_blueprint_from_app(app))
 
     @app.route('/test/login/<int:id>', methods=['GET', 'POST'])
     def test_login(id):
