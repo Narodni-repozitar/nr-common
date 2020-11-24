@@ -11,6 +11,7 @@
 from __future__ import absolute_import, print_function
 
 from .providers import NRIdProvider
+from invenio_pidstore.errors import PIDDoesNotExistError
 
 
 def nr_id_minter(record_uuid, data):
@@ -39,8 +40,18 @@ def nr_id_minter(record_uuid, data):
     :returns: A fresh `invenio_pidstore.models.PersistentIdentifier` instance.
     """
     pid_field = "control_number"
-    assert pid_field not in data
-    provider = NRIdProvider.create(
-        object_type='rec', object_uuid=record_uuid)
-    data[pid_field] = provider.pid.pid_value
+    if pid_field not in data:
+        provider = NRIdProvider.create(
+            object_type='rec', object_uuid=record_uuid)
+        data[pid_field] = provider.pid.pid_value
+    else:
+        try:
+            provider = NRIdProvider.get(pid_value=str(data[pid_field]))
+        except PIDDoesNotExistError:
+            provider = NRIdProvider.create(
+                object_type='rec',
+                object_uuid=record_uuid,
+                pid_value=data[pid_field],
+            )
+            data[pid_field] = provider.pid.pid_value
     return provider.pid

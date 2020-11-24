@@ -19,7 +19,7 @@ from nr_common.models import NRIdentifier
 class NRIdProvider(BaseProvider):
     """Thesss identifier provider."""
 
-    pid_type = 'nr'
+    pid_type = 'nrcom'
     """Type of persistent identifier."""
 
     pid_provider = None
@@ -48,10 +48,13 @@ class NRIdProvider(BaseProvider):
         :param kwargs: You specify the pid_value.
         """
         # Request next integer in recid sequence.
-        assert 'pid_value' not in kwargs
-        kwargs['pid_value'] = str(NRIdentifier.next())
+        if 'pid_value' not in kwargs:
+            kwargs['pid_value'] = str(NRIdentifier.next())
+        else:
+            NRIdentifier.insert(kwargs['pid_value'])
         kwargs.setdefault('status', cls.default_status)
         if object_type and object_uuid:
             kwargs['status'] = PIDStatus.REGISTERED
         return super(NRIdProvider, cls).create(
             object_type=object_type, object_uuid=object_uuid, **kwargs)
+
