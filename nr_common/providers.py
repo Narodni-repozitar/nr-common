@@ -10,7 +10,8 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_pidstore.models import PIDStatus
+from invenio_pidstore.errors import PIDDoesNotExistError
+from invenio_pidstore.models import PIDStatus, PersistentIdentifier
 from invenio_pidstore.providers.base import BaseProvider
 
 from nr_common.models import NRIdentifier
@@ -57,4 +58,29 @@ class NRIdProvider(BaseProvider):
             kwargs['status'] = PIDStatus.REGISTERED
         return super(NRIdProvider, cls).create(
             object_type=object_type, object_uuid=object_uuid, **kwargs)
+
+    @classmethod
+    def get(cls, pid_value, pid_type=None, **kwargs):
+        """Get a persistent identifier for this provider.
+
+        :param pid_type: Persistent identifier type. (Default: configured
+            :attr:`invenio_pidstore.providers.base.BaseProvider.pid_type`)
+        :param pid_value: Persistent identifier value.
+        :param kwargs: See
+            :meth:`invenio_pidstore.providers.base.BaseProvider` required
+            initialization properties.
+        :returns: A :class:`invenio_pidstore.providers.base.BaseProvider`
+            instance.
+        """
+        try:
+            pid = PersistentIdentifier.get(pid_type or cls.pid_type, pid_value,
+                                       pid_provider=cls.pid_provider)
+        except PIDDoesNotExistError:
+            pid_type = pid_type or cls.pid_type
+            pid_type = "d" + pid_type
+            pid = PersistentIdentifier.get(pid_type or cls.pid_type, pid_value,
+                                           pid_provider=cls.pid_provider)
+        return cls(
+            pid,
+            **kwargs)
 
