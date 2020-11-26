@@ -40,18 +40,49 @@ def nr_id_minter(record_uuid, data):
     :returns: A fresh `invenio_pidstore.models.PersistentIdentifier` instance.
     """
     pid_field = "control_number"
+    nr_id_provider = NRIdProvider
+    pid_type = get_pid_type(data)
+    nr_id_provider.pid_type = pid_type
     if pid_field not in data:
-        provider = NRIdProvider.create(
+        provider = nr_id_provider.create(
             object_type='rec', object_uuid=record_uuid)
         data[pid_field] = provider.pid.pid_value
     else:
         try:
-            provider = NRIdProvider.get(pid_value=str(data[pid_field]))
+            provider = nr_id_provider.get(pid_value=str(data[pid_field]))
         except PIDDoesNotExistError:
-            provider = NRIdProvider.create(
+            provider = nr_id_provider.create(
                 object_type='rec',
                 object_uuid=record_uuid,
                 pid_value=data[pid_field],
             )
             data[pid_field] = provider.pid.pid_value
     return provider.pid
+
+
+def get_pid_type(data):
+    resource_type_array = data.get("resourceType")
+    resource_type_array = [_ for _ in resource_type_array if _["is_ancestor"] is False]
+    if len(resource_type_array) != 1:
+        raise Exception("Something unexpected happen, nusl should have one resource type")
+    resource_type = resource_type_array[0]
+    slug = resource_type["links"]["self"].split("/")[-1]
+    return get_model_by_slug(slug)
+
+
+def get_model_by_slug(slug):
+    mapping = {
+        "conference-materials": "nrthe",
+        "exhibition-catalogues-and-guides": "nrthe",
+        "business-trip-reports": "nrthe",
+        "press-releases": "nrthe",
+        "bachelor-nrthe": "nrthe",
+        "master-nrthe": "nrthe",
+        "rigorous-nrthe": "nrthe",
+        "doctoral-nrthe": "nrthe",
+        "post-doctoral-nrthe": "nrthe",
+        "certified-methodologies": "nrnrs",
+        "preservation-procedures": "nrnrs",
+        "specialized-maps": "nrnrs",
+    }
+    return mapping.get(slug, "nrcom")

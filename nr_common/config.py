@@ -33,97 +33,97 @@ RECORDS_DRAFT_ENDPOINTS = {
 }
 
 
-def degree_grantor_filter(field, path=None):
-    def inner(values):
-        return Q('nested',
-                 path="degreeGrantor.ancestors",
-                 query=Q("nested",
-                         path="degreeGrantor.ancestors.title",
-                         query=Q('terms',
-                                 **{field: values}
-                                 ))
-                 )
+# def degree_grantor_filter(field, path=None):
+#     def inner(values):
+#         return Q('nested',
+#                  path="degreeGrantor.ancestors",
+#                  query=Q("nested",
+#                          path="degreeGrantor.ancestors.title",
+#                          query=Q('terms',
+#                                  **{field: values}
+#                                  ))
+#                  )
+#
+#     return inner
 
-    return inner
-
-
-def nested_terms_filter(prefix, field, field_query=None):
-    """Create a term filter.
-
-    :param prefix
-    :param field: Field name.
-    :param field_query
-    :returns: Function that returns the Terms query.
-    """
-
-    field = prefix + '.' + field
-
-    def inner(values):
-        if field_query:
-            query = field_query(field)(values)
-        else:
-            query = Q('terms', **{field: values})
-        return Q('nested', path=prefix, query=query)
-
-    return inner
-
-
-def year_filter(field):
-    """Create a term filter.
-
-    :param field: Field name.
-    :returns: Function that returns the Terms query.
-    """
-
-    def inner(values):
-        queries = []
-        for value in values:
-            queries.append(
-                Q('range', **{
-                    field: {
-                        "gte": value,
-                        "lt": int(value) + 1,
-                        "format": "yyyy"
-                    }
-                })
-            )
-        return Q('bool', should=queries, minimum_should_match=1)
-
-    return inner
+#
+# def nested_terms_filter(prefix, field, field_query=None):
+#     """Create a term filter.
+#
+#     :param prefix
+#     :param field: Field name.
+#     :param field_query
+#     :returns: Function that returns the Terms query.
+#     """
+#
+#     field = prefix + '.' + field
+#
+#     def inner(values):
+#         if field_query:
+#             query = field_query(field)(values)
+#         else:
+#             query = Q('terms', **{field: values})
+#         return Q('nested', path=prefix, query=query)
+#
+#     return inner
 
 
-def person_filter(field):
-    """Create a term filter.
+# def year_filter(field):
+#     """Create a term filter.
+#
+#     :param field: Field name.
+#     :returns: Function that returns the Terms query.
+#     """
+#
+#     def inner(values):
+#         queries = []
+#         for value in values:
+#             queries.append(
+#                 Q('range', **{
+#                     field: {
+#                         "gte": value,
+#                         "lt": int(value) + 1,
+#                         "format": "yyyy"
+#                     }
+#                 })
+#             )
+#         return Q('bool', should=queries, minimum_should_match=1)
+#
+#     return inner
 
-    :param field: Field name.
-    :returns: Function that returns the Terms query.
-    """
 
-    def inner(values):
-        queries = []
-        for value in values:
-            queries.append(
-                Q('term', **{
-                    field: value
-                })
-            )
-        return Q('bool', should=queries, minimum_should_match=1)
-
-    return inner
-
-
-def boolean_filter(field):
-    def inner(values):
-        queries = []
-        for value in values:
-            queries.append(
-                Q('term', **{
-                    field: bool(int(value))
-                })
-            )
-        return Q('bool', should=queries, minimum_should_match=1)
-
-    return inner
+# def person_filter(field):
+#     """Create a term filter.
+#
+#     :param field: Field name.
+#     :returns: Function that returns the Terms query.
+#     """
+#
+#     def inner(values):
+#         queries = []
+#         for value in values:
+#             queries.append(
+#                 Q('term', **{
+#                     field: value
+#                 })
+#             )
+#         return Q('bool', should=queries, minimum_should_match=1)
+#
+#     return inner
+#
+#
+# def boolean_filter(field):
+#     def inner(values):
+#         queries = []
+#         for value in values:
+#             queries.append(
+#                 Q('term', **{
+#                     field: bool(int(value))
+#                 })
+#             )
+#         return Q('bool', should=queries, minimum_should_match=1)
+#
+#     return inner
 
 
 FILTERS = {

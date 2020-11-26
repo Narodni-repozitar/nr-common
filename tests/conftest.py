@@ -33,6 +33,7 @@ from invenio_records_rest.utils import PIDConverter
 from invenio_records_rest.views import create_blueprint_from_app
 from invenio_search import InvenioSearch, RecordsSearch
 from marshmallow import Schema
+from marshmallow.fields import Nested, Url, List, Boolean
 from oarepo_mapping_includes.ext import OARepoMappingIncludesExt
 from oarepo_records_draft.ext import RecordsDraft
 from oarepo_references import OARepoReferences
@@ -46,10 +47,20 @@ from nr_common.ext import NRCommon
 from tests.helpers import set_identity
 
 
+class Links(Schema):
+    self = Url()
+
+
+class ResourceType(Schema):
+    is_ancestor = Boolean()
+    links = Nested(Links)
+
+
 class TestSchema(Schema):
     """Test record schema."""
     title = SanitizedUnicode()
     control_number = SanitizedUnicode()
+    resourceType = List(Nested(ResourceType))
 
 
 class TestRecord(MarshmallowValidatedRecordMixin,

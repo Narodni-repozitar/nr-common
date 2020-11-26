@@ -7,6 +7,14 @@ from tests.conftest import TestRecord
 def test_nr_id_minter(app, db):
     data = {
         "title": "Test",
+        "resourceType": [
+            {
+                "is_ancestor": False,
+                "links": {
+                    "self": "https://example.com/taxonomies/parent/master-nrthe"
+                }
+            }
+        ]
     }
     record = TestRecord.create(data=data)
     minted_id = nr_id_minter(record_uuid=record.id, data=data)
@@ -15,8 +23,16 @@ def test_nr_id_minter(app, db):
 
 def test_nr_id_minter_2(app, db):
     data = {
+        "control_number": "68",
         "title": "Test",
-        "control_number": "68"
+        "resourceType": [
+            {
+                "is_ancestor": False,
+                "links": {
+                    "self": "https://example.com/taxonomies/parent/bla"
+                }
+            }
+        ]
     }
     record = TestRecord.create(data=data)
     minted_id = nr_id_minter(record_uuid=record.id, data=data)
