@@ -31,6 +31,12 @@ pytest-runner = "^5.2"
 tests = ["oarepo", "pytest", "pytest-cov"]
 docs = ["sphinx"]
 
+[tool.poetry.plugins."invenio_base.apps"]
+'nr_common' = 'nr_common:NRCommon'
+
+[tool.poetry.plugins."invenio_base.api_apps"]
+'nr_common' = 'nr_common:NRCommon'
+
 [tool.poetry.plugins."invenio_jsonschemas.schemas"]
 "nr_common" = "nr_common.jsonschemas"
 
