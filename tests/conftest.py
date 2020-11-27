@@ -41,6 +41,7 @@ from oarepo_references.mixins import ReferenceEnabledRecordMixin
 from oarepo_taxonomies.cli import init_db
 from oarepo_taxonomies.ext import OarepoTaxonomies
 from oarepo_validate import MarshmallowValidatedRecordMixin
+from oarepo_validate.ext import OARepoValidate
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from nr_common.ext import NRCommon
@@ -169,6 +170,7 @@ def app():
     NRCommon(app)
     InvenioPIDStore(app)
     RecordsDraft(app)
+    OARepoValidate(app)
     app.url_map.converters['pid'] = PIDConverter
 
     # Celery

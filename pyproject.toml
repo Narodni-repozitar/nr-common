@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "nr-common"
-version = "3.0.0a18"
+version = "3.0.0a19"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]
@@ -30,6 +30,12 @@ pytest-runner = "^5.2"
 [tool.poetry.extras]
 tests = ["oarepo", "pytest", "pytest-cov"]
 docs = ["sphinx"]
+
+[tool.poetry.plugins."invenio_base.apps"]
+'nr_common' = 'nr_common:NRCommon'
+
+[tool.poetry.plugins."invenio_base.api_apps"]
+'nr_common' = 'nr_common:NRCommon'
 
 [tool.poetry.plugins."invenio_jsonschemas.schemas"]
 "nr_common" = "nr_common.jsonschemas"
