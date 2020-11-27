@@ -72,10 +72,10 @@ def get_pid_type(data):
 
 def get_model_by_slug(slug):
     mapping = {
-        "conference-materials": "nrthe",
-        "exhibition-catalogues-and-guides": "nrthe",
-        "business-trip-reports": "nrthe",
-        "press-releases": "nrthe",
+        "conference-materials": "nrevt",
+        "exhibition-catalogues-and-guides": "nrevt",
+        "business-trip-reports": "nrevt",
+        "press-releases": "nrevt",
         "bachelor-theses": "nrthe",
         "master-theses": "nrthe",
         "rigorous-theses": "nrthe",
