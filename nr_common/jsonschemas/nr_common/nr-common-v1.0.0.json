@@ -302,7 +302,7 @@
     },
     "series": {
       "description": "edice tématicky sdružující podobné věci",
-      "$comment": "taxonomie unikátních hodnot názvů jako u studyfield",
+      "$comment": "našeptávač",
       "type": "array",
       "items": {
         "type": "object",

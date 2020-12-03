@@ -1249,22 +1249,18 @@ class TestSeries:
     def test_series_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = [
             {
-                "links": {
-                    "self": "http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/maj"
-                }
+                "seriesTitle": "Titulek serie",
+                "seriesVolume": "číslo serie"
             }
         ]
         field = "series"
         base_json[field] = content
-        base_json_dereferenced[field] = [{
-            'is_ancestor': False,
-            'links': {
-                'self':
-                    'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/maj'
-            },
-            'seriesTitle': 'maj',
-            'seriesVolume': '1'
-        }]
+        base_json_dereferenced[field] = [
+            {
+                "seriesTitle": "Titulek serie",
+                "seriesVolume": "číslo serie"
+            }
+        ]
         schema = CommonMetadataSchemaV2()
         result = schema.load(base_json)
         assert result == base_json_dereferenced

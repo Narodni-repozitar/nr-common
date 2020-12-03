@@ -174,4 +174,10 @@ class RelatedItemSchema(StrictKeysMixin):
         end_page = data.get("itemEndPage")
         if start_page and end_page:
             if int(start_page) > int(end_page):
-                raise ValidationError(f"Start page ({start_page}) must be smaller than end page ({end_page})")
+                raise ValidationError(
+                    f"Start page ({start_page}) must be smaller than end page ({end_page})")
+
+
+class SeriesSchema(StrictKeysMixin):
+    seriesTitle = SanitizedUnicode(required=True)
+    seriesVolume = SanitizedUnicode()

@@ -22,7 +22,7 @@ from nr_common.marshmallow.fields import NRDate
 from nr_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
     WorkIdentifersSchema, FundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema, \
     TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SeriesMixin, SubjectMixin, \
-    PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier
+    PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier, SeriesSchema
 
 
 #
@@ -54,7 +54,7 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     publisher = SanitizedUnicode()
     relatedItem = List(Nested(RelatedItemSchema))
     rights = TaxonomyField(mixins=[TitledMixin, RightsMixin], many=True)
-    series = TaxonomyField(mixins=[SeriesMixin])
+    series = List(Nested(SeriesSchema))
     subject = TaxonomyField(mixins=[TitledMixin, SubjectMixin, PSHMixin, CZMeshMixin, MedvikMixin],
                             many=True)
     keywords = List(MultilingualStringV2())
