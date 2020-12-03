@@ -145,7 +145,7 @@ class PublicationPlaceSchema(StrictKeysMixin):
 
 
 class RelatedItemSchema(StrictKeysMixin):
-    itemTitle = MultilingualStringV2(required=True)
+    itemTitle = SanitizedUnicode(required=True)
     itemDOI = DOI()
     itemISBN = List(ISBN())
     itemISSN = List(ISSN())

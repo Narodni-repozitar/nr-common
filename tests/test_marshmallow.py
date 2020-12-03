@@ -1024,10 +1024,7 @@ class TestRelatedItem:
     def test_related_item_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = [
             {
-                "itemTitle": {
-                    "cs": "Český titulek",
-                    "en": "English title"
-                },
+                "itemTitle": "Some title",
                 "itemISBN": ["978-3-16-148410-0"],
                 "itemISSN": ["2049-3630"],
                 "itemDOI": "10.1021/acs.jced.6b00139",
@@ -1064,9 +1061,7 @@ class TestRelatedItem:
                 }
             }],
             'itemStartPage': '15',
-            'itemTitle': {
-                'cs': 'Český titulek', 'en': 'English title'
-            },
+            "itemTitle": "Some title",
             'itemURL': 'https://example.com',
             'itemVolume': '2',
             'itemYear': '2020'
@@ -1078,10 +1073,7 @@ class TestRelatedItem:
     def test_related_item_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = [
             {
-                "itemTitle": {
-                    "cs": "Český titulek",
-                    "en": "English title"
-                },
+                "itemTitle": "Some title",
                 "itemISBN": ["978-3-16-148410-0"],
                 "itemISSN": ["2049-3630"],
                 "itemDOI": "10.1021/acs.jced.6b00139",
@@ -1117,9 +1109,7 @@ class TestRelatedItem:
                 }
             }],
             'itemStartPage': '15',
-            'itemTitle': {
-                'cs': 'Český titulek', 'en': 'English title'
-            },
+            'itemTitle': "Some title",
             'itemURL': 'https://example.com',
             'itemVolume': '2',
             'itemYear': '2020'
@@ -1131,10 +1121,7 @@ class TestRelatedItem:
     def test_related_item_3(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = [
             {
-                "itemTitle": {
-                    "cs": "Český titulek",
-                    "en": "English title"
-                },
+                "itemTitle": "Some title",
                 "itemISBN": ["978-3-16-148410-0"],
                 "itemISSN": ["2049-3630"],
                 "itemDOI": "10.1021/acs.jced.6b00139",
@@ -1169,9 +1156,7 @@ class TestRelatedItem:
                 }
             }],
             'itemStartPage': '15',
-            'itemTitle': {
-                'cs': 'Český titulek', 'en': 'English title'
-            },
+            "itemTitle": "Some title",
             'itemURL': 'https://example.com',
             'itemVolume': '2',
             'itemYear': '2020'
@@ -1183,10 +1168,7 @@ class TestRelatedItem:
     def test_related_item_4(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = [
             {
-                "itemTitle": {
-                    "cs": "Český titulek",
-                    "en": "English title"
-                },
+                "itemTitle": "Some title",
                 "itemISBN": ["978-3-16-148410-0"],
                 "itemISSN": ["2049-3630"],
                 "itemDOI": "10.1021/acs.jced.6b00139",
@@ -1223,9 +1205,7 @@ class TestRelatedItem:
                 }
             }],
             'itemStartPage': '15',
-            'itemTitle': {
-                'cs': 'Český titulek', 'en': 'English title'
-            },
+            "itemTitle": "Some title",
             'itemURL': 'https://example.com',
             'itemVolume': '2',
             'itemYear': '2020'
