@@ -1002,7 +1002,7 @@ class TestPublicationPlace:
 
 class TestPublisher:
     def test_publisher(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
-        content = "bla"
+        content = ["bla", "bla2"]
         field = "publisher"
         base_json[field] = content
         base_json_dereferenced[field] = content
@@ -1010,8 +1010,8 @@ class TestPublisher:
         result = schema.load(base_json)
         assert result == base_json_dereferenced
 
-    def test_publication_place_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
-        content = ["bla"]
+    def test_publisher_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = "bla"
         field = "publisher"
         base_json[field] = content
         base_json_dereferenced[field] = content

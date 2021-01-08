@@ -9,7 +9,7 @@ setup_git() {
 
 commit_website_files() {
   git add -A
-  git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+  git commit --message "Travis build: $GITHUB_RUN_NUMBER"
 }
 
 upload_files() {

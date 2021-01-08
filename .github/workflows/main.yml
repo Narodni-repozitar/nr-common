@@ -60,6 +60,8 @@ jobs:
           "./run-tests.sh"
       - name: Push schemas
         if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: "./push-schemas.sh"
 #      - name: Check manifest
 #        run: |
