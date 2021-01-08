@@ -84,8 +84,11 @@ class ISBN(fields.Field):
 
     @staticmethod
     def extract_isbn(value):
-        isbns = isbnlib.get_isbnlike(value)
-        isbn = isbns[0]
+        try:
+            isbns = isbnlib.get_isbnlike(value)
+            isbn = isbns[0]
+        except:
+            raise ValidationError(f"Bad format {value}")
         if len(isbns) > 1:
             raise ValidationError("Too much ISBN numbers")
         elif (len(isbns) == 0) or (not isbnlib.is_isbn10(isbn) and not isbnlib.to_isbn13(isbn)):

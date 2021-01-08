@@ -2069,7 +2069,7 @@ description = "A Lucene query parser generating ElasticSearch queries and more !
 name = "luqum"
 optional = false
 python-versions = "*"
-version = "0.10.0"
+version = "0.11.0"
 
 [package.dependencies]
 ply = ">=3.11"
@@ -4061,8 +4061,8 @@ linkheader = [
     {file = "LinkHeader-0.4.3.tar.gz", hash = "sha256:7fbbc35c0ba3fbbc530571db7e1c886e7db3d718b29b345848ac9686f21b50c3"},
 ]
 luqum = [
-    {file = "luqum-0.10.0-py3-none-any.whl", hash = "sha256:15da2fea3093a74bd87d87f9c8dcb6ef30789dd36fd8ba9066c8a0a5a6636d3f"},
-    {file = "luqum-0.10.0.linux-x86_64.tar.gz", hash = "sha256:189d327478a510f319f63462bbe10c5c5a5e3d0c01cd79ae8c8f227ea454502b"},
+    {file = "luqum-0.11.0-py3-none-any.whl", hash = "sha256:f7518558bcfd219771083fcca9c2c877c3ff621beb2f5197d569e14ec2c6fe6f"},
+    {file = "luqum-0.11.0.linux-x86_64.tar.gz", hash = "sha256:2910a6d1eaba62a7fbaf3ea867b0da9b0d80739f87eb804906dc6bc4cbf6647f"},
 ]
 lxml = [
     {file = "lxml-4.6.2-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:a9d6bc8642e2c67db33f1247a77c53476f3a166e09067c0474facb045756087f"},
