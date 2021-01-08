@@ -234,7 +234,10 @@
       }
     },
     "publisher": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "relatedItem": {
       "description": "pole pro linkdata, provázání částí a celku nebo jinak přidružených dokumentů. předpokládá se u dizertací vydaných jako knih, příspěvky ve sborníku na sborník, článek na časopis, kapitola na knihu, recenze na článek nebo knihu.",
@@ -367,7 +370,6 @@
           "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
         }
       }
-
     }
   }
 }
