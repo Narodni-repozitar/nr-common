@@ -17,7 +17,7 @@ commit_website_files() {
 upload_files() {
   echo "UPLOAD_FILES"
   Address="https://${GH_TOKEN}@github.com/Narodni-repozitar/nr-schemas.git"
-  echo Address
+  echo $Address
   git remote add origin-pages $Address
   git push --set-upstream origin-pages
 }
