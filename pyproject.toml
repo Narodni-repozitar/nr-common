@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "nr-common"
-version = "3.0.0a25"
+version = "3.0.0a26"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]

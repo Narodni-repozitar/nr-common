@@ -469,7 +469,7 @@ class TestResourceType:
 
 class TestExtent:
     def test_extent(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
-        content = "128 s."
+        content = ["128 s."]
         field = "extent"
         base_json[field] = content
         base_json_dereferenced[field] = content
@@ -516,19 +516,19 @@ class TestExternalLocation:
 class TestControlNumber:
     def test_control_number(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         content = "128"
-        field = "extent"
+        field = "control_number"
         base_json[field] = content
         base_json_dereferenced[field] = content
         schema = CommonMetadataSchemaV2()
         result = schema.load(base_json)
         assert result == base_json_dereferenced
 
-    def test_extent_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+    def test_control_number_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         """
         Wrong data type
         """
         content = 128
-        field = "extent"
+        field = "control_number"
         base_json[field] = content
         base_json_dereferenced[field] = content
         schema = CommonMetadataSchemaV2()
