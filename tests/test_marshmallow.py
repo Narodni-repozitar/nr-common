@@ -1396,6 +1396,17 @@ class TestKeywords:
         with pytest.raises(ValidationError):
             schema.load(base_json)
 
+    def test_keywords_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        del base_json["keywords"]
+        del base_json_dereferenced["keywords"]
+        content = "Some error"
+        field = "keywords"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError, match="Some error"):
+            schema.load(base_json)
+
 
 class TestTitle:
     def test_title_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):

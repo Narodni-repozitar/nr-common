@@ -11,7 +11,7 @@ from __future__ import absolute_import, print_function
 
 from invenio_records_rest.schemas import StrictKeysMixin
 from invenio_records_rest.schemas.fields import SanitizedUnicode
-from marshmallow import post_load, ValidationError
+from marshmallow import post_load, ValidationError, pre_load
 from marshmallow.fields import Nested, Url, Boolean, List
 from marshmallow.validate import Length
 from oarepo_invenio_model.marshmallow import InvenioRecordMetadataSchemaV1Mixin
@@ -60,6 +60,13 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     keywords = List(MultilingualStringV2())
     title = List(MultilingualStringV2(required=True), required=True, validate=Length(min=1))
     titleAlternate = List(MultilingualStringV2())
+
+    @pre_load
+    def check_keyword(self, data, **kwargs):
+        keywords = data.get("keywords", [])
+        if isinstance(keywords, str):
+            raise ValidationError(keywords)
+        return data
 
     @post_load
     def validate_keywords_subjects(self, data, **kwargs):
