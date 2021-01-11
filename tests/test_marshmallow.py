@@ -1399,7 +1399,7 @@ class TestKeywords:
     def test_keywords_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         del base_json["keywords"]
         del base_json_dereferenced["keywords"]
-        content = "Some error"
+        content = {"error":"Some error"}
         field = "keywords"
         base_json[field] = content
         base_json_dereferenced[field] = content
