@@ -101,7 +101,10 @@
     },
     "extent": {
       "description": "Extent of the work. If it is not paged, then it takes over number of pages of the entire pdf.",
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "externalLocation": {
       "description": "externí umístění dokumentu, formát URL",

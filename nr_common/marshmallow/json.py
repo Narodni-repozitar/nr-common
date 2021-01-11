@@ -39,7 +39,7 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     dateIssued = NRDate(required=True)
     dateModified = NRDate()
     resourceType = TaxonomyField(mixins=[TitledMixin], required=True)
-    extent = SanitizedUnicode()  # TODO: pokud nemáme extent, spočítat z PDF - asi nepůjde
+    extent = List(SanitizedUnicode())  # TODO: pokud nemáme extent, spočítat z PDF - asi nepůjde
     externalLocation = Url()
     control_number = SanitizedUnicode(required=True)
     recordIdentifiers = Nested(RecordIdentifier)
