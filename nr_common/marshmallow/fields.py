@@ -107,6 +107,8 @@ class ISSN(fields.Field):
             return issn.format(value)
         except (InvalidChecksum, InvalidLength, InvalidFormat, InvalidComponent) as e:
             raise ValidationError(str(e))
+        except:
+            raise ValidationError(f"Bad format {value}")
 
 
 class DOI(fields.Field):
