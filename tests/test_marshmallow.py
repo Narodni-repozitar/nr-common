@@ -569,6 +569,22 @@ class TestRecordIdentifiers:
         result = schema.load(base_json)
         assert result == base_json_dereferenced
 
+    def test_record_identifiers_3(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = {
+            "nuslOAI": "oai:invenio.nusl.cz:1",
+            "nrcrHandle": "http://hdl.handle.net/20.500.11956/119618",
+            "nrcrOAI": "oai:narodni-repozitar.cz:1",
+            "originalRecord": 'http://hdl.handle.net/20.500.11956/111006',
+            "originalRecordOAI": "oai:dspace.cuni.cz:20.500.11956/111006",
+            "catalogueSysNo": "1"
+        }
+        field = "recordIdentifiers"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
 
 class TestWorkIdentifiers:
     def test_work_identifiers(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
@@ -1399,7 +1415,7 @@ class TestKeywords:
     def test_keywords_2(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         del base_json["keywords"]
         del base_json_dereferenced["keywords"]
-        content = {"error":"Some error"}
+        content = {"error": "Some error"}
         field = "keywords"
         base_json[field] = content
         base_json_dereferenced[field] = content
