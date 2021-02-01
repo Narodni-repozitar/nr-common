@@ -64,8 +64,9 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     @pre_load
     def check_keyword(self, data, **kwargs):
         keywords = data.get("keywords", [])
-        if isinstance(keywords, str):
-            raise ValidationError(keywords)
+        if isinstance(keywords, dict):
+            if "error" in keywords:
+                raise ValidationError(keywords["error"])
         return data
 
     @post_load
