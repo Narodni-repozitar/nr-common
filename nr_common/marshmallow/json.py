@@ -21,8 +21,8 @@ from oarepo_taxonomies.marshmallow import TaxonomyField
 from nr_common.marshmallow.fields import NRDate
 from nr_common.marshmallow.subschemas import PersonSchema, ContributorSchema, \
     WorkIdentifersSchema, FundingReferenceSchema, PublicationPlaceSchema, RelatedItemSchema, \
-    TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SeriesMixin, SubjectMixin, \
-    PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier, SeriesSchema
+    TitledMixin, AccessRightsMixin, InstitutionsMixin, RightsMixin, SubjectMixin, \
+    PSHMixin, CZMeshMixin, MedvikMixin, RecordIdentifier, SeriesSchema, RulesExceptionsSchema
 
 
 #
@@ -60,6 +60,7 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
     keywords = List(MultilingualStringV2())
     title = List(MultilingualStringV2(required=True), required=True, validate=Length(min=1))
     titleAlternate = List(MultilingualStringV2())
+    rulesExceptions = List(Nested(RulesExceptionsSchema))
 
     @pre_load
     def check_keyword(self, data, **kwargs):

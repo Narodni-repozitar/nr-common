@@ -587,6 +587,15 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'issn': {'type': 'keyword'}
                     },
                     'type': 'object'
+                },
+                'rulesExceptions': {
+                    'properties': {
+                        'element': {'type': 'text'},
+                        'exception': {'type': 'keyword'},
+                        'path': {'type': 'keyword'},
+                        'phase': {'type': 'keyword'}
+                    },
+                    'type': 'nested'
                 }
             }
         }

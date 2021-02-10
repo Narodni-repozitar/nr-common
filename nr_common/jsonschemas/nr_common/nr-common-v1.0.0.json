@@ -348,6 +348,28 @@
       "items": {
         "$ref": "../multilingual-v2.0.0.json#/definitions/multilingual"
       }
+    },
+    "rulesExceptions": {
+      "description": "pole pro ukládání chyb při zpracování jednotlivých polí",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "element": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "exception": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "required": [
