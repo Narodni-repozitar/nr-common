@@ -1486,3 +1486,23 @@ class TestTitleAlternate:
         schema = CommonMetadataSchemaV2()
         with pytest.raises(ValidationError):
             schema.load(base_json)
+
+
+class TestRulesExceptions:
+    def test_rules_exception_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = [
+            {
+                "path": "/dc/subject",
+                "element": "[{'en_US': [{'value': [None]}], 'cs_CZ': [{'value': [None]}]}]",
+                "phase": "pre",
+                "exception": "bla"
+            }
+        ]
+        field = "rulesExceptions"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        result = schema.load(base_json)
+        assert result == base_json_dereferenced
+
+
