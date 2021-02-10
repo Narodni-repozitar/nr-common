@@ -181,3 +181,10 @@ class RelatedItemSchema(StrictKeysMixin):
 class SeriesSchema(StrictKeysMixin):
     seriesTitle = SanitizedUnicode(required=True)
     seriesVolume = SanitizedUnicode()
+
+
+class RulesExceptionsSchema(StrictKeysMixin):
+    path = SanitizedUnicode()
+    element = SanitizedUnicode()
+    phase = SanitizedUnicode()
+    exception = SanitizedUnicode()
