@@ -84,3 +84,9 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
         if not entities:
             data["entities"] = data["provider"]
         return data
+
+    @post_load
+    def rules_exceptions(self, data, **kwargs):
+        if "rulesExceptions" in data:
+            raise ValidationError(f"Some rules raises exception: {data['rulesExceptions']}")
+        return data
