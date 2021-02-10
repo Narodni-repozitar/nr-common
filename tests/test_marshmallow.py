@@ -1502,7 +1502,7 @@ class TestRulesExceptions:
         base_json[field] = content
         base_json_dereferenced[field] = content
         schema = CommonMetadataSchemaV2()
-        result = schema.load(base_json)
-        assert result == base_json_dereferenced
+        with pytest.raises(ValidationError):
+            result = schema.load(base_json)
 
 
