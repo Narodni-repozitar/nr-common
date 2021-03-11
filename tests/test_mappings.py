@@ -22,9 +22,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
     pprint(es_record["_source"])
     assert es_record["_source"] == base_json_dereferenced
     assert body == {
-        'aliases': {
-          'nr-all':{}
-        },
+        'aliases': {'nr-all': {}},
         'mappings': {
             'date_detection': False,
             'dynamic': False,
@@ -137,8 +135,82 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     },
                     'type': 'nested'
                 },
-                'dateIssued': {'type': 'keyword'},
-                'dateModified': {'type': 'keyword'},
+                'dateIssued': {
+                    'fields': {
+                        'date': {
+                            'format': 'YYYY',
+                            'ignore_malformed': True,
+                            'type': 'date'
+                        }
+                    },
+                    'type': 'keyword'
+                },
+                'dateModified': {
+                    'fields': {
+                        'date': {
+                            'format': 'YYYY',
+                            'ignore_malformed': True,
+                            'type': 'date'
+                        }
+                    },
+                    'type': 'keyword'
+                },
+                'entities': {
+                    'properties': {
+                        'aliases': {
+                            'fields': {
+                                'keyword': {
+                                    'ignore_above': 256,
+                                    'type': 'keyword'
+                                }
+                            },
+                            'type': 'text'
+                        },
+                        'formerNames': {
+                            'fields': {
+                                'keyword': {
+                                    'ignore_above': 256,
+                                    'type': 'keyword'
+                                }
+                            },
+                            'type': 'text'
+                        },
+                        'ico': {'type': 'keyword'},
+                        'is_ancestor': {'type': 'boolean'},
+                        'links': {
+                            'properties': {
+                                'parent': {'type': 'keyword'},
+                                'self': {'type': 'keyword'}
+                            },
+                            'type': 'object'
+                        },
+                        'provider': {'type': 'boolean'},
+                        'relatedID': {
+                            'properties': {
+                                'type': {
+                                    'fields': {
+                                        'keyword': {
+                                            'ignore_above': 256,
+                                            'type': 'keyword'
+                                        }
+                                    },
+                                    'type': 'text'
+                                },
+                                'value': {
+                                    'fields': {
+                                        'keyword': {
+                                            'ignore_above': 1000,
+                                            'type': 'keyword'
+                                        }
+                                    },
+                                    'type': 'text'
+                                }
+                            }
+                        },
+                        'url': {'type': 'keyword'}
+                    },
+                    'type': 'object'
+                },
                 'extent': {'index': False, 'type': 'keyword'},
                 'externalLocation': {'type': 'keyword'},
                 'fundingReference': {
@@ -257,62 +329,6 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     'type': 'text'
                 },
                 'provider': {
-                    'properties': {
-                        'aliases': {
-                            'fields': {
-                                'keyword': {
-                                    'ignore_above': 256,
-                                    'type': 'keyword'
-                                }
-                            },
-                            'type': 'text'
-                        },
-                        'formerNames': {
-                            'fields': {
-                                'keyword': {
-                                    'ignore_above': 256,
-                                    'type': 'keyword'
-                                }
-                            },
-                            'type': 'text'
-                        },
-                        'ico': {'type': 'keyword'},
-                        'is_ancestor': {'type': 'boolean'},
-                        'links': {
-                            'properties': {
-                                'parent': {'type': 'keyword'},
-                                'self': {'type': 'keyword'}
-                            },
-                            'type': 'object'
-                        },
-                        'provider': {'type': 'boolean'},
-                        'relatedID': {
-                            'properties': {
-                                'type': {
-                                    'fields': {
-                                        'keyword': {
-                                            'ignore_above': 256,
-                                            'type': 'keyword'
-                                        }
-                                    },
-                                    'type': 'text'
-                                },
-                                'value': {
-                                    'fields': {
-                                        'keyword': {
-                                            'ignore_above': 1000,
-                                            'type': 'keyword'
-                                        }
-                                    },
-                                    'type': 'text'
-                                }
-                            }
-                        },
-                        'url': {'type': 'keyword'}
-                    },
-                    'type': 'object'
-                },
-                'entities': {
                     'properties': {
                         'aliases': {
                             'fields': {
@@ -503,6 +519,15 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     },
                     'type': 'object'
                 },
+                'rulesExceptions': {
+                    'properties': {
+                        'element': {'type': 'text'},
+                        'exception': {'type': 'keyword'},
+                        'path': {'type': 'keyword'},
+                        'phase': {'type': 'keyword'}
+                    },
+                    'type': 'nested'
+                },
                 'series': {
                     'properties': {
                         'seriesTitle': {
@@ -587,15 +612,6 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'issn': {'type': 'keyword'}
                     },
                     'type': 'object'
-                },
-                'rulesExceptions': {
-                    'properties': {
-                        'element': {'type': 'text'},
-                        'exception': {'type': 'keyword'},
-                        'path': {'type': 'keyword'},
-                        'phase': {'type': 'keyword'}
-                    },
-                    'type': 'nested'
                 }
             }
         }
