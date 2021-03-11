@@ -83,10 +83,24 @@
         }
       },
       "dateIssued": {
-        "type": "keyword"
+        "type": "keyword",
+        "fields": {
+          "date":{
+            "type": "date",
+            "format": "YYYY",
+            "ignore_malformed": true
+          }
+        }
       },
       "dateModified": {
-        "type": "keyword"
+        "type": "keyword",
+        "fields": {
+          "date":{
+            "type": "date",
+            "format": "YYYY",
+            "ignore_malformed": true
+          }
+        }
       },
       "resourceType": {
         "type": "taxonomy-term",
