@@ -24,12 +24,12 @@ pycountry = "^19.0.0"
 python-stdnum = "^1.14"
 sphinx = { version = "^1.5.1", optional = true }
 pytest-runner = "^5.2"
-requests = "^2.25.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.0.0"
 pytest-cov = "^2.10.1"
 oarepo = "^3.3"
+requests = "^2.25.1"
 
 [tool.poetry.extras]
 docs = ["sphinx"]
