@@ -44,7 +44,7 @@ jobs:
           poetry config virtualenvs.create false
       - name: Install dependencies
         run: |
-          poetry install --extras tests
+          poetry install
           cat poetry.lock
       - name: Test with pytest
         run: |
