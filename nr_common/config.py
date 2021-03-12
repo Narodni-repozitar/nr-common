@@ -11,6 +11,8 @@ from __future__ import absolute_import, print_function
 
 from invenio_records_rest.utils import allow_all
 
+from nr_common.record import published_index_name, draft_index_name
+
 RECORDS_DRAFT_ENDPOINTS = {
     'common': {
         'draft': 'draft-common',
@@ -20,17 +22,40 @@ RECORDS_DRAFT_ENDPOINTS = {
         'default_endpoint_prefix': True,
         'max_result_window': 500000,
         'record_class': 'nr_common.record:PublishedCommonRecord',
+        # TODO: doplnit indexer class
 
         'publish_permission_factory_imp': allow_all,  # TODO: change this !!!
         'unpublish_permission_factory_imp': allow_all,
         'edit_permission_factory_imp': allow_all,
         'default_media_type': 'application/json',
+        'search_index': published_index_name,
+        # 'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory' TODO: implementovat FSM
     },
     'draft-common': {
         'pid_type': 'dnrcom',
+        'record_class': 'nr_common.record:DraftCommonRecord',
+        # 'create_permission_factory_imp':
+        # 'restoration.objects.permissions.create_object_permission_impl',
+        # 'read_permission_factory_imp':
+        # 'restoration.objects.permissions.read_object_permission_impl',
+        # 'update_permission_factory_imp':
+        # 'restoration.objects.permissions.update_object_permission_impl',
+        # 'record_loaders': {
+        #     'application/json': 'oarepo_validate.json_files_loader',
+        #     'application/json-patch+json': 'oarepo_validate.json_loader'
+        # },
+        # 'record_serializers': {
+        #     'application/json': 'restoration.objects.serializer.json_response',
+        # },
+        # 'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory',
+        # 'files': dict(
+        #     put_file_factory='restoration.objects.permissions.put_file_permission_impl',
+        #     delete_file_factory='restoration.objects.permissions.delete_file_permission_impl',
+        #     get_file_factory='restoration.objects.permissions.get_file_permission_impl',
+        # ),
+        'search_index': draft_index_name
     }
 }
-
 
 # def degree_grantor_filter(field, path=None):
 #     def inner(values):
@@ -141,7 +166,8 @@ FILTERS = {
     # 'marshmallow.message': terms_filter(
     #     "invenio_draft_validation.errors.marshmallow.message.keyword"),
     # 'jsonschema.field': terms_filter("invenio_draft_validation.errors.jsonschema.field"),
-    # 'jsonschema.message': terms_filter("invenio_draft_validation.errors.jsonschema.message.keyword")
+    # 'jsonschema.message': terms_filter(
+    # "invenio_draft_validation.errors.jsonschema.message.keyword")
 }
 
 POST_FILTERS = {
