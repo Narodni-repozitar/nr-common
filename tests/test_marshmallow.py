@@ -729,6 +729,15 @@ class TestLanguage:
         with pytest.raises(ValidationError):
             schema.load(base_json)
 
+    def test_language_3(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = []
+        field = "language"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError, match='Language is required field'):
+            schema.load(base_json)
+
 
 class TestNote:
     def test_note_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
