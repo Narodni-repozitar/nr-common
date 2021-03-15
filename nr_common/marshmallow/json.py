@@ -82,7 +82,8 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
         subject = [x for x in data.get("subject", []) if not x["is_ancestor"]]
         keywords = data.get("keywords", [])
         if len(keywords) + len(subject) < 3:
-            raise ValidationError("At least three subjects or keyword are required")
+            raise ValidationError("At least three subjects or keyword are required",
+                                  field_name="keywords")
         return data
 
     @post_load
