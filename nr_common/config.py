@@ -23,7 +23,8 @@ RECORDS_DRAFT_ENDPOINTS = {
         'max_result_window': 500000,
         'record_class': 'nr_common.record:PublishedCommonRecord',
         # TODO: doplnit indexer class
-
+        'list_route': '/common/',
+        'item_route': '/common/',
         'publish_permission_factory_imp': allow_all,  # TODO: change this !!!
         'unpublish_permission_factory_imp': allow_all,
         'edit_permission_factory_imp': allow_all,
@@ -34,6 +35,9 @@ RECORDS_DRAFT_ENDPOINTS = {
     'draft-common': {
         'pid_type': 'dnrcom',
         'record_class': 'nr_common.record:DraftCommonRecord',
+        'list_route': '/draft/common/',
+        'item_route': '/draft/common/',
+        'search_index': draft_index_name
         # 'create_permission_factory_imp':
         # 'restoration.objects.permissions.create_object_permission_impl',
         # 'read_permission_factory_imp':
@@ -53,7 +57,7 @@ RECORDS_DRAFT_ENDPOINTS = {
         #     delete_file_factory='restoration.objects.permissions.delete_file_permission_impl',
         #     get_file_factory='restoration.objects.permissions.get_file_permission_impl',
         # ),
-        'search_index': draft_index_name
+
     }
 }
 
