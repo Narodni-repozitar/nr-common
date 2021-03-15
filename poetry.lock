@@ -3154,7 +3154,7 @@ locale = ["Babel (>=1.3)"]
 docs = ["sphinx"]
 
 [metadata]
-content-hash = "9f777125deff235425ffc2cb3378d4395d65515e947d76221ce01e1a6de2990c"
+content-hash = "9385a7af0b39baab74b94a70f9b14b45fce9214c514e6a8ee2071232aadb0112"
 lock-version = "1.0"
 python-versions = "^3.8"
 
