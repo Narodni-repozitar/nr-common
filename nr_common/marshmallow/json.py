@@ -71,6 +71,13 @@ class CommonMetadataSchemaV2(InvenioRecordMetadataSchemaV1Mixin, StrictKeysMixin
         return data
 
     @post_load
+    def check_language(self, data, **kwargs):
+        language = data.get("language")
+        if not language:
+            raise ValidationError("Language is required field", field_name="language")
+        return data
+
+    @post_load
     def validate_keywords_subjects(self, data, **kwargs):
         subject = [x for x in data.get("subject", []) if not x["is_ancestor"]]
         keywords = data.get("keywords", [])
