@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "nr-common"
-version = "3.0.0a34"
+version = "3.0.0a35"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]
@@ -13,7 +13,6 @@ readme = "README.md"
 python = "^3.8"
 idutils = "^1.1.8"
 isbnlib = "^3.10.3"
-pycountry = "^19.0.0"
 sphinx = { version = "^1.5.1", optional = true }
 python-stdnum = "^1.16"
 
