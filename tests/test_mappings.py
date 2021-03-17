@@ -45,6 +45,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                 'accessRights': {
                     'properties': {
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},
@@ -103,6 +104,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                             'properties': {
                                 'dataCiteCode': {'type': 'keyword'},
                                 'is_ancestor': {'type': 'boolean'},
+                                'level': {'type': 'integer'},
                                 'links': {
                                     'properties': {
                                         'parent': {'type': 'keyword'},
@@ -177,6 +179,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         },
                         'ico': {'type': 'keyword'},
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},
@@ -237,6 +240,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                                 },
                                 'ico': {'type': 'keyword'},
                                 'is_ancestor': {'type': 'boolean'},
+                                'level': {'type': 'integer'},
                                 'links': {
                                     'properties': {
                                         'parent': {'type': 'keyword'},
@@ -300,6 +304,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                 'language': {
                     'properties': {
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},
@@ -350,6 +355,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         },
                         'ico': {'type': 'keyword'},
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},
@@ -389,6 +395,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'country': {
                             'properties': {
                                 'is_ancestor': {'type': 'boolean'},
+                                'level': {'type': 'integer'},
                                 'links': {
                                     'properties': {
                                         'parent': {'type': 'keyword'},
@@ -444,6 +451,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'itemRelationType': {
                             'properties': {
                                 'is_ancestor': {'type': 'boolean'},
+                                'level': {'type': 'integer'},
                                 'links': {
                                     'properties': {
                                         'parent': {'type': 'keyword'},
@@ -468,6 +476,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                 'resourceType': {
                     'properties': {
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},
@@ -495,6 +504,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     'properties': {
                         'icon': {'type': 'keyword'},
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},
@@ -566,6 +576,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                             'type': 'object'
                         },
                         'is_ancestor': {'type': 'boolean'},
+                        'level': {'type': 'integer'},
                         'links': {
                             'properties': {
                                 'parent': {'type': 'keyword'},

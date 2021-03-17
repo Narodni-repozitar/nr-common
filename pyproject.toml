@@ -28,6 +28,7 @@ oarepo-taxonomies = "^3.0.0a1"
 oarepo-references = "^1.9.0"
 oarepo-records-draft = "^5.0.0a7"
 python-stdnum = "^1.14"
+pytest-runner = "^5.3.0"
 
 [tool.poetry.extras]
 docs = ["sphinx"]
