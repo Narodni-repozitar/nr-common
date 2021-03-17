@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "nr-common"
-version = "3.0.0a32"
+version = "3.0.0a33"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]
@@ -13,23 +13,21 @@ readme = "README.md"
 python = "^3.8"
 idutils = "^1.1.8"
 isbnlib = "^3.10.3"
-
-oarepo-invenio-model = "^2.0.0"
-oarepo-mapping-includes = "<=1.2.0"
-oarepo-multilingual = "2.3.0"
-oarepo-taxonomies = "^2.5.3"
-oarepo-references = "^1.9.0"
-oarepo-records-draft = "^5.0.0a7"
 pycountry = "^19.0.0"
-python-stdnum = "^1.14"
 sphinx = { version = "^1.5.1", optional = true }
-pytest-runner = "^5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.0.0"
 pytest-cov = "^2.10.1"
 oarepo = "^3.3"
 requests = "^2.25.1"
+oarepo-invenio-model = "^2.0.0"
+oarepo-mapping-includes = "<=1.2.0"
+oarepo-multilingual = "2.3.0"
+oarepo-taxonomies = "^3.0.0a1"
+oarepo-references = "^1.9.0"
+oarepo-records-draft = "^5.0.0a7"
+python-stdnum = "^1.14"
 
 [tool.poetry.extras]
 docs = ["sphinx"]
