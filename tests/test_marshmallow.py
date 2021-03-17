@@ -204,6 +204,7 @@ class TestContributor:
         base_json_dereferenced[field] = content
         base_json_dereferenced[field][0]["role"] = [{
             'dataCiteCode': 'Supervisor',
+            'level': 1,
             'is_ancestor': False,
             'links': {
                 'self':
@@ -794,6 +795,7 @@ class TestFundingReference:
         ]
         dereferenced_content = [{
             'funder': [{
+                'level': 1,
                 'funderISVaVaICode': '123456789',
                 'is_ancestor': False,
                 'links': {
@@ -835,6 +837,7 @@ class TestFundingReference:
             'funder': [{
                 'funderISVaVaICode': '123456789',
                 'is_ancestor': False,
+                'level': 1,
                 'links': {
                     'self':
                         'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/ntk'
@@ -884,6 +887,7 @@ class TestProvider:
         field = "provider"
         base_json[field] = content
         base_json_dereferenced[field] = [{
+            'level': 1,
             'address': 'Malostranské náměstí 259/12, '
                        '118 00 Praha 1',
             'aliases': ['AMU'],
@@ -980,6 +984,7 @@ class TestPublicationPlace:
                     'alpha3': 'CZE',
                     'number': '203'
                 },
+                'level': 1,
                 'is_ancestor': False,
                 'links': {
                     'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/cz'
@@ -1075,6 +1080,7 @@ class TestRelatedItem:
             'itemISSN': ['2049-3630'],
             'itemIssue': '25',
             'itemRelationType': [{
+                'level': 1,
                 'is_ancestor': False,
                 'links': {
                     'self':
@@ -1253,6 +1259,7 @@ class TestRights:
         base_json[field] = content
         base_json_dereferenced[field] = [{
             'is_ancestor': False,
+            'level': 1,
             'links': {
                 'self':
                     'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/copyright'
@@ -1321,6 +1328,7 @@ class TestSubject:
             'DateRevised': datetime(2007, 1, 26, 16, 14,
                                     37),
             'is_ancestor': False,
+            'level': 1,
             'links': {
                 'self':
                     'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/d010420'
@@ -1332,6 +1340,7 @@ class TestSubject:
             {
                 'DateRevised': datetime(2007, 1, 26, 16, 14,
                                         37),
+                'level': 1,
                 'is_ancestor': False,
                 'links': {
                     'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3000'
@@ -1345,6 +1354,7 @@ class TestSubject:
             {
                 'DateRevised': datetime(2007, 1, 26, 16, 14,
                                         37),
+                'level': 1,
                 'is_ancestor': False,
                 'links': {
                     'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/psh3001'
@@ -1513,5 +1523,3 @@ class TestRulesExceptions:
         schema = CommonMetadataSchemaV2()
         with pytest.raises(ValidationError):
             result = schema.load(base_json)
-
-
