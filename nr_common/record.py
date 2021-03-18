@@ -40,3 +40,8 @@ class PublishedCommonRecord(InvalidRecordAllowedMixin, CommonBaseRecord):
 
 class DraftCommonRecord(DraftRecordMixin, CommonBaseRecord):
     index_name = draft_index_name
+
+    @property
+    def canonical_url(self):
+        return url_for('invenio_records_rest.draft-common_item',
+                       pid_value=self['control_number'], _external=True)
