@@ -39,7 +39,7 @@ class TestAbstract:
     def test_abstract_load_3(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
         abstract_ = {
             "cs": "Testovací abstrakt",
-            "pl": "Test abstract"
+            "zz": "Test abstract"
         }
         base_json["abstract"] = abstract_
         base_json_dereferenced["abstract"] = abstract_
@@ -49,7 +49,7 @@ class TestAbstract:
 
     def test_abstract_load_4(self, db, taxonomy_tree, base_json, base_json_dereferenced):
         abstract_ = {
-            "cze": "Testovací abstrakt",
+            "blbost": "Testovací abstrakt",
             "en": "Test abstract"
         }
         base_json["abstract"] = abstract_

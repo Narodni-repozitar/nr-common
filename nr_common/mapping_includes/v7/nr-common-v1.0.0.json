@@ -301,6 +301,9 @@
       "subject": {
         "type": "nr-taxonomies-subject-v1.0.0.json#/subject"
       },
+      "subjectAll": {
+        "type": "multilingual"
+      },
       "keywords": {
         "type": "multilingual#subjectKeyword"
       },

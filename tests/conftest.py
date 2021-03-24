@@ -129,7 +129,11 @@ def app():
         CELERY_RESULT_BACKEND='cache',
         CELERY_CACHE_BACKEND='memory',
         CELERY_TASK_EAGER_PROPAGATES=True,
-        SUPPORTED_LANGUAGES=["cs", "en"],
+        SUPPORTED_LANGUAGES=['cs', 'en', 'sk', 'de', 'fr', 'ru', 'es', 'nl', 'it',
+                                          'no', 'pl', 'da', 'el',
+                                          'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
+        MULTILINGUAL_SUPPORTED_LANGUAGES=['cs', 'en', 'sk', 'de', 'fr', 'ru', 'es', 'nl', 'it', 'no', 'pl', 'da', 'el',
+                       'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
         RECORDS_REST_ENDPOINTS=RECORDS_REST_ENDPOINTS,
         ELASTICSEARCH_DEFAULT_LANGUAGE_TEMPLATE={
             "type": "text",
@@ -148,6 +152,15 @@ def app():
                 "type": "keyword",
                 "copy_to": "subjectKeyword"
             },
+            "*#subjectAll": {
+                "type": "text",
+                "copy_to": "subjectAll.*",
+                "fields": {
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            }
         }
     )
 

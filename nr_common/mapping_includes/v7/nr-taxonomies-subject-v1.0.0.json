@@ -3,7 +3,7 @@
     "type": "taxonomy-term",
     "properties": {
       "title": {
-            "type": "multilingual"
+            "type": "multilingual#subjectAll"
         },
       "relatedURI": {
         "type": "keyword"
@@ -27,7 +27,7 @@
         }
       },
       "altLabel": {
-        "type": "multilingual"
+        "type": "multilingual#subjectAll"
       }
     }
   }
