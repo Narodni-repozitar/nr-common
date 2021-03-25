@@ -359,6 +359,15 @@ class TestDateIssued:
         with pytest.raises(ValidationError):
             schema.load(base_json)
 
+    def test_date_issued_9(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
+        content = "201"
+        field = "dateIssued"
+        base_json[field] = content
+        base_json_dereferenced[field] = content
+        schema = CommonMetadataSchemaV2()
+        with pytest.raises(ValidationError, match='Wrong date format'):
+            schema.load(base_json)
+
 
 class TestDateModified:
     def test_date_issued_1(self, app, db, taxonomy_tree, base_json, base_json_dereferenced):
