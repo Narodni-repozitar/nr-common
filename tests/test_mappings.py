@@ -1121,79 +1121,98 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'altLabel': {
                             'properties': {
                                 'bg': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.bg',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'cs': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.cs',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'da': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.da',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'de': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.de',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'el': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.el',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'en': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.en',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'es': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.es',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'fr': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.fr',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'hu': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.hu',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'it': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.it',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'lt': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.lt',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'nl': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.nl',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'no': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.no',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'pl': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.pl',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'pt': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.pt',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'ro': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.ro',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'ru': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.ru',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'sk': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.sk',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'sv': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.sv',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 }
                             },
@@ -1212,79 +1231,98 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'title': {
                             'properties': {
                                 'bg': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.bg',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'cs': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.cs',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'da': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.da',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'de': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.de',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'el': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.el',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'en': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.en',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'es': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.es',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'fr': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.fr',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'hu': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.hu',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'it': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.it',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'lt': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.lt',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'nl': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.nl',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'no': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.no',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'pl': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.pl',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'pt': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.pt',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'ro': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.ro',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'ru': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.ru',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'sk': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.sk',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 },
                                 'sv': {
-                                    'fields': {'keywords': {'type': 'keyword'}},
+                                    'copy_to': 'subjectAll.sv',
+                                    'fields': {'raw': {'type': 'keyword'}},
                                     'type': 'text'
                                 }
                             },
