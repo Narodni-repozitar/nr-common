@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "nr-common"
-version = "3.0.0a36"
+version = "3.0.0a37"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]
@@ -23,7 +23,8 @@ pytest-cov = "^2.10.1"
 oarepo = "^3.3"
 requests = "^2.25.1"
 oarepo-mapping-includes = "<=1.2.0"
-oarepo-multilingual = "2.3.0"
+#oarepo-multilingual = "2.3.0"
+oarepo-multilingual = { git = "https://github.com/Semtexcz/oarepo-multilingual.git", branch = "devel" }
 oarepo-taxonomies = "^3.0.0a1"
 oarepo-references = "^1.9.0"
 oarepo-records-draft = "^5.0.0a7"

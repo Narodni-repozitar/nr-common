@@ -61,6 +61,19 @@ RECORDS_DRAFT_ENDPOINTS = {
     }
 }
 
+ELASTICSEARCH_LANGUAGE_TEMPLATES = {
+    "*#subjectAll": {
+        "type": "text",
+        "copy_to": "subjectAll.*",
+        "fields": {
+            "raw": {
+                "type": "keyword"
+            }
+        }
+    }
+
+}
+
 # def degree_grantor_filter(field, path=None):
 #     def inner(values):
 #         return Q('nested',

@@ -84,20 +84,32 @@
       },
       "dateIssued": {
         "type": "keyword",
+        "copy_to": "dateAll",
         "fields": {
-          "date":{
+          "date": {
             "type": "date",
-            "format": "YYYY",
+            "format": "yyyy-MM-dd||yyyy-MM||yyyy",
             "ignore_malformed": true
           }
         }
       },
       "dateModified": {
         "type": "keyword",
+        "copy_to": "dateAll",
         "fields": {
           "date":{
             "type": "date",
-            "format": "YYYY",
+            "format": "yyyy-MM-dd||yyyy-MM||yyyy",
+            "ignore_malformed": true
+          }
+        }
+      },
+      "dateAll": {
+        "type": "keyword",
+        "fields": {
+          "date": {
+            "type": "date",
+            "format": "yyyy-MM-dd||yyyy-MM||yyyy",
             "ignore_malformed": true
           }
         }
@@ -300,6 +312,9 @@
       },
       "subject": {
         "type": "nr-taxonomies-subject-v1.0.0.json#/subject"
+      },
+      "subjectAll": {
+        "type": "multilingual"
       },
       "keywords": {
         "type": "multilingual#subjectKeyword"

@@ -160,6 +160,8 @@ def serialize_date(value):
 
 def _serialize_dates(dates):
     result = []
+    if not dates:
+        raise ValidationError("Wrong date format")
     for date in dates:
         new_date = [stage.strip() for stage in date if len(stage) > 0]
         l = len(new_date)
