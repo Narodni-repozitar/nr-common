@@ -50,6 +50,9 @@
                         "ignore_above": 256
                     }
                 }
+            },
+            "title": {
+                "type": "multilingual"
             }
         }
     }
