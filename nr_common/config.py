@@ -30,14 +30,15 @@ RECORDS_DRAFT_ENDPOINTS = {
         'edit_permission_factory_imp': allow_all,
         'default_media_type': 'application/json',
         'search_index': published_index_name,
-        # 'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory' TODO: implementovat FSM
+        'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory'
     },
     'draft-common': {
         'pid_type': 'dnrcom',
         'record_class': 'nr_common.record:DraftCommonRecord',
         'list_route': '/draft/common/',
         'item_route': '/draft/common/',
-        'search_index': draft_index_name
+        'search_index': draft_index_name,
+        'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory',
         # 'create_permission_factory_imp':
         # 'restoration.objects.permissions.create_object_permission_impl',
         # 'read_permission_factory_imp':
@@ -51,7 +52,7 @@ RECORDS_DRAFT_ENDPOINTS = {
         # 'record_serializers': {
         #     'application/json': 'restoration.objects.serializer.json_response',
         # },
-        # 'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory',
+
         # 'files': dict(
         #     put_file_factory='restoration.objects.permissions.put_file_permission_impl',
         #     delete_file_factory='restoration.objects.permissions.delete_file_permission_impl',
