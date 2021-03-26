@@ -9,9 +9,17 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_records_rest.facets import terms_filter, range_filter
 from invenio_records_rest.utils import allow_all
+from oarepo_records_draft.rest import term_facet, DRAFT_IMPORTANT_FILTERS, DRAFT_IMPORTANT_FACETS
+from oarepo_ui.facets import date_histogram_facet, translate_facets
+from oarepo_ui.filters import group_by_terms_filter, boolean_filter
 
 from nr_common.record import published_index_name, draft_index_name
+from oarepo_multilingual import language_aware_text_term_facet, \
+    language_aware_text_terms_filter
+
+_ = lambda x: x
 
 RECORDS_DRAFT_ENDPOINTS = {
     'common': {
@@ -73,6 +81,53 @@ ELASTICSEARCH_LANGUAGE_TEMPLATES = {
         }
     }
 
+}
+
+FILTERS = {
+    _('person'): terms_filter('person.keyword'),
+    _('accessRights'): group_by_terms_filter('accessRights.title.en.raw', {
+        "true": "open access",
+        1: "open access",
+        True: "open access",
+        "1": "open access",
+        False: ["embargoed access", "restricted access", "metadata only access"],
+        0: ["embargoed access", "restricted access", "metadata only access"],
+        "false": ["embargoed access", "restricted access", "metadata only access"],
+        "0": ["embargoed access", "restricted access", "metadata only access"],
+    }),
+    _('resourceType'): language_aware_text_terms_filter('resourceType.title'),
+    _('keywords'): language_aware_text_terms_filter('keywords'),
+    _('subject'): language_aware_text_terms_filter('subjectAll'),
+    _('language'): language_aware_text_terms_filter('language.title'),
+    _('date'): range_filter('dateAll.date'),
+    _('dateIssued'): range_filter('dateIssued.date'),
+    _('dateDefended'): range_filter('dateDefended.date'),
+    _('dateModified'): range_filter('dateModified.date'),
+}
+
+CURATOR_FILTERS = {
+    _('rights'): language_aware_text_terms_filter('rights.title'),
+    _('provider'): language_aware_text_terms_filter('provider.title'),
+    _('isGL'): boolean_filter('isGL')
+}
+
+FACETS = {
+    'person': term_facet('person.keyword'),
+    'accessRights': term_facet('accessRights.title.en.raw'),
+    'resourceType': language_aware_text_term_facet('resourceType.title'),
+    'keywords': language_aware_text_term_facet('keywords'),
+    'subject': language_aware_text_term_facet('subjectAll'),
+    'language': language_aware_text_term_facet('language.title'),
+    'date': date_histogram_facet('dateAll.date'),
+}
+
+CURATOR_FACETS = {
+    'rights': language_aware_text_term_facet('rights.title'),
+    'provider': language_aware_text_term_facet('provider.title'),
+    'dateIssued': date_histogram_facet('dateIssued.date'),
+    'dateDefended': date_histogram_facet('dateDefended.date'),
+    'dateModified': date_histogram_facet('dateModified.date'),
+    'isGL': term_facet('isGL'),
 }
 
 # def degree_grantor_filter(field, path=None):
@@ -168,162 +223,39 @@ ELASTICSEARCH_LANGUAGE_TEMPLATES = {
 #     return inner
 
 
-FILTERS = {
-    # 'yearAccepted': year_filter('dateAccepted'),
-    # 'language': terms_filter('language.slug'),
-    # 'defended': boolean_filter('defended'),
-    # 'person': person_filter('person.keyword'),
-    # 'subjectKeywords': terms_filter('subjectKeywords'),
-    # 'accessRights': terms_filter('accessRights'),
-    # 'studyField': nested_terms_filter('studyField.title', 'value.keyword'),
-    # 'provider': nested_terms_filter('provider.title', 'value.keyword'),
-    # 'university': degree_grantor_filter('degreeGrantor.ancestors.title.value.keyword'),
-    # 'faculty': degree_grantor_filter('degreeGrantor.ancestors.title.value.keyword'),
-    # 'valid': boolean_filter("invenio_draft_validation.valid"),
-    # 'marshmallow.field': terms_filter("invenio_draft_validation.errors.marshmallow.field"),
-    # 'marshmallow.message': terms_filter(
-    #     "invenio_draft_validation.errors.marshmallow.message.keyword"),
-    # 'jsonschema.field': terms_filter("invenio_draft_validation.errors.jsonschema.field"),
-    # 'jsonschema.message': terms_filter(
-    # "invenio_draft_validation.errors.jsonschema.message.keyword")
-}
-
-POST_FILTERS = {
-    # 'doctype.slug': terms_filter('doctype.slug'),
-}
-
 RECORDS_REST_FACETS = {
-    # 'draft-nr_theses-nr-theses-v1.0.0': {
-    #     'aggs': {  # agregace
-    #         # 'yearAccepted': {
-    #         #     "date_histogram": {
-    #         #         "field": "dateAccepted",
-    #         #         "interval": "1y",
-    #         #         "format": "yyyy",
-    #         #         "min_doc_count": 1,
-    #         #         "order": {
-    #         #             "_key": "desc"
-    #         #         }
-    #         #
-    #         #     }
-    #         # },
-    #         'language': {
-    #             'terms': {
-    #                 'field': 'language.slug',
-    #                 'order': {'_count': 'desc'}
-    #             }
-    #         },
-    #         'defended': {
-    #             'terms': {
-    #                 'field': 'defended'
-    #             }
-    #         },
-    #         'doctype.slug': {
-    #             'terms': {
-    #                 'field': 'doctype.slug'
-    #             }
-    #         },
-    #         # 'person': {
-    #         #     'terms': {
-    #         #         'field': 'person.keyword'
-    #         #     }
-    #         # },
-    #         # 'subjectKeywords': {
-    #         #     'terms': {
-    #         #         'field': 'subjectKeywords',
-    #         #         'size': 100
-    #         #     }
-    #         # },
-    #         # 'accessRights': {
-    #         #     'terms': {
-    #         #         'field': 'accessRights'
-    #         #     }
-    #         # },
-    #         # "studyField": {
-    #         #     "nested": {
-    #         #         "path": "studyField.title"
-    #         #     },
-    #         #     "aggs": {
-    #         #         "studyField": {
-    #         #             "terms": {
-    #         #                 "field": "studyField.title.value.keyword",
-    #         #                 "size": 100
-    #         #             }
-    #         #         }
-    #         #     }
-    #         # },
-    #         "provider": {
-    #             "nested": {
-    #                 "path": "provider.title"
-    #             },
-    #             "aggs": {
-    #                 "provider": {
-    #                     "terms": {
-    #                         "field": "provider.title.value.keyword",
-    #                         "size": 100
-    #                     }
-    #                 }
-    #             }
-    #         },
-    #         "valid": {
-    #             'terms': {
-    #                 'field': "invenio_draft_validation.valid"
-    #             }
-    #         },
-    #         "marshmallow.field": {
-    #             "terms": {
-    #                 "field": "invenio_draft_validation.errors.marshmallow.field"
-    #             }
-    #         },
-    #         "marshmallow.message": {
-    #             "terms": {
-    #                 "field": "invenio_draft_validation.errors.marshmallow.message.keyword"
-    #             }
-    #         },
-    #         "jsonschema.field": {
-    #             "terms": {
-    #                 "field": "invenio_draft_validation.errors.jsonschema.field"
-    #             }
-    #         },
-    #         "jsonschema.message": {
-    #             "terms": {
-    #                 "field": "invenio_draft_validation.errors.jsonschema.message.keyword"
-    #             }
-    #         }
-    #     },
-    #     'filters': FILTERS,
-    #     'post_filters': POST_FILTERS
-    # }
+    draft_index_name: {
+        "aggs": translate_facets({**FACETS, **CURATOR_FACETS, **DRAFT_IMPORTANT_FACETS},
+                                 label='{facet_key}',
+                                 value='{value_key}'),
+        "filters": {**FILTERS, **CURATOR_FILTERS, **DRAFT_IMPORTANT_FILTERS}
+    },
 }
 
 RECORDS_REST_SORT_OPTIONS = {
-    # 'draft-nr_theses-nr-theses-v1.0.0': dict(
-    #     byid=dict(
-    #         title=('by id'),
-    #         fields=['-id'],
-    #         default_order='desc',
-    #         order=1,
-    #     ),
-    #     bestmatch=dict(
-    #         title=('Best match'),
-    #         fields=['_score'],
-    #         default_order='desc',
-    #         order=2,
-    #     ),
-    #     mostrecent=dict(
-    #         title=('Most recent'),
-    #         fields=['-_created'],
-    #         default_order='asc',
-    #         order=3,
-    #     ),
-    # )
+    draft_index_name: {
+        'alphabetical': {
+            'title': 'alphabetical',
+            'fields': [
+                'title.cs.raw'
+            ],
+            'default_order': 'asc',
+            'order': 1
+        },
+        'best_match': {
+            'title': 'Best match',
+            'fields': ['_score'],
+            'default_order': 'desc',
+            'order': 1,
+        }
+    }
 }
 
 RECORDS_REST_DEFAULT_SORT = {
-    # 'draft-nr_theses-nr-theses-v1.0.0': {
-    #     'query': 'byid',
-    #     'noquery': 'byid',
-    # }
+    draft_index_name: {
+        'query': 'best_match',
+        'noquery': 'best_match'
+    }
 }
 
 """Set default sorting options."""
