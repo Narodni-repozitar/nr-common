@@ -29,6 +29,8 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
             'numeric_detection': False,
             'properties': {
                 '$schema': {'index': True, 'type': 'keyword'},
+                '_communities': {'type': 'keyword'},
+                '_primary_community': {'type': 'keyword'},
                 'abstract': {
                     'properties': {
                         'bg': {
@@ -301,6 +303,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'institutionalID': {'type': 'keyword'},
                         'name': {
                             'copy_to': 'person',
+                            'fields': {'raw': {'type': 'keyword'}},
                             'type': 'text'
                         },
                         'researcherID': {'type': 'keyword'},
@@ -414,6 +417,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                         'institutionalID': {'type': 'keyword'},
                         'name': {
                             'copy_to': 'person',
+                            'fields': {'raw': {'type': 'keyword'}},
                             'type': 'text'
                         },
                         'researcherID': {'type': 'keyword'},
@@ -1428,6 +1432,7 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     },
                     'type': 'nested'
                 },
+                'state': {'type': 'keyword'},
                 'subject': {
                     'properties': {
                         'DateCreated': {'type': 'date'},

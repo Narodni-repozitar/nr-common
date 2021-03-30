@@ -106,8 +106,10 @@ FILTERS = {
 }
 
 CURATOR_FILTERS = {
+    _('accessRightsCurator'): language_aware_text_terms_filter('accessRights.title'),
     _('rights'): language_aware_text_terms_filter('rights.title'),
     _('provider'): language_aware_text_terms_filter('provider.title'),
+    _('entities'): language_aware_text_terms_filter('entities.title'),
     _('isGL'): boolean_filter('isGL')
 }
 
@@ -124,10 +126,12 @@ FACETS = {
 CURATOR_FACETS = {
     'rights': language_aware_text_term_facet('rights.title'),
     'provider': language_aware_text_term_facet('provider.title'),
+    'entities': language_aware_text_term_facet('entities.title'),
     'dateIssued': date_histogram_facet('dateIssued.date'),
     'dateDefended': date_histogram_facet('dateDefended.date'),
     'dateModified': date_histogram_facet('dateModified.date'),
     'isGL': term_facet('isGL'),
+    'accessRightsCurator': language_aware_text_term_facet('accessRights.title')
 }
 
 # def degree_grantor_filter(field, path=None):

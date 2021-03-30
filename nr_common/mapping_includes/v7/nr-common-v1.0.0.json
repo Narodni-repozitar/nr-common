@@ -22,6 +22,11 @@
         "properties": {
           "name": {
             "type": "text",
+            "fields": {
+              "raw": {
+                "type": "keyword"
+              }
+            },
             "copy_to": "person"
           },
           "ORCID": {
@@ -49,6 +54,11 @@
         "properties": {
           "name": {
             "type": "text",
+            "fields": {
+              "raw": {
+                "type": "keyword"
+              }
+            },
             "copy_to": "person"
           },
           "ORCID": {
