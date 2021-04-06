@@ -44,7 +44,6 @@ docs = ["sphinx"]
 
 [tool.poetry.plugins."invenio_jsonschemas.schemas"]
 "nr_common" = "nr_common.jsonschemas"
-"oarepo_fsm" = "oarepo_fsm.jsonschemas"
 
 [tool.poetry.plugins."invenio_pidstore.minters"]
 "nr_common" = "nr_common.minters:nr_id_minter"
