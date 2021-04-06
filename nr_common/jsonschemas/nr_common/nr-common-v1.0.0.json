@@ -383,22 +383,7 @@
         "language",
         "provider",
         "title"
-      ],
-      "definitions": {
-        "location": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "place": {
-              "type": "string"
-            },
-            "country": {
-              "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
-              "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
-            }
-          }
-        }
-      }
+      ]
     },
     {
       "$ref": "../fsm-record-v1.0.0.json#/definitions/FSMRecord"
@@ -406,5 +391,20 @@
     {
       "$ref": "../communities-v1.0.0.json#/definitions/Communities"
     }
-  ]
+  ],
+  "definitions": {
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "place": {
+          "type": "string"
+        },
+        "country": {
+          "$comment": "podmíněně povinné - uvedu-li místo, tak musím uvést i kod země",
+          "$ref": "../taxonomy-v2.0.0.json#/definitions/Term"
+        }
+      }
+    }
+  }
 }
