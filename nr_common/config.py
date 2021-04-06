@@ -11,25 +11,31 @@ from __future__ import absolute_import, print_function
 
 from invenio_records_rest.facets import terms_filter, range_filter
 from invenio_records_rest.utils import allow_all
+from oarepo_communities.links import community_record_links_factory
+from oarepo_communities.search import CommunitySearch
 from oarepo_records_draft.rest import term_facet, DRAFT_IMPORTANT_FILTERS, DRAFT_IMPORTANT_FACETS
-from oarepo_ui.facets import date_histogram_facet, translate_facets
-from oarepo_ui.filters import group_by_terms_filter, boolean_filter
 
+from nr_common.constants import PUBLISHED_COMMON_PID_TYPE, PUBLISHED_COMMON_RECORD, \
+    DRAFT_COMMON_PID_TYPE, DRAFT_COMMON_RECORD
 from nr_common.record import published_index_name, draft_index_name
 from oarepo_multilingual import language_aware_text_term_facet, \
     language_aware_text_terms_filter
+from oarepo_ui.facets import date_histogram_facet, translate_facets
+from oarepo_ui.filters import group_by_terms_filter, boolean_filter
+
+
 
 _ = lambda x: x
 
 RECORDS_DRAFT_ENDPOINTS = {
     'common': {
         'draft': 'draft-common',
-        'pid_type': 'nrcom',
+        'pid_type': PUBLISHED_COMMON_PID_TYPE,
         'pid_minter': 'nr_common',
         'pid_fetcher': 'nr_common',
         'default_endpoint_prefix': True,
         'max_result_window': 500000,
-        'record_class': 'nr_common.record:PublishedCommonRecord',
+        'record_class': PUBLISHED_COMMON_RECORD,
         # TODO: doplnit indexer class
         'list_route': '/common/',
         'item_route': '/common/',
@@ -38,35 +44,17 @@ RECORDS_DRAFT_ENDPOINTS = {
         'edit_permission_factory_imp': allow_all,
         'default_media_type': 'application/json',
         'search_index': published_index_name,
-        'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory'
+        'links_factory_imp': community_record_links_factory,
+        'search_class': CommunitySearch
     },
     'draft-common': {
-        'pid_type': 'dnrcom',
-        'record_class': 'nr_common.record:DraftCommonRecord',
+        'pid_type': DRAFT_COMMON_PID_TYPE,
+        'record_class': DRAFT_COMMON_RECORD,
         'list_route': '/draft/common/',
         'item_route': '/draft/common/',
         'search_index': draft_index_name,
-        'links_factory_imp': 'oarepo_fsm.links:record_fsm_links_factory',
-        # 'create_permission_factory_imp':
-        # 'restoration.objects.permissions.create_object_permission_impl',
-        # 'read_permission_factory_imp':
-        # 'restoration.objects.permissions.read_object_permission_impl',
-        # 'update_permission_factory_imp':
-        # 'restoration.objects.permissions.update_object_permission_impl',
-        # 'record_loaders': {
-        #     'application/json': 'oarepo_validate.json_files_loader',
-        #     'application/json-patch+json': 'oarepo_validate.json_loader'
-        # },
-        # 'record_serializers': {
-        #     'application/json': 'restoration.objects.serializer.json_response',
-        # },
-
-        # 'files': dict(
-        #     put_file_factory='restoration.objects.permissions.put_file_permission_impl',
-        #     delete_file_factory='restoration.objects.permissions.delete_file_permission_impl',
-        #     get_file_factory='restoration.objects.permissions.get_file_permission_impl',
-        # ),
-
+        'links_factory_imp': community_record_links_factory,
+        'search_class': CommunitySearch
     }
 }
 

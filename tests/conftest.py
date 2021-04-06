@@ -130,6 +130,7 @@ def app():
         CELERY_RESULT_BACKEND='cache',
         CELERY_CACHE_BACKEND='memory',
         CELERY_TASK_EAGER_PROPAGATES=True,
+        OAREPO_COMMUNITIES_ROLES=['member', 'curator', 'publisher'],
         SUPPORTED_LANGUAGES=['cs', 'en', 'sk', 'de', 'fr', 'ru', 'es', 'nl', 'it',
                                           'no', 'pl', 'da', 'el',
                                           'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
