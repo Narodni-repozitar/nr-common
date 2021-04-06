@@ -10,12 +10,10 @@ General libraries extending [Invenio](https://github.com/inveniosoftware) are co
  ## Instalace
  
  Nejedná se o samostatně funkční knihovnu, proto potřebuje běžící Invenio a závislosti Oarepo.
- Knihovna se instaluje ze zdroje.
+ Knihovna se instaluje klasicky přes pip
  
- ```bash
-git clone git@github.com:Narodni-repozitar/nr-common.git
-cd nr-common
-pip install -e .
+```bash
+pip install techlib-nr-common
 ```
 
 Pro testování a/nebo samostané fungování knihovny je nutné instalovat tests z extras.
