@@ -40,7 +40,7 @@ jobs:
         run: |
           pip install --upgrade pip setuptools py
           pip install twine wheel coveralls
-          pip install poetry==1.0.10
+          pip install poetry
           poetry config virtualenvs.create false
       - name: Install dependencies
         run: |
