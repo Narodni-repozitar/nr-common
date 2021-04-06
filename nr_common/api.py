@@ -46,6 +46,7 @@ class CommonAPI:
     #     db_record = existing_record
     #     return db_record
     #
+    # TODO: používá se někde?
     @staticmethod
     def create_draft_record(record: dict, pid_type=None, pid_value=None):
         if not pid_type:
