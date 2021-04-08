@@ -35,6 +35,7 @@ from invenio_search import InvenioSearch, RecordsSearch
 from marshmallow import Schema
 from marshmallow.fields import Nested, Url, List, Boolean
 from oarepo_communities import OARepoCommunities
+from oarepo_communities.api import OARepoCommunity
 from oarepo_mapping_includes.ext import OARepoMappingIncludesExt
 from oarepo_records_draft.ext import RecordsDraft
 from oarepo_references import OARepoReferences
@@ -131,10 +132,10 @@ def app():
         CELERY_TASK_EAGER_PROPAGATES=True,
         OAREPO_COMMUNITIES_ROLES=['member', 'curator', 'publisher'],
         SUPPORTED_LANGUAGES=['cs', 'en', 'sk', 'de', 'fr', 'ru', 'es', 'nl', 'it',
-                                          'no', 'pl', 'da', 'el',
-                                          'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
+                             'no', 'pl', 'da', 'el',
+                             'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
         MULTILINGUAL_SUPPORTED_LANGUAGES=['cs', 'en', 'sk', 'de', 'fr', 'ru', 'es', 'nl', 'it', 'no', 'pl', 'da', 'el',
-                       'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
+                                          'hu', 'lt', 'pt', 'bg', 'ro', 'sv'],
         RECORDS_REST_ENDPOINTS=RECORDS_REST_ENDPOINTS,
         ELASTICSEARCH_DEFAULT_LANGUAGE_TEMPLATE={
             "type": "text",
@@ -545,79 +546,95 @@ def base_json_dereferenced():
     return {
         "_primary_community": "nr",
         'accessRights': [{
-                             'is_ancestor': False,
-                             'level': 1,
-                             'links': {
-                                 'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/c-abf2'
-                             },
-                             'relatedURI': {
-                                 'coar': 'http://purl.org/coar/access_right/c_abf2',
-                                 'eprint': 'http://purl.org/eprint/accessRights/OpenAccess',
-                                 'vocabs':
-                                     'https://vocabs.acdh.oeaw.ac.at/archeaccessrestrictions/public'
-                             },
-                             'title': {'cs': 'otevřený přístup', 'en': 'open access'}
-                         }],
+            'is_ancestor': False,
+            'level': 1,
+            'links': {
+                'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/c-abf2'
+            },
+            'relatedURI': {
+                'coar': 'http://purl.org/coar/access_right/c_abf2',
+                'eprint': 'http://purl.org/eprint/accessRights/OpenAccess',
+                'vocabs':
+                    'https://vocabs.acdh.oeaw.ac.at/archeaccessrestrictions/public'
+            },
+            'title': {'cs': 'otevřený přístup', 'en': 'open access'}
+        }],
         'control_number': '411100',
         'creator': [{'name': 'Daniel Kopecký'}],
         'dateIssued': '2010-07-01',
         'entities': [{
-                         'address': 'Malostranské náměstí 259/12, 118 00 Praha 1',
-                         'aliases': ['AMU'],
-                         'ico': '61384984',
-                         'is_ancestor': False,
-                         'level': 1,
-                         'links': {
-                             'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
-                         },
-                         'provider': True,
-                         'related': {'rid': '51000'},
-                         'title': {
-                             'cs': 'Akademie múzických umění v Praze',
-                             'en': 'Academy of Performing Arts in Prague'
-                         },
-                         'type': 'veřejná VŠ',
-                         'url': 'https://www.amu.cz'
-                     }],
+            'address': 'Malostranské náměstí 259/12, 118 00 Praha 1',
+            'aliases': ['AMU'],
+            'ico': '61384984',
+            'is_ancestor': False,
+            'level': 1,
+            'links': {
+                'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
+            },
+            'provider': True,
+            'related': {'rid': '51000'},
+            'title': {
+                'cs': 'Akademie múzických umění v Praze',
+                'en': 'Academy of Performing Arts in Prague'
+            },
+            'type': 'veřejná VŠ',
+            'url': 'https://www.amu.cz'
+        }],
         'keywords': [{'cs': '1', 'en': '1'},
                      {'cs': '2', 'en': '2'},
                      {'cs': '3', 'en': '3'}],
         'language': [{
-                         'is_ancestor': False,
-                         'level': 1,
-                         'links': {
-                             'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/cze'
-                         },
-                         'title': {'cs': 'čeština', 'en': 'Czech'}
-                     }],
+            'is_ancestor': False,
+            'level': 1,
+            'links': {
+                'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/cze'
+            },
+            'title': {'cs': 'čeština', 'en': 'Czech'}
+        }],
         'provider': [{
-                         'address': 'Malostranské náměstí 259/12, 118 00 Praha 1',
-                         'aliases': ['AMU'],
-                         'ico': '61384984',
-                         'is_ancestor': False,
-                         'level': 1,
-                         'links': {
-                             'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
-                         },
-                         'provider': True,
-                         'related': {'rid': '51000'},
-                         'title': {
-                             'cs': 'Akademie múzických umění v Praze',
-                             'en': 'Academy of Performing Arts in Prague'
-                         },
-                         'type': 'veřejná VŠ',
-                         'url': 'https://www.amu.cz'
-                     }],
+            'address': 'Malostranské náměstí 259/12, 118 00 Praha 1',
+            'aliases': ['AMU'],
+            'ico': '61384984',
+            'is_ancestor': False,
+            'level': 1,
+            'links': {
+                'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/61384984'
+            },
+            'provider': True,
+            'related': {'rid': '51000'},
+            'title': {
+                'cs': 'Akademie múzických umění v Praze',
+                'en': 'Academy of Performing Arts in Prague'
+            },
+            'type': 'veřejná VŠ',
+            'url': 'https://www.amu.cz'
+        }],
         'resourceType': [{
-                             'is_ancestor': False,
-                             'level': 1,
-                             'links': {
-                                 'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/bakalarske-prace'
-                             },
-                             'title': {
-                                 'cs': 'Bakalářské práce',
-                                 'en': 'Bachelor’s theses'
-                             }
-                         }],
+            'is_ancestor': False,
+            'level': 1,
+            'links': {
+                'self': 'http://127.0.0.1:5000/2.0/taxonomies/test_taxonomy/bakalarske-prace'
+            },
+            'title': {
+                'cs': 'Bakalářské práce',
+                'en': 'Bachelor’s theses'
+            }
+        }],
         'title': [{'cs': 'Testovací záznam', 'en': 'Test record'}]
     }
+
+
+@pytest.fixture
+def community(app, db):
+    comm_data = {
+        # "curation_policy": policy,
+        "id": 'nr',
+        "description": f'Test NR community',
+        # TODO: "logo": "data/community-logos/ecfunded.jpg"
+    }
+    return OARepoCommunity.create(
+        comm_data,
+        id_='nr',
+        title='Test NR community',
+        ctype='other'
+    )
