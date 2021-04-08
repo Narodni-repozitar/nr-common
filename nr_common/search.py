@@ -17,6 +17,12 @@ class NRRecordsSearch(CommunitySearch):
     LIST_SOURCE_FIELDS = []
     HIGHLIGHT_FIELDS = {}
 
+    only = None
+    """one of ONLY_DRAFTS, ONLY_PUBLISHED"""
+
+    ONLY_DRAFTS = 'drafts'
+    ONLY_PUBLISHED = 'published'
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._source = self._source = type(self).LIST_SOURCE_FIELDS
@@ -26,8 +32,18 @@ class NRRecordsSearch(CommunitySearch):
     class ActualMeta:
         outer_class = None
         doc_types = ['_doc']
-        default_anonymous_filter = Q('term', _administration__state=STATE_PUBLISHED)
-        default_authenticated_filter = Q('terms', state=[STATE_APPROVED, STATE_PUBLISHED])
+
+        @classproperty
+        def default_anonymous_filter(cls):
+            if cls.outer_class.only == cls.outer_class.ONLY_DRAFTS:
+                return Q('match_none')
+            return Q('term', _administration__state=STATE_PUBLISHED)
+
+        @classproperty
+        def default_authenticated_filter(cls):
+            if cls.outer_class.only == cls.outer_class.ONLY_DRAFTS:
+                return Q('match_none')
+            return Q('terms', state=[STATE_PUBLISHED])
 
         @classmethod
         def default_filter_factory(cls, search=None, **kwargs):
@@ -40,9 +56,20 @@ class NRRecordsSearch(CommunitySearch):
             else:
                 if COMMUNITY_CURATOR_PERMISSION(None).can():
                     # Curators can see all community records
-                    return CommunitySearch.community_filter()
+                    if cls.outer_class.only == cls.outer_class.ONLY_DRAFTS:
+                        return Bool(
+                            must=[
+                                CommunitySearch.community_filter()],
+                            must_not=[
+                                Q('term', _administration__state=STATE_PUBLISHED),
+                            ])
+                    elif cls.outer_class.only == cls.outer_class.ONLY_PUBLISHED:
+                        return Bool(must=[
+                            Q('term', _administration__state=STATE_PUBLISHED),
+                            CommunitySearch.community_filter()])
+                    else:
+                        return CommunitySearch.community_filter()
 
-                # Community member sees both APPROVED and PUBLISHED community records only
                 q = Bool(must=[
                     CommunitySearch.community_filter(),
                     cls.outer_class.Meta.default_authenticated_filter])
