@@ -15,13 +15,13 @@ from .permissions import (
 
 class NRRecordsSearch(CommunitySearch):
     LIST_SOURCE_FIELDS = []
+    HIGHLIGHT_FIELDS = {}
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._source = self._source = type(self).LIST_SOURCE_FIELDS
-        self._highlight['title.cs'] = {}
-        self._highlight['title._'] = {}
-        self._highlight['title.en'] = {}
+        for k, v in type(self).HIGHLIGHT_FIELDS:
+            self._highlight[k] = v or {}
 
     class ActualMeta:
         outer_class = None
