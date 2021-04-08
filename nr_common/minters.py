@@ -10,11 +10,12 @@
 
 from __future__ import absolute_import, print_function
 
-from .providers import NRIdProvider
 from invenio_pidstore.errors import PIDDoesNotExistError
 
+from nr_common.providers import NRIdProvider
 
-def nr_id_minter(record_uuid, data):
+
+def nr_id_minter(record_uuid, data, nr_id_provider):
     """Mint record identifiers.
 
     This is a minter specific for records.
@@ -40,7 +41,6 @@ def nr_id_minter(record_uuid, data):
     :returns: A fresh `invenio_pidstore.models.PersistentIdentifier` instance.
     """
     pid_field = "control_number"
-    nr_id_provider = NRIdProvider
     pid_type = get_pid_type(data)
     nr_id_provider.pid_type = pid_type
     if pid_field not in data:

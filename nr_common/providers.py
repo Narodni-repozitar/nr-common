@@ -20,7 +20,7 @@ from nr_common.models import NRIdentifier
 class NRIdProvider(BaseProvider):
     """Thesss identifier provider."""
 
-    pid_type = 'nrcom'
+    pid_type = 'TODO'
     """Type of persistent identifier."""
 
     pid_provider = None

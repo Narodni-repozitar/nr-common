@@ -45,7 +45,6 @@ from oarepo_validate import MarshmallowValidatedRecordMixin
 from oarepo_validate.ext import OARepoValidate
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
-from nr_common.ext import NRCommon
 from tests.helpers import set_identity
 
 
@@ -182,7 +181,6 @@ def app():
     InvenioRecords(app)
     InvenioRecordsREST(app)
     InvenioCelery(app)
-    NRCommon(app)
     InvenioPIDStore(app)
     RecordsDraft(app)
     OARepoValidate(app)
