@@ -107,7 +107,7 @@
         "type": "keyword",
         "copy_to": "dateAll",
         "fields": {
-          "date":{
+          "date": {
             "type": "date",
             "format": "yyyy-MM-dd||yyyy-MM||yyyy",
             "ignore_malformed": true
@@ -349,6 +349,23 @@
           },
           "exception": {
             "type": "keyword"
+          }
+        }
+      },
+      "_administration": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "keyword"
+          },
+          "primaryCommunity": {
+            "type": "keyword"
+          },
+          "communities": {
+            "type": "keyword"
+          },
+          "owned_by": {
+            "type": "integer"
           }
         }
       }

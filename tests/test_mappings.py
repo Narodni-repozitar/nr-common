@@ -22,15 +22,21 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
     pprint(es_record["_source"])
     assert es_record["_source"] == base_json_dereferenced
     assert body == {
-        'aliases': {'nr-all': {}},
+        'aliases': {'{PREFIX}nr-all': {}},
         'mappings': {
             'date_detection': False,
             'dynamic': False,
             'numeric_detection': False,
             'properties': {
                 '$schema': {'index': True, 'type': 'keyword'},
-                '_communities': {'type': 'keyword'},
-                '_primary_community': {'type': 'keyword'},
+                '_administration': {
+                    'properties': {
+                        'communities': {'type': 'keyword'},
+                        'owned_by': {'type': 'integer'},
+                        'primaryCommunity': {'type': 'keyword'},
+                        'state': {'type': 'keyword'}
+                    },
+                    'type': 'object'},
                 'abstract': {
                     'properties': {
                         'bg': {
@@ -1432,7 +1438,6 @@ def test_mapping_1(app, es, es_index, base_json_dereferenced):
                     },
                     'type': 'nested'
                 },
-                'state': {'type': 'keyword'},
                 'subject': {
                     'properties': {
                         'DateCreated': {'type': 'date'},

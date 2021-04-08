@@ -1,6 +1,6 @@
 {
   "aliases": {
-    "nr-all": {}
+    "{PREFIX}nr-all": {}
   },
   "mappings": {
     "date_detection": false,
@@ -8,9 +8,7 @@
     "dynamic": false,
     "properties": {
       "oarepo:extends": [
-        "nr-common-v1.0.0.json#/mappings/properties",
-        "fsm-record-v1.0.0.json#/FSMRecord/properties",
-        "communities-v1.0.0.json#/Communities/properties"
+        "nr-common-v1.0.0.json#/mappings/properties"
       ]
     }
   }

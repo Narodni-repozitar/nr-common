@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "techlib-nr-common"
-version = "3.0.0a39"
+version = "3.0.0a40"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]
@@ -23,7 +23,7 @@ pytest = "^5.0.0"
 pytest-cov = "^2.10.1"
 oarepo = "^3.3"
 oarepo-ui = "^2.3.0"
-oarepo-micro-api = "^3.3.57"
+oarepo-micro-api = "^3.3.60"
 oarepo-mapping-includes = "<=1.2.0"
 oarepo-multilingual = "^2.5.0"
 oarepo-taxonomies = "^3.0.0a1"
