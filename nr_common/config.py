@@ -23,7 +23,7 @@ from oarepo_multilingual import language_aware_text_term_facet, \
 from oarepo_ui.facets import date_histogram_facet, translate_facets
 from oarepo_ui.filters import group_by_terms_filter, boolean_filter
 
-
+from nr_common.search import CommonRecordsSearch
 
 _ = lambda x: x
 
@@ -45,7 +45,7 @@ RECORDS_DRAFT_ENDPOINTS = {
         'default_media_type': 'application/json',
         'search_index': published_index_name,
         'links_factory_imp': community_record_links_factory,
-        'search_class': CommunitySearch
+        'search_class': CommonRecordsSearch
     },
     'draft-common': {
         'pid_type': DRAFT_COMMON_PID_TYPE,
@@ -54,7 +54,7 @@ RECORDS_DRAFT_ENDPOINTS = {
         'item_route': '/draft/common/',
         'search_index': draft_index_name,
         'links_factory_imp': community_record_links_factory,
-        'search_class': CommunitySearch
+        'search_class': CommonRecordsSearch
     }
 }
 
