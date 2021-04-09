@@ -1,7 +1,31 @@
-from nr_common.search import nr_query_parser
+from nr_common.search import nr_simple_query_parser, nr_luqum_query_parser, nr_query_parser
 
 
-def test_nr_query_parser(app):
+def test_nr_query_parser_1(app):
+    query_string = "title.cs:auto"
+    query = nr_query_parser(qstr=query_string)
+    assert query.to_dict() == {'match': {'title.cs': {'query': 'auto', 'zero_terms_query': 'none'}}}
+
+
+def test_nr_query_parser_2(app):
+    query_string = "creator.name: Hovorka"
+    query = nr_query_parser(qstr=query_string)
+    assert query.to_dict() == {
+        'nested': {
+            'path': 'creator',
+            'query': {
+                'match': {
+                    'creator.name': {
+                        'query': 'Hovorka',
+                        'zero_terms_query': 'none'
+                    }
+                }
+            }
+        }
+    }
+
+
+def test_nr_query_parser_3(app):
     query_string = "auto"
     query = nr_query_parser(qstr=query_string)
     assert query.to_dict() == {
