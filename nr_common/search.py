@@ -1,4 +1,5 @@
 import functools
+import re
 
 from boltons.typeutils import classproperty
 from elasticsearch_dsl import Q
@@ -91,9 +92,16 @@ class NRRecordsSearch(CommunitySearch):
         return type(f'{cls.__name__}.Meta', (cls.ActualMeta,), {'outer_class': cls})
 
 
-def community_search_factory(*args, **kwargs):
+def community_search_factory(list_resource, records_search, **kwargs):
     community_id = getattr(request, 'view_args', {}).get('community_id')
-    query, params = es_search_factory(*args, **kwargs)
+
+    endpoint = request.endpoint  # 'invenio_records_rest.draft-nresults-community_list'
+    endpoint = endpoint.split('.')[1]
+    endpoint = re.sub('_list$', '', endpoint)
+
+    index_name = records_search._index
+
+    query, params = es_search_factory(list_resource, records_search, **kwargs)
     if community_id:
         params = {
             **params,
