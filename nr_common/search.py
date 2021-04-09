@@ -3,7 +3,12 @@ import functools
 from boltons.typeutils import classproperty
 from elasticsearch_dsl import Q
 from elasticsearch_dsl.query import Bool
+from flask import request
+from flask_login import current_user
+from invenio_records_rest.query import es_search_factory
+from oarepo_communities.api import OARepoCommunity
 from oarepo_communities.constants import STATE_PUBLISHED, STATE_APPROVED
+from oarepo_communities.proxies import current_oarepo_communities
 from oarepo_communities.search import CommunitySearch
 
 from .permissions import (
@@ -17,16 +22,10 @@ class NRRecordsSearch(CommunitySearch):
     LIST_SOURCE_FIELDS = []
     HIGHLIGHT_FIELDS = {}
 
-    only = None
-    """one of ONLY_DRAFTS, ONLY_PUBLISHED"""
-
-    ONLY_DRAFTS = 'drafts'
-    ONLY_PUBLISHED = 'published'
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._source = self._source = type(self).LIST_SOURCE_FIELDS
-        for k, v in type(self).HIGHLIGHT_FIELDS:
+        for k, v in type(self).HIGHLIGHT_FIELDS.items():
             self._highlight[k] = v or {}
 
     class ActualMeta:
@@ -35,47 +34,69 @@ class NRRecordsSearch(CommunitySearch):
 
         @classproperty
         def default_anonymous_filter(cls):
-            if cls.outer_class.only == cls.outer_class.ONLY_DRAFTS:
-                return Q('match_none')
             return Q('term', _administration__state=STATE_PUBLISHED)
 
         @classproperty
         def default_authenticated_filter(cls):
-            if cls.outer_class.only == cls.outer_class.ONLY_DRAFTS:
-                return Q('match_none')
             return Q('terms', state=[STATE_PUBLISHED])
 
         @classmethod
         def default_filter_factory(cls, search=None, **kwargs):
-            if not AUTHENTICATED_PERMISSION.can() or not (
-                    COMMUNITY_MEMBER_PERMISSION(None).can() or COMMUNITY_CURATOR_PERMISSION(None).can()):
-                # Anonymous or non-community members sees published community records only
+            if not request.view_args.get('community_id'):
+                if not AUTHENTICATED_PERMISSION.can():
+                    return cls.outer_class.Meta.default_anonymous_filter
+
+                roles = current_user.roles
+                my_communities = []
+                for role in roles:
+                    try:
+                        my_communities.append(role.community.one().id)
+                    except:
+                        pass
+                return Bool(should=[
+                    cls.outer_class.Meta.default_authenticated_filter,
+                    Q('terms', **{current_oarepo_communities.primary_community_field: my_communities}),
+                    Q('terms', **{current_oarepo_communities.communities_field: my_communities})
+                ], minimum_should_match=1)
+
+            if not AUTHENTICATED_PERMISSION.can():
+                # Anonymous sees published community records only
                 return Bool(must=[
                     cls.outer_class.Meta.default_anonymous_filter,
                     CommunitySearch.community_filter()])
-            else:
-                if COMMUNITY_CURATOR_PERMISSION(None).can():
-                    # Curators can see all community records
-                    if cls.outer_class.only == cls.outer_class.ONLY_DRAFTS:
-                        return Bool(
-                            must=[
-                                CommunitySearch.community_filter()],
-                            must_not=[
-                                Q('term', _administration__state=STATE_PUBLISHED),
-                            ])
-                    elif cls.outer_class.only == cls.outer_class.ONLY_PUBLISHED:
-                        return Bool(must=[
-                            Q('term', _administration__state=STATE_PUBLISHED),
-                            CommunitySearch.community_filter()])
-                    else:
-                        return CommunitySearch.community_filter()
 
-                q = Bool(must=[
-                    CommunitySearch.community_filter(),
-                    cls.outer_class.Meta.default_authenticated_filter])
+            if (
+                    not COMMUNITY_MEMBER_PERMISSION(None).can() and
+                    not COMMUNITY_CURATOR_PERMISSION(None).can()
+            ):
+                # non-community members sees the same as anonymous
+                return Bool(must=[
+                    cls.outer_class.Meta.default_anonymous_filter,
+                    CommunitySearch.community_filter()])
+
+            # member or curator
+            if COMMUNITY_CURATOR_PERMISSION(None).can():
+                # Curators can see all community records
+                return CommunitySearch.community_filter()
+
+            # member sees authenticated results filtered by community
+            q = Bool(must=[
+                CommunitySearch.community_filter(),
+                cls.outer_class.Meta.default_authenticated_filter])
             return q
 
     @classproperty
     @functools.lru_cache(maxsize=1)
     def Meta(cls):
         return type(f'{cls.__name__}.Meta', (cls.ActualMeta,), {'outer_class': cls})
+
+
+def community_search_factory(*args, **kwargs):
+    community_id = getattr(request, 'view_args', {}).get('community_id')
+    query, params = es_search_factory(*args, **kwargs)
+    if community_id:
+        params = {
+            **params,
+            'community_id': community_id
+        }
+    return query, params
