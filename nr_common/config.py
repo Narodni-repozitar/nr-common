@@ -23,9 +23,22 @@ from oarepo_multilingual import language_aware_text_term_facet, \
 from oarepo_ui.facets import date_histogram_facet, translate_facets
 from oarepo_ui.filters import group_by_terms_filter, boolean_filter
 
-
-
 _ = lambda x: x
+
+NR_SEARCH_FIELDS = ['abstract.*', 'creator.name', 'creator.ORCID', 'creator.scopusID',
+                    'creator.researcherID', 'creator.czenasAutID', 'creator.vedidk',
+                    'creator.institutionalID', 'contributor.name', 'contributor.ORCID',
+                    'contributor.scopusID', 'contributor.researcherID',
+                    'contributor.czenasAutID', 'contributor.vedidk',
+                    'contributor.institutionalID', 'contributor.role.title.*',
+                    'contributor.role.marcCode', 'contributor.role.dataCiteCode',
+                    'dateModified', 'resourceType.title.*', 'resourceType.alias.*',
+                    'workIdentifiers.isbn', 'workIdentifiers.issn', 'workIdentifiers.doi',
+                    'workIdentifiers.RIV', 'note', 'fundingReference.projectID',
+                    'fundingReference.projectName', 'fundingReference.fundingProgram',
+                    'fundingReference.funder.title.*', 'fundingReference.funder.formerNames',
+                    'fundingReference.funder.aliases', 'entities.title.*', 'entities.aliases',
+                    'entities.formerNames', 'publisher'],
 
 RECORDS_DRAFT_ENDPOINTS = {
     'common': {
