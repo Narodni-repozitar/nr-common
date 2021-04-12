@@ -10,13 +10,13 @@ from luqum.parser import parser
 from luqum.tree import Word
 
 
-def nr_query_parser(qstr: str = None):
+def nr_query_parser(qstr: str = None, index_name: str = None, enpoint_name: str = None):
     if not qstr:
         return Q()
     tree = parser.parse(qstr)
     if isinstance(tree, Word):
         return nr_simple_query_parser(qstr)
-    return nr_luqum_query_parser(tree)
+    return nr_luqum_query_parser(tree, mapping)
 
 
 def nr_simple_query_parser(qstr: str = None):
@@ -36,10 +36,10 @@ def nr_simple_query_parser(qstr: str = None):
         return Q('query_string', query=qstr)
 
 
-def nr_luqum_query_parser(tree):
-    mapping = get_mapping()  # TODO: vyřešit jak brát mapping z requestu
+def nr_luqum_query_parser(tree, mapping):
+    mapping = get_mapping(mapping)  # TODO: vyřešit jak brát mapping z requestu
     schema_analyzer = SchemaAnalyzer(mapping)
-    q_builder_opt = schema_analyzer.query_builder_options() # TODO: využít i v simple query parser
+    q_builder_opt = schema_analyzer.query_builder_options()  # TODO: využít i v simple query parser
     es_builder = ElasticsearchQueryBuilder(**q_builder_opt)
     query = es_builder(tree)
     return Q(query)
