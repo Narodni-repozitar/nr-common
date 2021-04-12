@@ -11,6 +11,7 @@ from oarepo_communities.api import OARepoCommunity
 from oarepo_communities.constants import STATE_PUBLISHED, STATE_APPROVED
 from oarepo_communities.proxies import current_oarepo_communities
 from oarepo_communities.search import CommunitySearch
+from oarepo_search.query_parsers import query_parser
 
 from .permissions import (
     AUTHENTICATED_PERMISSION,
@@ -25,6 +26,8 @@ class NRRecordsSearch(CommunitySearch):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#return-agg-type
+        self._params = {'typed_keys': True}
         self._source = self._source = type(self).LIST_SOURCE_FIELDS
         for k, v in type(self).HIGHLIGHT_FIELDS.items():
             self._highlight[k] = v or {}
@@ -56,7 +59,8 @@ class NRRecordsSearch(CommunitySearch):
                         pass
                 return Bool(should=[
                     cls.outer_class.Meta.default_authenticated_filter,
-                    Q('terms', **{current_oarepo_communities.primary_community_field: my_communities}),
+                    Q('terms',
+                      **{current_oarepo_communities.primary_community_field: my_communities}),
                     Q('terms', **{current_oarepo_communities.communities_field: my_communities})
                 ], minimum_should_match=1)
 
@@ -100,6 +104,9 @@ def community_search_factory(list_resource, records_search, **kwargs):
     endpoint = re.sub('_list$', '', endpoint)
 
     index_name = records_search._index
+
+    kwargs["query_parser"] = functools.partial(query_parser, index_name=index_name,
+                                               endpoint_name=endpoint)
 
     query, params = es_search_factory(list_resource, records_search, **kwargs)
     if community_id:

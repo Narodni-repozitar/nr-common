@@ -40,6 +40,7 @@ from oarepo_mapping_includes.ext import OARepoMappingIncludesExt
 from oarepo_records_draft.ext import RecordsDraft
 from oarepo_references import OARepoReferences
 from oarepo_references.mixins import ReferenceEnabledRecordMixin
+from oarepo_search import OARepoSearch
 from oarepo_taxonomies.cli import init_db
 from oarepo_taxonomies.ext import OarepoTaxonomies
 from oarepo_validate import MarshmallowValidatedRecordMixin
@@ -186,6 +187,7 @@ def app():
     RecordsDraft(app)
     OARepoValidate(app)
     OARepoCommunities(app)
+    OARepoSearch(app)
     app.url_map.converters['pid'] = PIDConverter
 
     # Celery

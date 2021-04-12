@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "techlib-nr-common"
-version = "3.0.0a45"
+version = "3.0.0a46"
 description = "NR common data types"
 license = "MIT"
 keywords = ["National", "Repository", "common", "model", "Invenio"]
@@ -17,6 +17,7 @@ isbnlib = "^3.10.3"
 sphinx = { version = "^1.5.1", optional = true }
 python-stdnum = "^1.16"
 oarepo-invenio-model = "^2.0.0"
+oarepo-search = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.0.0"
