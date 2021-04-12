@@ -17,6 +17,7 @@ isbnlib = "^3.10.3"
 sphinx = { version = "^1.5.1", optional = true }
 python-stdnum = "^1.16"
 oarepo-invenio-model = "^2.0.0"
+oarepo-search = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.0.0"
