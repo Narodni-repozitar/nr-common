@@ -4,7 +4,7 @@ import re
 from boltons.typeutils import classproperty
 from elasticsearch_dsl import Q
 from elasticsearch_dsl.query import Bool
-from flask import request
+from flask import request, current_app
 from flask_login import current_user
 from invenio_records_rest.query import es_search_factory
 from oarepo_communities.api import OARepoCommunity
@@ -27,7 +27,8 @@ class NRRecordsSearch(CommunitySearch):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#return-agg-type
-        self._params = {'typed_keys': True}
+        typed_keys = current_app.config.get("NR_ES_TYPED_KEYS", False)
+        self._params = {'typed_keys': typed_keys}
         self._source = self._source = type(self).LIST_SOURCE_FIELDS
         for k, v in type(self).HIGHLIGHT_FIELDS.items():
             self._highlight[k] = v or {}
