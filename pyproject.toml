@@ -46,3 +46,4 @@ docs = ["sphinx"]
 
 [tool.poetry.plugins."oarepo_mapping_includes"]
 "nr_common" = "nr_common.mapping_includes"
+
